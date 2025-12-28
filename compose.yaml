@@ -1,7 +1,130 @@
 services:
+  # --- Services ---
+  notification-service:
+    image: ./notification-service
+  # --- REDIS ---
   redis:
     image: redis:alpine3.22
-    ports:
-      - "6379:6379"
+    container_name: redis
     restart: always
     command: ["redis-server", "--loglevel", "warning"]
+
+  # --- KEYCLOAK (Replaces Auth DB) ---
+  keycloak:
+    # Using a version that includes the MySQL driver
+    image: quay.io/keycloak/keycloak:26.4
+    container_name: keycloak
+    restart: always
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      # Specify MySQL as the database vendor
+      KC_DB: mysql
+      # JDBC URL connecting to the keycloak-db container
+      KC_DB_URL: jdbc:mysql://keycloak-db:3306/keycloak?allowPublicKeyRetrieval=true&useSSL=false
+      KC_DB_USERNAME: keycloak_user
+      KC_DB_PASSWORD: keycloak_password
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+    command: start-dev
+    depends_on:
+      - keycloak-db
+    ports:
+      - "8080:8080"
+
+  # --- KEYCLOAK DATABASE (MySQL) ---
+  keycloak-db:
+    image: mysql:8.0
+    container_name: keycloak-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret_password
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak_user
+      MYSQL_PASSWORD: keycloak_password
+    volumes:
+      - keycloak_data:/var/lib/mysql
+
+  # --- PRODUCT DATABASE ---
+  product-db:
+    image: mysql:8.0
+    container_name: product-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret_password
+      MYSQL_DATABASE: product_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    volumes:
+      - product_data:/var/lib/mysql
+
+  # --- FACTOR DATABASE ---
+  factor-db:
+    image: mysql:8.0
+    container_name: factor-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret_password
+      MYSQL_DATABASE: factor_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    volumes:
+      - factor_data:/var/lib/mysql
+
+  # --- CUSTOMERS DATABASE ---
+  customers-db:
+    image: mysql:8.0
+    container_name: customers-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret_password
+      MYSQL_DATABASE: customers_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    volumes:
+      - customers_data:/var/lib/mysql
+
+  # --- RABBITMQ ---
+  rabbitmq:
+    image: rabbitmq:4.0-management-alpine
+    container_name: rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+
+  # --- PHPMYADMIN ---
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      # Added keycloak-db to the list so you can manage it via phpMyAdmin
+      PMA_HOSTS: keycloak-db,product-db,factor-db,customers-db
+      PMA_VERBOSES: "Keycloak DB,Product DB,Factor DB,Customers DB"
+    depends_on:
+      - keycloak-db
+      - product-db
+      - factor-db
+      - customers-db
+
+volumes:
+  keycloak_data:
+    driver: local
+  product_data:
+    driver: local
+  factor_data:
+    driver: local
+  customers_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
