@@ -1,11 +1,9 @@
 import { Claim } from "@prisma/client";
-import { PrismaProvider } from "../infrastructure/database/prisma.provider.js";
 import { buildFindManyArgs } from "../utils/prisma.util.js";
 import { GetManyRequestQuery } from "../schemas/common/get-many-request.schema.js";
 import { CreateClaimRequest } from "../schemas/claim/create-claim.schema.js";
 import { UpdateClaimRequest } from "../schemas/claim/update-claim.schema.js";
-
-const prisma = PrismaProvider.getInstance();
+import { prisma } from "../infrastructure/database/prisma.provider.js";
 
 async function createClaim(payload: CreateClaimRequest): Promise<Claim> {
   return await prisma.claim.create({

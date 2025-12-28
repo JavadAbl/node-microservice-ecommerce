@@ -1,18 +1,17 @@
 FROM node:24.12-alpine
 
-WORKDIR /
+WORKDIR /app
 
 COPY package.json .
 COPY prisma .
 
-ENV DATABASE_URL="file:./dev.db"
+ENV DATABASE_URL="mysql://admin:admin@notifications-db:3306/notifications_db"
 
 RUN npm install
 
 COPY . .
 
 RUN npx prisma generate
-RUN npx prisma db push
 
 EXPOSE 3000
 

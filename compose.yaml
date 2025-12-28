@@ -1,7 +1,17 @@
 services:
   # --- Services ---
   notification-service:
-    image: ./notification-service
+    build: ./services/notification
+    volumes:
+      - ./services/notification/src:/app/src
+      - /app/node_modules
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - notifications-db
+    # command: sh -c "npx prisma db push"
+
   # --- REDIS ---
   redis:
     image: redis:alpine3.22
@@ -87,6 +97,21 @@ services:
     volumes:
       - customers_data:/var/lib/mysql
 
+      # --- Notifications DATABASE ---
+  notifications-db:
+    image: mysql:8.0
+    container_name: notifications-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret_password
+      MYSQL_DATABASE: notifications_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - notifications_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
   # --- RABBITMQ ---
   rabbitmq:
     image: rabbitmq:4.0-management-alpine
@@ -125,6 +150,8 @@ volumes:
   factor_data:
     driver: local
   customers_data:
+    driver: local
+  notifications_data:
     driver: local
   rabbitmq_data:
     driver: local
