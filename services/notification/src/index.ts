@@ -66,7 +66,7 @@ async function start() {
 
     const port = config.PORT;
 
-    await app.listen({ port, host: "0.0.0.0" });
+    await app.listen({ port, host: config.HOST });
     console.log(`Server running on ${port}`);
   } catch (error) {
     app.log.error(error);

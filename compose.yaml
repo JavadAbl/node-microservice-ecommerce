@@ -1,16 +1,16 @@
 services:
   # --- Services ---
-  notification-service:
-    build: ./services/notification
-    volumes:
-      - ./services/notification/src:/app/src
-      - /app/node_modules
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - notifications-db
-    # command: sh -c "npx prisma db push"
+  # notification-service:
+  #   build: ./services/notification
+  #   volumes:
+  #     - ./services/notification/src:/app/src
+  #     - /app/node_modules
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - notifications-db
+  #   # command: sh -c "npx prisma db push"
 
   # --- REDIS ---
   redis:
@@ -103,7 +103,7 @@ services:
     container_name: notifications-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root_secret_password
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: notifications_db
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
@@ -124,6 +124,7 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
     ports:
       - "15672:15672"
+      - "5672:5672" 
 
   # --- PHPMYADMIN ---
   phpmyadmin:
@@ -134,13 +135,14 @@ services:
       - "8081:80"
     environment:
       # Added keycloak-db to the list so you can manage it via phpMyAdmin
-      PMA_HOSTS: keycloak-db,product-db,factor-db,customers-db
-      PMA_VERBOSES: "Keycloak DB,Product DB,Factor DB,Customers DB"
+      PMA_HOSTS: keycloak-db,product-db,factor-db,customers-db,notifications-db
+      PMA_VERBOSES: "Keycloak DB,Product DB,Factor DB,Customers DB,notifications-db"
     depends_on:
       - keycloak-db
       - product-db
       - factor-db
       - customers-db
+      - notifications-db
 
 volumes:
   keycloak_data:
