@@ -6,6 +6,10 @@ export const config = {
   HTTP_PORT: parseInt(process.env.HTTP_PORT),
   HTTP_HOST: process.env.HTTP_HOST,
   JWT_SECRET: process.env.JWT_SECRET,
-  DATABASE_URL: process.env.DATABASE_URL,
+  DATABASE_HOST: process.env.DATABASE_HOST,
+  DATABASE_PORT: parseInt(process.env.DATABASE_PORT),
+  DATABASE_USERNAME: process.env.DATABASE_USERNAME,
+  DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
+  DATABASE_NAME: process.env.DATABASE_NAME,
   RABBITMQ_URL: process.env.RABBITMQ_URL,
 };

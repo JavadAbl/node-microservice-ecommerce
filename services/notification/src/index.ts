@@ -1,20 +1,22 @@
 import { config } from "./infrastructure/config.js";
-import { rabbitConnection } from "./infrastructure/rabbitmq/rabbitmq.provider.js";
 import { createServer } from "http";
 import { pause } from "./utils/app.util.js";
+import { prisma, prismaAdapter } from "./infrastructure/database/prisma.provider.js";
+import { rabbitConnection } from "./infrastructure/rabbitmq/rabbitmq.provider.js";
 
 async function start() {
   try {
     const server = createServer();
 
-    server.on("request", (req, res) => {
+    server.on("request", async (req, res) => {
+      const x = await prisma.user.findMany();
+      console.log(x);
+
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(
         JSON.stringify({ status: "UP", timestamp: new Date().toISOString(), service: "RabbitMQ-Worker" }),
       );
     });
-
-    await rabbitConnection.connect({ timeout: 10000 });
 
     const port = config.HTTP_PORT;
     const host = config.HTTP_HOST;
@@ -41,7 +43,6 @@ async function gracefulShutdown() {
   const gracefulShutdownRabbitMQ = async () => {
     console.log("Closing RabbitMQ connection...");
     const connection = rabbitConnection;
-    console.log("connection", connection);
 
     await pause(2500);
     await connection.close();

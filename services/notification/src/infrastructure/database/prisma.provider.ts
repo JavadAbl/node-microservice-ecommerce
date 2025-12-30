@@ -3,9 +3,7 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@prisma/client";
 import { config } from "../config.js";
 
-console.log(config.DATABASE_URL);
-
-const adapter = new PrismaMariaDb({
+export const prismaAdapter = new PrismaMariaDb({
   ssl: false,
   host: "localhost",
   user: "root",
@@ -13,4 +11,5 @@ const adapter = new PrismaMariaDb({
   database: "notifications_db",
   port: 3306,
 });
-export const prisma = new PrismaClient({ adapter });
+
+export const prisma = new PrismaClient({ adapter: prismaAdapter });

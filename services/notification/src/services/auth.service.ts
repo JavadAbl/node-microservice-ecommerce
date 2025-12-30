@@ -1,4 +1,4 @@
-import { LoginRequest } from "../schemas/auth/login.request.js";
+/* import { LoginRequest } from "../schemas/auth/login.request.js";
 import { AuthDto } from "../schemas/auth/auth.dto.js";
 import { JwtUtil } from "../utils/jwt.util.js";
 import { app } from "../index.js";
@@ -65,3 +65,4 @@ async function renewToken(payload: RenewTokenRequest): Promise<RenewTokenDto> {
 }
 
 export const authService = { login, register, renewToken };
+ */
