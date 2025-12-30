@@ -1,7 +1,7 @@
 export interface User {
   userId: number;
   email: string;
-  password: string; // hashed
+  password: string;
   roles: string[];
   claims: string[];
   createdAt: Date;
@@ -21,9 +21,5 @@ export interface LoginUserInput {
 export interface LoginResult {
   accessToken: string;
   refreshToken: string;
-  user: {
-    userId: number;
-    email: string;
-    roles: string[];
-  };
+  user: { userId: number; email: string; roles: string[] };
 }

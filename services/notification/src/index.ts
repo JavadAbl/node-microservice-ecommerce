@@ -1,77 +1,55 @@
-import Fastify, { FastifyReply, FastifyRequest } from "fastify";
-import cors from "@fastify/cors";
-import jwt from "@fastify/jwt";
-import helmet from "@fastify/helmet";
-import fastifySwagger from "@fastify/swagger";
-import fastifySwaggerUi from "@fastify/swagger-ui";
-import { authRoutes } from "./routes/auth.route.js";
-import { claimRoutes } from "./routes/claim.route.js";
-import { roleRoutes } from "./routes/role.route.js";
 import { config } from "./infrastructure/config.js";
-import { errorHandler } from "./middleware/error-handler.js";
-
-export const app = Fastify({ logger: false, caseSensitive: false });
+import { rabbitConnection } from "./infrastructure/rabbitmq/rabbitmq.provider.js";
+import { createServer } from "http";
+import { pause } from "./utils/app.util.js";
 
 async function start() {
   try {
-    // Register Swagger for API documentation
-    await app.register(fastifySwagger, {
-      openapi: {
-        info: {
-          title: "Authentication Microservice API",
-          description:
-            "API documentation for the Authentication Microservice with JWT, RBAC and claims hierarchy management",
-          version: "1.0.0",
-        },
-        servers: [{ url: `http://localhost:${config.PORT || 3000}`, description: "Development server" }],
-      },
-      exposeHeadRoutes: true,
+    const server = createServer();
+
+    server.on("request", (req, res) => {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({ status: "UP", timestamp: new Date().toISOString(), service: "RabbitMQ-Worker" }),
+      );
     });
 
-    await app.register(fastifySwaggerUi, {
-      routePrefix: "/docs", // Swagger UI will be available at /docs
-      uiConfig: { deepLinking: false, docExpansion: "full", persistAuthorization: true },
+    await rabbitConnection.connect({ timeout: 10000 });
+
+    const port = config.HTTP_PORT;
+    const host = config.HTTP_HOST;
+
+    server.listen(port, host, () => {
+      console.log(`Notification server running on http://${host}:${port}`);
     });
 
-    // Security headers
-    await app.register(helmet);
-
-    // Enable CORS
-    await app.register(cors, { origin: config.CORS_ORIGIN || "*" });
-
-    // JWT authentication
-    await app.register(jwt, { secret: config.JWT_SECRET });
-
-    // Register routes
-    app.register(authRoutes, { prefix: "/auth" });
-    app.register(claimRoutes, { prefix: "/claims" });
-    app.register(roleRoutes, { prefix: "/roles" });
-
-    // Decorate Fastify with an `authenticate` function
-    app.decorate("authenticate", async function (request: FastifyRequest, reply: FastifyReply) {
-      try {
-        await request.jwtVerify();
-      } catch (err) {
-        throw err;
-      }
+    process.on("SIGINT", async () => {
+      console.log("Received SIGINT. Starting graceful shutdown...");
+      await gracefulShutdown();
     });
-
-    // Global error handler
-    app.setErrorHandler(errorHandler);
-
-    // Health check endpoint
-    app.get("/health", async () => {
-      return { status: "OK", timestamp: new Date().toISOString() };
+    process.on("SIGTERM", async () => {
+      console.log("Received SIGINT. Starting graceful shutdown...");
+      await gracefulShutdown();
     });
-
-    const port = config.PORT;
-
-    await app.listen({ port, host: config.HOST });
-    console.log(`Server running on ${port}`);
   } catch (error) {
-    app.log.error(error);
+    console.error(error);
     process.exit(1);
   }
+}
+
+async function gracefulShutdown() {
+  const gracefulShutdownRabbitMQ = async () => {
+    console.log("Closing RabbitMQ connection...");
+    const connection = rabbitConnection;
+    console.log("connection", connection);
+
+    await pause(2500);
+    await connection.close();
+    console.log("RabbitMQ connection closed.");
+  };
+
+  await gracefulShutdownRabbitMQ();
+  process.exit(0);
 }
 
 start();

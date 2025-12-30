@@ -1,103 +1,30 @@
-import amqp, { Channel, Connection } from "amqplib";
+import amqp, { AmqpConnectionManager, ChannelWrapper } from "amqp-connection-manager";
+import { config } from "../config.js";
+import { Channel } from "amqplib";
 
-export class RabbitMQClient {
-  private connection: Connection | null = null;
-  private channel: Channel | null = null;
+const AMQP_URL = config.RABBITMQ_URL;
 
-  async connect() {
-    try {
-      // Create TCP connection
-      this.connection = await amqp.connect("amqp://localhost");
+export const rabbitConnection: AmqpConnectionManager = amqp.connect([AMQP_URL]);
 
-      // Handle connection errors
-      this.connection.on("error", (err) => {
-        console.error("RabbitMQ connection error:", err);
-        this.reconnect();
-      });
+rabbitConnection.on("connect", () => console.log("Connected to RabbitMQ!"));
+rabbitConnection.on("disconnect", (err) => console.log("Disconnected from RabbitMQ", err.err.message));
 
-      // Handle connection close
-      this.connection.on("close", () => {
-        console.log("RabbitMQ connection closed");
-        this.reconnect();
-      });
+// Create a channel wrapper
+// This allows you to define setup logic (queues/exchanges) that persists across restarts
 
-      // Create channel
-      this.channel = await this.connection.createChannel();
+export const pubChannel = rabbitConnection.createChannel({
+  setup: (channel) => {
+    return channel.assertExchange("events", "topic");
+  },
+});
 
-      // Handle channel errors
-      this.channel.on("error", (err) => {
-        console.error("RabbitMQ channel error:", err);
-      });
-
-      console.log("Connected to RabbitMQ successfully");
-
-      return { connection: this.connection, channel: this.channel };
-    } catch (error) {
-      console.error("Error connecting to RabbitMQ:", error);
-      await this.reconnect();
-      throw error;
-    }
-  }
-
-  async publish(exchange: string, routingKey: string, content: Buffer) {
-    if (!this.channel) {
-      throw new Error("Channel not available");
-    }
-    return this.channel.publish(exchange, routingKey, content);
-  }
-
-  async consume(queue: string, onMessage: (msg: any) => void) {
-    if (!this.channel) {
-      throw new Error("Channel not available");
-    }
-    return this.channel.consume(queue, onMessage);
-  }
-
-  async reconnect() {
-    // Close existing channel if open
-    if (this.channel) {
-      await this.channel.close().catch(() => {});
-    }
-
-    // Reconnect after delay
-    setTimeout(() => {
-      console.log("Attempting to reconnect...");
-      this.connect();
-    }, 5000);
-  }
-
-  async close() {
-    if (this.channel) {
-      await this.channel.close();
-    }
-    if (this.connection) {
-      await this.connection.close();
-    }
-  }
-}
-
-// Usage example
-const rabbitMQ = new RabbitMQClient();
-
-// One connection, multiple channels for different purposes
-async function setup() {
-  await rabbitMQ.connect();
-
-  // You could create separate channels for different concerns
-  const { channel } = rabbitMQ;
-
-  // Producer channel setup
-  await channel.assertExchange("orders", "direct", { durable: true });
-
-  // Consumer channel setup
-  await channel.assertQueue("order.process", { durable: true });
-  await channel.bindQueue("order.process", "orders", "order.created");
-
-  // Consume messages
-  channel.consume("order.process", (msg) => {
-    if (msg) {
-      console.log("Processing order:", msg.content.toString());
-      channel.ack(msg);
-    }
-  });
-}
+export const subChannel = rabbitConnection.createChannel({
+  setup: (channel) => {
+    return Promise.all([
+      channel.assertQueue("email_queue"),
+      channel.consume("email_queue", (msg) => {
+        /* logic */
+      }),
+    ]);
+  },
+});
