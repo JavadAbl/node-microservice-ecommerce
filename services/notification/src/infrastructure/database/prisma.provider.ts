@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-import { config } from "../config.js";
+import { config } from "../app.config.js";
 import { PrismaClient } from "./generated/prisma/client.js";
 
 export const prismaAdapter = new PrismaMariaDb({

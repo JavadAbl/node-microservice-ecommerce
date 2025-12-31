@@ -1,4 +1,4 @@
-import { config } from "./infrastructure/config.js";
+import { config } from "./infrastructure/app.config.js";
 import { createServer } from "http";
 import { pause } from "./utils/app.util.js";
 import { prisma, prismaAdapter } from "./infrastructure/database/prisma.provider.js";
