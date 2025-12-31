@@ -5,12 +5,12 @@ import { PrismaClient } from "./generated/prisma/client.js";
 
 export const prismaAdapter = new PrismaMariaDb({
   ssl: false,
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "notifications_db",
-  port: 3306,
-  acquireTimeout: 5000,
+  host: config.HTTP_HOST,
+  user: config.DATABASE_USERNAME,
+  password: config.DATABASE_PASSWORD,
+  database: config.DATABASE_NAME,
+  port: config.DATABASE_PORT,
+  allowPublicKeyRetrieval: true,
 });
 
 export const prisma = new PrismaClient({ adapter: prismaAdapter });
