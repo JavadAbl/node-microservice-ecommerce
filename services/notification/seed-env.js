@@ -7,6 +7,7 @@ const config = {
   HTTP_PORT: 3000,
   HTTP_HOST: "localhost",
   JWT_SECRET: "fallback_jwt_secret_for_dev",
+    DATABASE_URL: "mysql://admin:admin@localhost:3306/notifications_db",
   DATABASE_HOST: "localhost",
   DATABASE_PORT: "3306",
   DATABASE_USERNAME: "admin",

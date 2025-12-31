@@ -16,6 +16,7 @@ package-lock.json
 public
 # OS
 .DS_Store
+generated
 
 # Tests
 /coverage

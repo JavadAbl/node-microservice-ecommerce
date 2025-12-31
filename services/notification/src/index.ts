@@ -6,6 +6,11 @@ import { rabbitConnection } from "./infrastructure/rabbitmq/rabbitmq.provider.js
 
 async function start() {
   try {
+    await rabbitConnection.connect({ timeout: 5000 });
+    await prisma.$connect();
+    await prisma.$queryRaw`SELECT 1`;
+    console.log("Connected to database");
+
     const server = createServer();
 
     server.on("request", async (req, res) => {
