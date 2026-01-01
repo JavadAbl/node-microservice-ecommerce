@@ -1,7 +1,13 @@
 import { config } from "./infrastructure/app-config.js";
 import { createServer } from "http";
 import { prisma } from "./infrastructure/database/prisma.provider.js";
-import { rmqGracefulShutdown, rmqConnect } from "./infrastructure/rabbitmq/rabbitmq.provider.js";
+import {
+  gracefulShutdownRabbitMQ,
+  connectRmq,
+  rmqConnection,
+} from "./infrastructure/rabbitmq/rabbitmq.provider.js";
+import { RMQ_QUEUE_EMAIL, RMQ_QUEUE_EMAIL_VERIFICATION } from "./infrastructure/rabbitmq/rabbitmq-config.js";
+import { APP_Name } from "./utils/constans.js";
 
 async function start() {
   try {
@@ -9,11 +15,16 @@ async function start() {
     await prisma.$queryRaw`SELECT 1`;
     console.log("Connected to database");
 
-    await rmqConnect();
+    await connectRmq();
 
     const server = createServer();
 
     server.on("request", async (req, res) => {
+      console.log(rmqConnection.channelCount);
+
+      const c = rmqConnection.createChannel({ json: true });
+      c.sendToQueue(RMQ_QUEUE_EMAIL_VERIFICATION, { s: 1 }, { appId: APP_Name });
+
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(
         JSON.stringify({ status: "UP", timestamp: new Date().toISOString(), service: "RabbitMQ-Worker" }),
@@ -42,7 +53,7 @@ async function start() {
 }
 
 async function gracefulShutdown() {
-  await rmqGracefulShutdown();
+  await gracefulShutdownRabbitMQ();
   process.exit(0);
 }
 

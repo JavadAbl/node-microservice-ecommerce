@@ -11,14 +11,13 @@ datasource db {
 
 // Inbox Event Pattern for processing RabbitMQ events
 model EventInbox {
-  id          Int              @id @default(autoincrement())
-  queue       String
-  serviceName String
-  status      InboxEventStatus @default(PENDING)
-  handledAt   DateTime?
-  payload     Json
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  id        Int              @id @default(autoincrement())
+  eventType String
+  status    InboxEventStatus @default(PENDING)
+  handledAt DateTime?
+  payload   Json
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 }
 
 enum InboxEventStatus {
