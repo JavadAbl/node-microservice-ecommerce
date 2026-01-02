@@ -3,7 +3,7 @@ import { createServer } from "http";
 import { prisma } from "./infrastructure/database/prisma.provider.js";
 import { rmqGracefulShutdown, rmqConnect } from "./infrastructure/rabbitmq/rabbitmq-provider.js";
 import { cronSetupJobs } from "./infrastructure/node-cron/cron-jobs.js";
-import { connectQueues } from "./infrastructure/queue/queue-provider.js";
+import { connectQueues, queueGracefulShutdown } from "./infrastructure/queue/queue-provider.js";
 import { registerWorkers } from "./infrastructure/queue/workers/workers-provider.js";
 
 async function start() {
@@ -71,6 +71,7 @@ process.on("SIGTERM", async () => {
 
 async function gracefulShutdown() {
   await rmqGracefulShutdown();
+  await queueGracefulShutdown();
   process.exit(0);
 }
 

@@ -1,4 +1,4 @@
-import { verificationEmailQueue } from "./queue-provider.js";
+import { verificationEmailQueue } from "../queue-provider.js";
 
 interface SendEmailJobData {
   to: string;
@@ -6,7 +6,7 @@ interface SendEmailJobData {
   body: string;
 }
 
-export function addSendEmailJob(data: SendEmailJobData) {
+export async function produceEmailVerificationJob(data: SendEmailJobData) {
   const job = verificationEmailQueue.createJob(data);
 
   job
@@ -17,5 +17,5 @@ export function addSendEmailJob(data: SendEmailJobData) {
       console.error(`Job ${job.id} failed with error:`, err.message);
     });
 
-  job.save();
+  await job.save();
 }
