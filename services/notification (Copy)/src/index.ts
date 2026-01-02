@@ -22,8 +22,8 @@ async function start() {
     server.on("request", async (req, res) => {
       console.log(rmqConnection.channelCount);
 
-      const c = rmqConnection.createChannel({ json: true });
-      c.sendToQueue(RMQ_QUEUE_EMAIL_VERIFICATION, { s: 1 }, { appId: APP_Name });
+      const c = rmqConnection.createChannel({ json: true ,});
+      c.sendToQueue(RMQ_QUEUE_EMAIL_VERIFICATION, { s: 1 }, { appId: APP_Name, });
 
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(

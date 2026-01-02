@@ -10,7 +10,7 @@ datasource db {
 }
 
 // Inbox Event Pattern for processing RabbitMQ events
-model EventInbox {
+model InboxEvent {
   id          Int              @id @default(autoincrement())
   queue       String
   serviceName String

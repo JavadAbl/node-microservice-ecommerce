@@ -4,16 +4,19 @@ import path from "path";
 // Define the configuration with the same logic as your source file
 const config = {
   NODE_ENV: "development",
-  HTTP_PORT: 3000,
+  HTTP_PORT: 3001,
   HTTP_HOST: "localhost",
   JWT_SECRET: "fallback_jwt_secret_for_dev",
-    DATABASE_URL: "mysql://admin:admin@localhost:3306/notifications_db",
+  DATABASE_URL: "mysql://admin:admin@localhost:3306/notifications_db",
   DATABASE_HOST: "localhost",
   DATABASE_PORT: "3306",
   DATABASE_USERNAME: "admin",
   DATABASE_PASSWORD: "admin",
   DATABASE_NAME: "notifications_db",
   RABBITMQ_URL: `amqp://guest:guest@localhost:5672`,
+  REDIS_HOST: "localhost",
+  REDIS_PORT: 6379,
+  REDIS_PASSWORD: "redis",
 };
 
 // 1. Convert the object into a string format for .env (KEY=VALUE)

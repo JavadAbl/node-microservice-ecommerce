@@ -35,7 +35,9 @@
     "@prisma/client": "^7.2.0",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^0.10.9",
+    "bee-queue": "^2.0.0",
     "dotenv": "^17.2.3",
+    "node-cron": "^4.2.1",
     "poolifier": "^5.1.7",
     "reflect-metadata": "^0.2.2"
   },

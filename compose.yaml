@@ -17,7 +17,10 @@ services:
     image: redis:alpine3.22
     container_name: redis
     restart: always
-    command: ["redis-server", "--loglevel", "warning"]
+    command: ["redis-server", "--loglevel", "warning", "--requirepass", "redis"]
+    ports:
+      - "6379:6379"
+    
 
   # --- KEYCLOAK (Replaces Auth DB) ---
   keycloak:
@@ -139,10 +142,10 @@ services:
       PMA_HOSTS: keycloak-db,product-db,factor-db,customers-db,notifications-db
       PMA_VERBOSES: "Keycloak DB,Product DB,Factor DB,Customers DB,notifications-db"
     depends_on:
-      - keycloak-db
-      - product-db
-      - factor-db
-      - customers-db
+    #  - keycloak-db
+     # - product-db
+     # - factor-db
+     # - customers-db
       - notifications-db
 
 volumes:

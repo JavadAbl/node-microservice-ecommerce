@@ -12,4 +12,7 @@ export const config = {
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
   DATABASE_NAME: process.env.DATABASE_NAME,
   RABBITMQ_URL: process.env.RABBITMQ_URL,
+  REDIS_HOST: process.env.REDIS_HOST,
+  REDIS_PORT: parseInt(process.env.REDIS_PORT),
+  REDIS_PASSWORD: process.env.REDIS_PASSWORD,
 };
