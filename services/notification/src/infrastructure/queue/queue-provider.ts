@@ -1,32 +1,34 @@
 import Queue from "bee-queue";
-import { config } from "../app-config.js";
+import { RMQ_QUEUE_EMAIL_WELCOME } from "../rabbitmq/rabbitmq-config.js";
 import { QUEUE_EMAIL_VERIFICATION } from "./queue-config.js";
-import { produceEmailVerificationJob } from "./producers/email-verification-producer.js";
+import { config } from "../app-config.js";
 
-const host = config.REDIS_HOST;
-const port = config.REDIS_PORT;
-const password = config.REDIS_PASSWORD;
+export let queueEmailVerification: Queue;
+export let queueEmailWelcome: Queue;
 
-export let verificationEmailQueue: Queue;
-
-export async function connectQueues() {
-  await connectVerificationEmailQueue();
+export function queuesConnect() {
+  queueEmailVerification = queueCreate(QUEUE_EMAIL_VERIFICATION);
+  queueEmailWelcome = queueCreate(RMQ_QUEUE_EMAIL_WELCOME);
 }
 
-async function connectVerificationEmailQueue() {
-  verificationEmailQueue = new Queue(QUEUE_EMAIL_VERIFICATION, {
+function queueCreate(queueName: string) {
+  const host = config.REDIS_HOST;
+  const port = config.REDIS_PORT;
+  const password = config.REDIS_PASSWORD;
+
+  const queue = new Queue(queueName, {
     redis: { host, port, password },
     removeOnSuccess: true,
     removeOnFailure: true,
   });
 
-  verificationEmailQueue.once("ready", () => console.log(`Queue ${QUEUE_EMAIL_VERIFICATION} is connected`));
+  queue.once("ready", () => console.log(`Queue ${queueName} is connected`));
 
-  produceEmailVerificationJob({ body: "ds", subject: "sd", to: "sd" });
-  produceEmailVerificationJob({ body: "ds", subject: "sd", to: "sd" });
+  return queue;
 }
 
 export const queueGracefulShutdown = async () => {
-  await verificationEmailQueue.close();
-  console.log(`Worker ${verificationEmailQueue.name} stopped.`);
+  await queueEmailVerification.close();
+  await queueEmailWelcome.close();
+  // console.log(`Worker ${queueEmailVerification.name} stopped.`);
 };

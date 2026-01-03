@@ -1,13 +1,14 @@
 import { Channel } from "amqp-connection-manager";
-import { RMQ_QUEUE_EMAIL_VERIFICATION } from "./rabbitmq-config.js";
+import { RMQ_QUEUE_EMAIL_VERIFICATION, RMQ_QUEUE_EMAIL_WELCOME } from "./rabbitmq-config.js";
 import { rmqConnection } from "./rabbitmq-provider.js";
-import { prisma } from "../database/prisma.provider.js";
+import { EventHandler, rmqInboxEventHandler } from "./rabbitmq-handlers.js";
 
 export function rmqSetupConsumers() {
-  createConsumer(RMQ_QUEUE_EMAIL_VERIFICATION, addToInboxEvent);
+  createConsumer(RMQ_QUEUE_EMAIL_VERIFICATION, rmqInboxEventHandler);
+  createConsumer(RMQ_QUEUE_EMAIL_WELCOME, rmqInboxEventHandler);
 }
 
-function createConsumer(queueName: string, handler: typeof addToInboxEvent) {
+function createConsumer(queueName: string, handler: EventHandler) {
   rmqConnection.createChannel({
     json: true,
     setup: async (channel: Channel) => {
@@ -21,9 +22,9 @@ function createConsumer(queueName: string, handler: typeof addToInboxEvent) {
 
             await handler(eventPayload, queueName, event.properties.appId);
 
-            console.log(`[✅] Processed and acknowledged message from ${queueName}`);
+            console.log(`[✅] Processed and acknowledged rabbitmq message from ${queueName}`);
           } catch (error) {
-            console.error(`[❌] Failed to process message from ${queueName}:`, error);
+            console.error(`[❌] Failed to process rabbitmq message from ${queueName}:`, error);
             //todo
             //handle error events
           } finally {
@@ -36,8 +37,4 @@ function createConsumer(queueName: string, handler: typeof addToInboxEvent) {
   });
 
   console.log(`[🚀] Consumer setup for queue: ${queueName}`);
-}
-
-function addToInboxEvent(payload: any, queue: string, serviceName: string) {
-  return prisma.inboxEvent.create({ data: { queue, payload, serviceName } });
 }

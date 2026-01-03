@@ -15,4 +15,8 @@ export const config = {
   REDIS_HOST: process.env.REDIS_HOST,
   REDIS_PORT: parseInt(process.env.REDIS_PORT),
   REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+  MAIL_HOST: process.env.MAIL_HOST,
+  MAIL_USER: process.env.MAIL_USER,
+  MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+  MAIL_PORT: parseInt(process.env.MAIL_PORT),
 };

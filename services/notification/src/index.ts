@@ -1,19 +1,16 @@
-import { config } from "./infrastructure/app-config.js";
-import { createServer } from "http";
-import { prisma } from "./infrastructure/database/prisma.provider.js";
+import { prisma } from "./infrastructure/database/prisma-provider.js";
 import { rmqGracefulShutdown, rmqConnect } from "./infrastructure/rabbitmq/rabbitmq-provider.js";
 import { cronSetupJobs } from "./infrastructure/node-cron/cron-jobs.js";
-import { connectQueues, queueGracefulShutdown } from "./infrastructure/queue/queue-provider.js";
-import { registerWorkers } from "./infrastructure/queue/workers/workers-provider.js";
+import { queueGracefulShutdown, queuesConnect } from "./infrastructure/queue/queue-provider.js";
+import { queueWorkersRegister } from "./infrastructure/queue/queue-workers.js";
 
 async function start() {
   try {
     await startDatabase();
     await startRmq();
     startNodeCron();
-    await startQueues();
+    startQueues();
     startWorkers();
-    startHttpServer();
   } catch (error) {
     console.error(error);
     process.exit(1);
@@ -34,30 +31,12 @@ function startNodeCron() {
   cronSetupJobs();
 }
 
-async function startQueues() {
-  await connectQueues();
+function startQueues() {
+  queuesConnect();
 }
 
 function startWorkers() {
-  registerWorkers();
-}
-
-function startHttpServer() {
-  const server = createServer();
-
-  server.on("request", async (req, res) => {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(
-      JSON.stringify({ status: "UP", timestamp: new Date().toISOString(), service: "RabbitMQ-Worker" }),
-    );
-  });
-
-  const port = config.HTTP_PORT;
-  const host = config.HTTP_HOST;
-
-  server.listen(port, host, () => {
-    console.log(`Notification server running on http://${host}:${port}`);
-  });
+  queueWorkersRegister();
 }
 
 process.on("SIGINT", async () => {

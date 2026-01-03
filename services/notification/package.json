@@ -4,7 +4,7 @@
   "description": "Authentication microservice with JWT, RBAC and claims hierarchy management",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && copyfiles-fixed -u 1 src/**/*.hbs dist/",
     "typecheck": "tsc --noEmit",
     "dev": "tsx --watch src/index.ts",
     "dev:check": "tsc --noEmit && tsx --watch src/index.ts",
@@ -37,7 +37,9 @@
     "amqplib": "^0.10.9",
     "bee-queue": "^2.0.0",
     "dotenv": "^17.2.3",
+    "handlebars": "^4.7.8",
     "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.12",
     "poolifier": "^5.1.7",
     "reflect-metadata": "^0.2.2"
   },
@@ -46,15 +48,18 @@
     "@types/amqplib": "^0.10.8",
     "@types/jest": "^29.5.14",
     "@types/node": "^24",
+    "@types/nodemailer": "^7.0.4",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "concurrently": "^9.2.1",
+    "copyfiles-fixed": "^2.4.3",
     "eslint": "^8.57.1",
     "jest": "^30.2.0",
     "prettier": "^3.7.4",
     "prisma": "^7.2.0",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.6",
+    "tsdown": "^0.19.0-beta.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

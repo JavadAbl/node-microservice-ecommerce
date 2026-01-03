@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Welcome to the Family!</title>
+    <style>
+        /* Reset styles */
+        body,
+        table,
+        td,
+        p,
+        a,
+        li,
+        blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            display: block;
+        }
+
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background-color: #f4f4f4;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333333;
+        }
+
+        /* Container */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        /* Typography */
+        h1 {
+            color: #333333;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #555555;
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            color: #555555;
+        }
+
+        /* Button Style */
+        .btn-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: #ffffff !important;
+            /* Important override for some clients */
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer */
+        .footer {
+            font-size: 12px;
+            color: #888888;
+            text-align: center;
+            margin: 0;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .footer a {
+            color: #888888;
+            text-decoration: underline;
+        }
+
+        /* Social Icons (Circle shape) */
+        .social-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            line-height: 32px;
+            text-align: center;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background-color: #cccccc;
+        }
+
+        /* Responsive Media Queries */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            h1 {
+                font-size: 22px !important;
+            }
+
+            h2 {
+                font-size: 18px !important;
+            }
+
+            p {
+                font-size: 14px !important;
+            }
+
+            .btn {
+                display: block !important;
+                width: 100% !important;
+                /* Full width button on mobile */
+                box-sizing: border-box;
+                padding: 12px 0 !important;
+            }
+
+            .mobile-padding {
+                padding: 20px !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+
+    <!-- Main Table Container -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 40px 10px;">
+
+                <!-- Email Content Wrapper -->
+                <table border="0" cellpadding="0" cellspacing="0" width="600" class="email-container" bgcolor="#ffffff"
+                    style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+
+                    <!-- Header / Logo Area -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 20px 40px;">
+                            <!-- Replace with your <img> tag if you have a logo -->
+                            <!-- <img src="https://your-domain.com/logo.png" width="120" alt="Company Logo" style="display:block;"> -->
+                            <h2 style="margin:0; color:#007bff;">Ecommerce App</h2>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 10px 40px 40px 40px;" class="mobile-padding" align="left">
+
+                            <!-- Greeting -->
+                            <h1>Welcome to the Family, {{username}}!</h1>
+
+                            <p>Hi {{username}},</p>
+
+                            <p>We’re thrilled to have you on board! You’ve successfully joined <strong>Ecommerce
+                                    App</strong>, and we can’t wait to show you what we have to offer.</p>
+
+                            <p>Whether you're looking for the latest trends or everyday essentials, we've got you
+                                covered.</p>
+
+                            <!-- Call to Action Button -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" class="btn-container">
+                                        <a href="{{shopNowLink}}" class="btn">Start Shopping</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p>If you have any questions, simply reply to this email. We're always here to help.</p>
+
+                            <p>Happy Shopping,</p>
+                            <p style="margin-bottom: 0;"><strong>The Ecommerce App Team</strong></p>
+
+                        </td>
+                    </tr>
+
+                    <!-- Social Proof / Quick Links (Optional) -->
+                    <tr>
+                        <td bgcolor="#f8f9fa"
+                            style="padding: 20px 40px; text-align: center; border-top: 1px solid #eeeeee;">
+                            <p style="margin: 0 0 10px 0; font-size: 14px; color: #888888;">Follow us for exclusive
+                                deals:</p>
+
+                            <!-- Placeholders for social links -->
+                            <a href="#" class="social-icon">FB</a>
+                            <a href="#" class="social-icon">Tw</a>
+                            <a href="#" class="social-icon">In</a>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td bgcolor="#f4f4f4" align="center" class="footer">
+                            <p style="margin: 10px 0;">&copy; {{currentYear}} Your Company Name. All rights reserved.
+                            </p>
+                            <p style="margin: 5px 0;">
+                                <a href="{{unsubscribeLink}}">Unsubscribe</a> |
+                                <a href="{{privacyPolicyLink}}">Privacy Policy</a>
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+                <!-- End Email Content Wrapper -->
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

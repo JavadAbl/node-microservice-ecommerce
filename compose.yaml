@@ -136,7 +136,7 @@ services:
     container_name: phpmyadmin
     restart: always
     ports:
-      - "8081:80"
+      - "8082:80"
     environment:
       # Added keycloak-db to the list so you can manage it via phpMyAdmin
       PMA_HOSTS: keycloak-db,product-db,factor-db,customers-db,notifications-db

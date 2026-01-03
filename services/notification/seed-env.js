@@ -17,6 +17,10 @@ const config = {
   REDIS_HOST: "localhost",
   REDIS_PORT: 6379,
   REDIS_PASSWORD: "redis",
+  MAIL_HOST: "sandbox.smtp.mailtrap.io",
+  MAIL_PORT: "2525",
+  MAIL_USER: "18c409b889973b",
+  MAIL_PASSWORD: "462b3f9533ca87",
 };
 
 // 1. Convert the object into a string format for .env (KEY=VALUE)

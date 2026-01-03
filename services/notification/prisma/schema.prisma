@@ -24,6 +24,7 @@ model InboxEvent {
 enum InboxEventStatus {
   PENDING
   Handled
+  Error
 }
 
 // Email logs for tracking sent emails
