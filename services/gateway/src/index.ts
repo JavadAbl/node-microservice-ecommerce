@@ -3,6 +3,7 @@ import { appConfig } from "./infrastructure/app-config.js";
 import { fastifyReplyFrom } from "@fastify/reply-from";
 import { gatewayRoutes } from "./routes.js";
 import fastifyJwt from "@fastify/jwt";
+import { authPlugin } from "./auth.js";
 
 export const app = fastify({ routerOptions: { caseSensitive: false } });
 
@@ -35,8 +36,8 @@ function setupFastifyPlugins() {
     done(null); // This skips parsing and keeps the body as a stream
   }); */
 
-  app.register(fastifyJwt, { secret: appConfig.JWT_SECRET });
-  app.decorate("authenticate", async function (request: FastifyRequest, reply: FastifyReply) {
+  app.register(authPlugin);
+  /*  app.decorate("authenticate", async function (request: FastifyRequest, reply: FastifyReply) {
     try {
       console.log(1232);
 
@@ -44,7 +45,7 @@ function setupFastifyPlugins() {
     } catch (err) {
       reply.code(401).send({ error: "Unauthorized" });
     }
-  });
+  }); */
 
   app.register(fastifyReplyFrom, {
     disableCache: true,

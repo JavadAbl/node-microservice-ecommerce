@@ -4,9 +4,10 @@ import path from "path";
 // Define the configuration with the same logic as your source file
 const config = {
   NODE_ENV: "development",
-  HTTP_PORT: 3001,
+  HTTP_PORT: 3000,
   HTTP_HOST: "localhost",
-  JWT_SECRET: "sadasd3er3e",
+  KEYCLOAK_ADDRESS: "http://localhost:8080",
+  KEYCLOAK_REALM: "master",
 };
 
 // 1. Convert the object into a string format for .env (KEY=VALUE)

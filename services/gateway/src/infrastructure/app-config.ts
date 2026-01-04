@@ -5,5 +5,6 @@ export const appConfig = {
   NODE_ENV: process.env.NODE_ENV,
   HTTP_PORT: parseInt(process.env.HTTP_PORT),
   HTTP_HOST: process.env.HTTP_HOST,
-  JWT_SECRET: process.env.JWT_SECRET,
+  KEYCLOAK_ADDRESS: process.env.KEYCLOAK_ADDRESS,
+  KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
 };
