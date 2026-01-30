@@ -3,9 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import { vehicleService } from "../services/vehicle-service.js";
 import { CreateVehicleRequestRouteType } from "../schemas/vehicle/create-vehicle-schema.js";
 import { GetVehiclesRequestRouteType } from "../schemas/vehicle/get-vehicle-schema.js";
+import { VehicleDto } from "../schemas/vehicle/vehicle-schema.js";
 
-function getVehicles(req: FastifyRequest<GetVehiclesRequestRouteType>, reply) {
-  return vehicleService.getMany(req.query);
+async function getVehicles(req: FastifyRequest<GetVehiclesRequestRouteType>, reply) {
+  return (await vehicleService.getMany(req.query)) as unknown as VehicleDto[];
 }
 
 function createVehicle(req: FastifyRequest<CreateVehicleRequestRouteType>, rep: FastifyReply) {

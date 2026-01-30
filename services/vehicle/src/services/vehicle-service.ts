@@ -14,9 +14,9 @@ function getById(id: number) {
 }
 
 async function create(payload: CreateVehicleRequest) {
-  const {} = payload;
-  const existingRole = await prisma.vehicle.findUnique({ where: { name } });
-  if (existingRole) throwCONFLICT("Role");
+  const { vin } = payload;
+  const existingRole = await prisma.vehicle.findUnique({ where: { vin } });
+  if (existingRole) throwCONFLICT("Vehicle");
   return prisma.vehicle.create({ data: payload });
 }
 

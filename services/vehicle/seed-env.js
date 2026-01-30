@@ -11,7 +11,7 @@ const config = {
   DATABASE_PORT: "3306",
   DATABASE_USERNAME: "admin",
   DATABASE_PASSWORD: "admin",
-  DATABASE_NAME: "notifications_db",
+  DATABASE_NAME: "vehicle_db",
   RABBITMQ_URL: `amqp://guest:guest@localhost:5672`,
   REDIS_HOST: "localhost",
   REDIS_PORT: 6379,

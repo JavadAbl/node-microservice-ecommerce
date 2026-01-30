@@ -21,8 +21,8 @@ export const VehicleDtoSchema = Type.Object({
   state: Type.Optional(Type.String({ description: "Registration state" })),
   ownerId: Type.Optional(Type.String({ description: "Owner ID" })),
   status: Type.Enum(VehicleStatus, { description: "Vehicle status", default: VehicleStatus.Active }),
-  createdAt: Type.Date({ format: "date-time", description: "Creation timestamp" }),
-  updatedAt: Type.Optional(Type.Date({ format: "date-time", description: "Last update timestamp" })),
+  createdAt: Type.String({ format: "date-time", description: "Creation timestamp" }),
+  updatedAt: Type.Optional(Type.String({ format: "date-time", description: "Last update timestamp" })),
 });
 
 export type VehicleDto = Static<typeof VehicleDtoSchema>;

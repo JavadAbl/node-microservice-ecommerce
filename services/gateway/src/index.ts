@@ -2,11 +2,11 @@
 import fastify from "fastify";
 import { appConfig } from "./utils/app-config.js";
 import { fastifyReplyFrom } from "@fastify/reply-from";
-import { gatewayRoutes, swaggerProxyRoutes } from "./routes.js";
 import { SERVICES } from "./services.js";
 import { authPlugin } from "./plugins/auth-plugin.js";
 import swagger from "@fastify/swagger"; // REQUIRED DEPENDENCY
 import swaggerUi from "@fastify/swagger-ui";
+import { serviceProxyPlugin } from "./routes.js";
 
 export const app = fastify({
   logger: true,
@@ -33,16 +33,10 @@ async function startHttpServer() {
 }
 
 async function setupFastifyPlugins() {
-  // 1. Auth plugin
+  //  Auth plugin
   await app.register(authPlugin);
 
-  // 2. Reply-from for proxying
-  await app.register(fastifyReplyFrom, {
-    disableCache: true,
-    http: { agentOptions: { keepAlive: true, maxFreeSockets: 1000, timeout: 60000 } },
-  });
-
-  // 3. Swagger core (minimal config - only needed for swagger-ui dependency)
+  //  Swagger core (minimal config - only needed for swagger-ui dependency)
   await app.register(swagger, {
     openapi: {
       info: {
@@ -53,13 +47,10 @@ async function setupFastifyPlugins() {
     },
   });
 
-  // 4. Public Swagger proxy routes (MUST be before gatewayRoutes)
-  await app.register(swaggerProxyRoutes);
+  //  Register the per-service proxy (Replaces the old gatewayRoutes)
+  await app.register(serviceProxyPlugin);
 
-  // 5. Protected gateway routes
-  await app.register(gatewayRoutes);
-
-  // 6. Swagger UI with external service specs in dropdown
+  //  Swagger UI with external service specs in dropdown
   await app.register(swaggerUi, {
     routePrefix: "/",
     uiConfig: {

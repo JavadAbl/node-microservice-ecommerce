@@ -1,22 +1,22 @@
 import Fastify from "fastify";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
-import { claimRoutes } from "./routes/vehicle-route.js";
 import { config } from "./infrastructure/config.js";
 import { errorHandler } from "./plugins/error-handler.js";
 import { prisma } from "./infrastructure/database/prisma-provider.js";
-
-export const app = Fastify({ logger: false, caseSensitive: false, http2: true });
+import { vehicleRoutes } from "./routes/vehicle-route.js";
 
 async function run() {
   await startDatabase();
-  await startHttpServer;
+  await startHttpServer();
   try {
   } catch (error) {
     app.log.error(error);
     process.exit(1);
   }
 }
+
+export const app = Fastify({ logger: false, caseSensitive: false, http2: true });
 
 async function startHttpServer() {
   // Register Swagger for API documentation
@@ -29,17 +29,17 @@ async function startHttpServer() {
         version: "1.0.0",
       },
       // Revert to http:// since we are using h2c (no SSL)
-      servers: [{ url: `http://localhost:${config.HTTP_PORT}`, description: "Internal Microservice (h2c)" }],
+      // servers: [{ url: `http://localhost:${config.HTTP_PORT}`, description: "Internal Microservice (h2c)" }],
     },
     exposeHeadRoutes: true,
   });
 
   await app.register(fastifySwaggerUi, {
-    routePrefix: "/docs",
+    routePrefix: "/",
     uiConfig: { deepLinking: false, docExpansion: "full", persistAuthorization: true },
   });
 
-  app.register(claimRoutes, { prefix: "/claims" });
+  app.register(vehicleRoutes, { prefix: "/Vehicles" });
 
   app.setErrorHandler(errorHandler);
 
