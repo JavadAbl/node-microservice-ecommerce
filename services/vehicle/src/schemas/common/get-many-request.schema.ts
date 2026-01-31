@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { Prisma } from "../../infrastructure/database/generated/prisma/client.js";
 
-/* export type GetManyRequestQuery = {
+/* export type GetManyQuery = {
   page?: string | undefined;
   limit?: string | undefined;
   sortBy?: string | undefined;
@@ -10,7 +10,7 @@ import { Prisma } from "../../infrastructure/database/generated/prisma/client.js
 };
  */
 
-export type GetManyRequestQuery<T extends keyof Prisma.TypeMap["model"]> = {
+export type GetManyQuery<T extends keyof Prisma.TypeMap["model"]> = {
   page?: number;
   limit?: number;
   sortBy?: keyof Prisma.TypeMap["model"][T]["fields"];
@@ -18,7 +18,7 @@ export type GetManyRequestQuery<T extends keyof Prisma.TypeMap["model"]> = {
   search?: string;
 };
 
-export const GetManyRequestQuerySchema = Type.Object({
+export const GetManyQuerySchema = Type.Object({
   page: Type.Optional(Type.String()),
   limit: Type.Optional(Type.String()),
   sortBy: Type.Optional(Type.String()),

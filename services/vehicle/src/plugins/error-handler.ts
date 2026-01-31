@@ -1,6 +1,6 @@
 import { config } from "../infrastructure/config.js";
-import { app } from "../index.js";
 import { StatusCodes } from "http-status-codes";
+import { app } from "../server.js";
 
 export const errorHandler = (error: any, request: any, reply: any) => {
   const statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;

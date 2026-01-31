@@ -19,16 +19,16 @@ const CreateVehicleBodySchema = Type.Object({
   ownerId: Type.Optional(Type.String({ description: "Owner ID" })),
 });
 
-export const CreateVehicleRequestSchema = {
+export const CreateVehicleSchema = {
   body: CreateVehicleBodySchema,
   description: "Create a vehicle entity",
   tags: ["Vehicles"],
   response: { 201: VehicleDtoSchema },
 };
 
-export type CreateVehicleRequest = Static<typeof CreateVehicleBodySchema>;
+export type CreateVehicle = Static<typeof CreateVehicleBodySchema>;
 
-export interface CreateVehicleRequestRouteType extends RouteGenericInterface {
-  Body: CreateVehicleRequest;
+export interface CreateVehicleRouteType extends RouteGenericInterface {
+  Body: CreateVehicle;
   Reply: VehicleDto;
 }

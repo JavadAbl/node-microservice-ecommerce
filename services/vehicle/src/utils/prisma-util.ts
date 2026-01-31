@@ -1,5 +1,5 @@
 import { Prisma } from "../infrastructure/database/generated/prisma/client.js";
-import { GetManyRequestQuery } from "../schemas/common/get-many-request.schema.js";
+import { GetManyQuery } from "../schemas/common/get-many-request.schema.js";
 
 /**
  * Builds Prisma findMany arguments based on query criteria.
@@ -10,7 +10,7 @@ import { GetManyRequestQuery } from "../schemas/common/get-many-request.schema.j
  * @returns A `PrismaFindManyArgs` object for the specified model.
  */
 export function buildFindManyArgs<T extends keyof Prisma.TypeMap["model"]>(
-  criteria: GetManyRequestQuery<T>,
+  criteria: GetManyQuery<T>,
   options?: { searchableFields?: (keyof Prisma.TypeMap["model"][T]["fields"])[] },
 ): Prisma.TypeMap["model"][T]["operations"]["findMany"]["args"] {
   // Default page is now 1 (first page)

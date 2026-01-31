@@ -6,7 +6,7 @@ const GetVehicleByIdParamSchema = Type.Object({
   id: Type.Integer({ description: "Id of the vehicle", minimum: 1 }),
 });
 
-export const GetVehicleByIdRequestSchema = {
+export const GetVehicleByIdSchema = {
   params: GetVehicleByIdParamSchema,
   description: "Get a vehicle by ID",
   tags: ["Vehicles"],
@@ -15,7 +15,7 @@ export const GetVehicleByIdRequestSchema = {
 
 export type GetVehicleByIdParams = Static<typeof GetVehicleByIdParamSchema>;
 
-export interface GetVehicleByIdRequestRouteType extends RouteGenericInterface {
+export interface GetVehicleByIdRouteType extends RouteGenericInterface {
   Params: GetVehicleByIdParams;
   Reply: VehicleDto;
 }

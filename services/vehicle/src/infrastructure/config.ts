@@ -15,3 +15,14 @@ export const config = {
   REDIS_PORT: parseInt(process.env.REDIS_PORT),
   REDIS_PASSWORD: process.env.REDIS_PASSWORD,
 };
+
+export function validateConfig() {
+  for (const [key, value] of Object.entries(config)) {
+    if (!value) {
+      console.error(`❌ Error: Environment variable "${key}" is missing or empty.`);
+      process.exit(1);
+    }
+  }
+}
+
+export const isDev = config.NODE_ENV.toLocaleLowerCase() === "development";

@@ -29,19 +29,18 @@ const UpdateVehicleParamSchema = Type.Object({
   id: Type.Integer({ description: "Id of the vehicle", minimum: 1 }),
 });
 
-export const UpdateVehicleRequestSchema = {
+export const UpdateVehicleSchema = {
   body: UpdateVehicleBodySchema,
   params: UpdateVehicleParamSchema,
   description: "Update a vehicle entity",
   tags: ["Vehicles"],
-  response: { 200: VehicleDtoSchema },
+  response: { 200: Type.Unknown() },
 };
 
-export type UpdateVehicleRequest = Static<typeof UpdateVehicleBodySchema>;
+export type UpdateVehicle = Static<typeof UpdateVehicleBodySchema>;
 export type UpdateVehicleParams = Static<typeof UpdateVehicleParamSchema>;
 
-export interface UpdateVehicleRequestRouteType extends RouteGenericInterface {
-  Body: UpdateVehicleRequest;
+export interface UpdateVehicleRouteType extends RouteGenericInterface {
+  Body: UpdateVehicle;
   Params: UpdateVehicleParams;
-  Reply: VehicleDto;
 }
