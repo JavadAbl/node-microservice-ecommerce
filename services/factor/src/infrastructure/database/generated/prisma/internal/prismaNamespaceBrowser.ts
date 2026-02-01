@@ -51,8 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Vehicle: 'Vehicle',
-  VehicleServiceHistory: 'VehicleServiceHistory'
+  Factor: 'Factor',
+  FactorItem: 'FactorItem',
+  Payment: 'Payment',
+  CustomerReference: 'CustomerReference',
+  ProductReference: 'ProductReference'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -71,43 +74,71 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const VehicleScalarFieldEnum = {
+export const FactorScalarFieldEnum = {
   id: 'id',
-  vin: 'vin',
-  make: 'make',
-  model: 'model',
-  year: 'year',
-  trim: 'trim',
-  fuelType: 'fuelType',
-  transmission: 'transmission',
-  engine: 'engine',
-  color: 'color',
-  mileage: 'mileage',
-  licensePlate: 'licensePlate',
-  state: 'state',
-  ownerId: 'ownerId',
+  factorNumber: 'factorNumber',
+  customerId: 'customerId',
+  orderId: 'orderId',
   status: 'status',
-  isDeleted: 'isDeleted',
+  issuedAt: 'issuedAt',
+  dueAt: 'dueAt',
+  totalPrice: 'totalPrice',
+  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type VehicleScalarFieldEnum = (typeof VehicleScalarFieldEnum)[keyof typeof VehicleScalarFieldEnum]
+export type FactorScalarFieldEnum = (typeof FactorScalarFieldEnum)[keyof typeof FactorScalarFieldEnum]
 
 
-export const VehicleServiceHistoryScalarFieldEnum = {
+export const FactorItemScalarFieldEnum = {
   id: 'id',
-  serviceType: 'serviceType',
-  serviceDate: 'serviceDate',
-  mileageAtService: 'mileageAtService',
-  technicianName: 'technicianName',
-  notes: 'notes',
-  vehicleId: 'vehicleId',
+  factorId: 'factorId',
+  productId: 'productId',
+  description: 'description',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice'
+} as const
+
+export type FactorItemScalarFieldEnum = (typeof FactorItemScalarFieldEnum)[keyof typeof FactorItemScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  factorId: 'factorId',
+  amount: 'amount',
+  method: 'method',
+  status: 'status',
+  transactionId: 'transactionId',
+  paidAt: 'paidAt',
+  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type VehicleServiceHistoryScalarFieldEnum = (typeof VehicleServiceHistoryScalarFieldEnum)[keyof typeof VehicleServiceHistoryScalarFieldEnum]
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const CustomerReferenceScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  nationalCode: 'nationalCode',
+  mobile: 'mobile',
+  email: 'email'
+} as const
+
+export type CustomerReferenceScalarFieldEnum = (typeof CustomerReferenceScalarFieldEnum)[keyof typeof CustomerReferenceScalarFieldEnum]
+
+
+export const ProductReferenceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  price: 'price'
+} as const
+
+export type ProductReferenceScalarFieldEnum = (typeof ProductReferenceScalarFieldEnum)[keyof typeof ProductReferenceScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -126,25 +157,43 @@ export const NullsOrder = {
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
-export const VehicleOrderByRelevanceFieldEnum = {
-  vin: 'vin',
-  make: 'make',
-  model: 'model',
-  trim: 'trim',
-  engine: 'engine',
-  color: 'color',
-  licensePlate: 'licensePlate',
-  state: 'state',
-  ownerId: 'ownerId'
+export const FactorOrderByRelevanceFieldEnum = {
+  factorNumber: 'factorNumber',
+  description: 'description'
 } as const
 
-export type VehicleOrderByRelevanceFieldEnum = (typeof VehicleOrderByRelevanceFieldEnum)[keyof typeof VehicleOrderByRelevanceFieldEnum]
+export type FactorOrderByRelevanceFieldEnum = (typeof FactorOrderByRelevanceFieldEnum)[keyof typeof FactorOrderByRelevanceFieldEnum]
 
 
-export const VehicleServiceHistoryOrderByRelevanceFieldEnum = {
-  technicianName: 'technicianName',
-  notes: 'notes'
+export const FactorItemOrderByRelevanceFieldEnum = {
+  description: 'description'
 } as const
 
-export type VehicleServiceHistoryOrderByRelevanceFieldEnum = (typeof VehicleServiceHistoryOrderByRelevanceFieldEnum)[keyof typeof VehicleServiceHistoryOrderByRelevanceFieldEnum]
+export type FactorItemOrderByRelevanceFieldEnum = (typeof FactorItemOrderByRelevanceFieldEnum)[keyof typeof FactorItemOrderByRelevanceFieldEnum]
+
+
+export const PaymentOrderByRelevanceFieldEnum = {
+  transactionId: 'transactionId',
+  description: 'description'
+} as const
+
+export type PaymentOrderByRelevanceFieldEnum = (typeof PaymentOrderByRelevanceFieldEnum)[keyof typeof PaymentOrderByRelevanceFieldEnum]
+
+
+export const CustomerReferenceOrderByRelevanceFieldEnum = {
+  firstName: 'firstName',
+  lastName: 'lastName',
+  nationalCode: 'nationalCode',
+  mobile: 'mobile',
+  email: 'email'
+} as const
+
+export type CustomerReferenceOrderByRelevanceFieldEnum = (typeof CustomerReferenceOrderByRelevanceFieldEnum)[keyof typeof CustomerReferenceOrderByRelevanceFieldEnum]
+
+
+export const ProductReferenceOrderByRelevanceFieldEnum = {
+  name: 'name'
+} as const
+
+export type ProductReferenceOrderByRelevanceFieldEnum = (typeof ProductReferenceOrderByRelevanceFieldEnum)[keyof typeof ProductReferenceOrderByRelevanceFieldEnum]
 

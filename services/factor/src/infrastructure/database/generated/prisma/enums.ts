@@ -9,58 +9,33 @@
 * 🟢 You can import this file directly.
 */
 
-export const FuelType = {
-  Gasoline: 'Gasoline',
-  Diesel: 'Diesel',
-  Electric: 'Electric',
-  Hybrid: 'Hybrid',
-  PlugInHybrid: 'PlugInHybrid',
-  Hydrogen: 'Hydrogen',
-  Other: 'Other'
+export const FactorStatus = {
+  DRAFT: 'DRAFT',
+  ISSUED: 'ISSUED',
+  PAID: 'PAID',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  OVERDUE: 'OVERDUE',
+  CANCELLED: 'CANCELLED'
 } as const
 
-export type FuelType = (typeof FuelType)[keyof typeof FuelType]
+export type FactorStatus = (typeof FactorStatus)[keyof typeof FactorStatus]
 
 
-export const TransmissionType = {
-  Automatic: 'Automatic',
-  Manual: 'Manual',
-  CVT: 'CVT',
-  DualClutch: 'DualClutch',
-  Robotic: 'Robotic',
-  Other: 'Other'
+export const PaymentMethod = {
+  CASH: 'CASH',
+  CREDIT_CARD: 'CREDIT_CARD',
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  ONLINE: 'ONLINE'
 } as const
 
-export type TransmissionType = (typeof TransmissionType)[keyof typeof TransmissionType]
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
 
 
-export const VehicleServiceType = {
-  OilChange: 'OilChange',
-  TireRotation: 'TireRotation',
-  BrakeService: 'BrakeService',
-  EngineDiagnostic: 'EngineDiagnostic',
-  TransmissionFlush: 'TransmissionFlush',
-  BatteryReplacement: 'BatteryReplacement',
-  AirFilterReplacement: 'AirFilterReplacement',
-  SuspensionService: 'SuspensionService',
-  Alignment: 'Alignment',
-  RecallService: 'RecallService',
-  GeneralMaintenance: 'GeneralMaintenance',
-  Other: 'Other'
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
 } as const
 
-export type VehicleServiceType = (typeof VehicleServiceType)[keyof typeof VehicleServiceType]
-
-
-export const VehicleStatus = {
-  Active: 'Active',
-  InRepair: 'InRepair',
-  ReadyForPickup: 'ReadyForPickup',
-  Archived: 'Archived',
-  UnderWarranty: 'UnderWarranty',
-  InService: 'InService',
-  OnLoan: 'OnLoan',
-  NotOperational: 'NotOperational'
-} as const
-
-export type VehicleStatus = (typeof VehicleStatus)[keyof typeof VehicleStatus]
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]

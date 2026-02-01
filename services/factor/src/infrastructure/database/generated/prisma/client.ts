@@ -29,8 +29,8 @@ export * from "./enums.js"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Vehicles
- * const vehicles = await prisma.vehicle.findMany()
+ * // Fetch zero or more Factors
+ * const factors = await prisma.factor.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,12 +40,27 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model Vehicle
+ * Model Factor
  * 
  */
-export type Vehicle = Prisma.VehicleModel
+export type Factor = Prisma.FactorModel
 /**
- * Model VehicleServiceHistory
+ * Model FactorItem
  * 
  */
-export type VehicleServiceHistory = Prisma.VehicleServiceHistoryModel
+export type FactorItem = Prisma.FactorItemModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model CustomerReference
+ * 
+ */
+export type CustomerReference = Prisma.CustomerReferenceModel
+/**
+ * Model ProductReference
+ * 
+ */
+export type ProductReference = Prisma.ProductReferenceModel

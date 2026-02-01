@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.3.0",
   "engineVersion": "9d6ad21cbbceab97458517b147a6a09ff43aa735",
   "activeProvider": "mysql",
-  "inlineSchema": "// prisma/schema.prisma\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/infrastructure/database/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n}\n\nmodel Vehicle {\n  id           Int               @id @default(autoincrement())\n  vin          String            @unique\n  make         String\n  model        String\n  year         Int\n  trim         String?\n  fuelType     FuelType?\n  transmission TransmissionType?\n  engine       String?\n  color        String?\n  mileage      Int?\n  licensePlate String?\n  state        String?\n  ownerId      String?\n  status       VehicleStatus     @default(Active)\n  isDeleted    Boolean           @default(false)\n\n  createdAt DateTime  @default(now())\n  updatedAt DateTime? @updatedAt\n\n  services VehicleServiceHistory[]\n}\n\nmodel VehicleServiceHistory {\n  id               Int                @id @default(autoincrement())\n  serviceType      VehicleServiceType\n  serviceDate      DateTime\n  mileageAtService Int\n  technicianName   String\n  notes            String?\n\n  vehicleId Int\n  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)\n\n  createdAt DateTime  @default(now())\n  updatedAt DateTime? @updatedAt\n}\n\n// Enums-------------------------------------------------------------------------\nenum FuelType {\n  Gasoline\n  Diesel\n  Electric\n  Hybrid\n  PlugInHybrid\n  Hydrogen\n  Other\n}\n\nenum TransmissionType {\n  Automatic\n  Manual\n  CVT\n  DualClutch\n  Robotic\n  Other\n}\n\nenum VehicleServiceType {\n  OilChange\n  TireRotation\n  BrakeService\n  EngineDiagnostic\n  TransmissionFlush\n  BatteryReplacement\n  AirFilterReplacement\n  SuspensionService\n  Alignment\n  RecallService\n  GeneralMaintenance\n  Other\n}\n\nenum VehicleStatus {\n  Active\n  InRepair\n  ReadyForPickup\n  Archived\n  UnderWarranty\n  InService\n  OnLoan\n  NotOperational\n}\n",
+  "inlineSchema": "// prisma/schema.prisma\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/infrastructure/database/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n}\n\n//Tables---------------------------------------------------------------------\nmodel Factor {\n  id           Int          @id @default(autoincrement())\n  factorNumber String       @unique\n  customerId   Int\n  orderId      Int\n  status       FactorStatus @default(DRAFT)\n  issuedAt     DateTime     @default(now())\n  dueAt        DateTime?\n  totalPrice   Float\n  description  String?\n  createdAt    DateTime     @default(now())\n  updatedAt    DateTime     @updatedAt\n\n  customer CustomerReference @relation(fields: [customerId], references: [id])\n  items    FactorItem[]\n  payments Payment[]\n}\n\nmodel FactorItem {\n  id          Int    @id @default(autoincrement())\n  factorId    Int\n  productId   Int\n  description String\n  quantity    Int    @default(1)\n  unitPrice   Float\n  totalPrice  Float // quantity * unitPrice\n\n  factor  Factor           @relation(fields: [factorId], references: [id], onDelete: Cascade)\n  product ProductReference @relation(fields: [productId], references: [id])\n}\n\nmodel Payment {\n  id            Int           @id @default(autoincrement())\n  factorId      Int\n  amount        Float\n  method        PaymentMethod\n  status        PaymentStatus @default(PENDING)\n  transactionId String // From payment gateway (e.g., Stripe, PayPal)\n  paidAt        DateTime?\n  description   String?\n\n  factor Factor @relation(fields: [factorId], references: [id], onDelete: Cascade)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\n//Reference Tables--------------------------------------------------------\nmodel CustomerReference {\n  id           Int    @id @default(autoincrement())\n  firstName    String\n  lastName     String\n  nationalCode String\n  mobile       String\n  email        String\n\n  factors Factor[]\n}\n\nmodel ProductReference {\n  id    Int    @id @default(autoincrement())\n  name  String\n  price Float\n\n  factorItems FactorItem[]\n}\n\n// Enums---------------------------------------------------------------\nenum FactorStatus {\n  DRAFT\n  ISSUED\n  PAID\n  PARTIALLY_PAID\n  OVERDUE\n  CANCELLED\n}\n\nenum PaymentMethod {\n  CASH\n  CREDIT_CARD\n  BANK_TRANSFER\n  ONLINE\n}\n\nenum PaymentStatus {\n  PENDING\n  COMPLETED\n  FAILED\n  REFUNDED\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Vehicle\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"vin\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"make\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"model\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"year\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"trim\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fuelType\",\"kind\":\"enum\",\"type\":\"FuelType\"},{\"name\":\"transmission\",\"kind\":\"enum\",\"type\":\"TransmissionType\"},{\"name\":\"engine\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"color\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mileage\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"licensePlate\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"state\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"VehicleStatus\"},{\"name\":\"isDeleted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"services\",\"kind\":\"object\",\"type\":\"VehicleServiceHistory\",\"relationName\":\"VehicleToVehicleServiceHistory\"}],\"dbName\":null},\"VehicleServiceHistory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"serviceType\",\"kind\":\"enum\",\"type\":\"VehicleServiceType\"},{\"name\":\"serviceDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"mileageAtService\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"technicianName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"vehicleId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"vehicle\",\"kind\":\"object\",\"type\":\"Vehicle\",\"relationName\":\"VehicleToVehicleServiceHistory\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Factor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"factorNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"orderId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"FactorStatus\"},{\"name\":\"issuedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"dueAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"totalPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"CustomerReference\",\"relationName\":\"CustomerReferenceToFactor\"},{\"name\":\"items\",\"kind\":\"object\",\"type\":\"FactorItem\",\"relationName\":\"FactorToFactorItem\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"FactorToPayment\"}],\"dbName\":null},\"FactorItem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"factorId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"productId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"unitPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"totalPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"factor\",\"kind\":\"object\",\"type\":\"Factor\",\"relationName\":\"FactorToFactorItem\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"ProductReference\",\"relationName\":\"FactorItemToProductReference\"}],\"dbName\":null},\"Payment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"factorId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"method\",\"kind\":\"enum\",\"type\":\"PaymentMethod\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"PaymentStatus\"},{\"name\":\"transactionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paidAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"factor\",\"kind\":\"object\",\"type\":\"Factor\",\"relationName\":\"FactorToPayment\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"CustomerReference\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"firstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"nationalCode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mobile\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"factors\",\"kind\":\"object\",\"type\":\"Factor\",\"relationName\":\"CustomerReferenceToFactor\"}],\"dbName\":null},\"ProductReference\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"factorItems\",\"kind\":\"object\",\"type\":\"FactorItem\",\"relationName\":\"FactorItemToProductReference\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -60,8 +60,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Vehicles
-   * const vehicles = await prisma.vehicle.findMany()
+   * // Fetch zero or more Factors
+   * const factors = await prisma.factor.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -82,8 +82,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Vehicles
- * const vehicles = await prisma.vehicle.findMany()
+ * // Fetch zero or more Factors
+ * const factors = await prisma.factor.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -177,24 +177,54 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.vehicle`: Exposes CRUD operations for the **Vehicle** model.
+   * `prisma.factor`: Exposes CRUD operations for the **Factor** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Vehicles
-    * const vehicles = await prisma.vehicle.findMany()
+    * // Fetch zero or more Factors
+    * const factors = await prisma.factor.findMany()
     * ```
     */
-  get vehicle(): Prisma.VehicleDelegate<ExtArgs, { omit: OmitOpts }>;
+  get factor(): Prisma.FactorDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.vehicleServiceHistory`: Exposes CRUD operations for the **VehicleServiceHistory** model.
+   * `prisma.factorItem`: Exposes CRUD operations for the **FactorItem** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more VehicleServiceHistories
-    * const vehicleServiceHistories = await prisma.vehicleServiceHistory.findMany()
+    * // Fetch zero or more FactorItems
+    * const factorItems = await prisma.factorItem.findMany()
     * ```
     */
-  get vehicleServiceHistory(): Prisma.VehicleServiceHistoryDelegate<ExtArgs, { omit: OmitOpts }>;
+  get factorItem(): Prisma.FactorItemDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.payment`: Exposes CRUD operations for the **Payment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Payments
+    * const payments = await prisma.payment.findMany()
+    * ```
+    */
+  get payment(): Prisma.PaymentDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.customerReference`: Exposes CRUD operations for the **CustomerReference** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CustomerReferences
+    * const customerReferences = await prisma.customerReference.findMany()
+    * ```
+    */
+  get customerReference(): Prisma.CustomerReferenceDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.productReference`: Exposes CRUD operations for the **ProductReference** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProductReferences
+    * const productReferences = await prisma.productReference.findMany()
+    * ```
+    */
+  get productReference(): Prisma.ProductReferenceDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {
