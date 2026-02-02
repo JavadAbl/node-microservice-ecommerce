@@ -13,7 +13,6 @@ datasource db {
 model Factor {
   id           Int          @id @default(autoincrement())
   factorNumber String       @unique
-  customerId   Int
   orderId      Int
   status       FactorStatus @default(DRAFT)
   issuedAt     DateTime     @default(now())
@@ -23,27 +22,29 @@ model Factor {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
-  customer CustomerReference @relation(fields: [customerId], references: [id])
+  customer   CustomerReference @relation(fields: [customerId], references: [id])
+  customerId Int
+
   items    FactorItem[]
   payments Payment[]
 }
 
 model FactorItem {
   id          Int    @id @default(autoincrement())
-  factorId    Int
-  productId   Int
   description String
   quantity    Int    @default(1)
   unitPrice   Float
   totalPrice  Float // quantity * unitPrice
 
-  factor  Factor           @relation(fields: [factorId], references: [id], onDelete: Cascade)
-  product ProductReference @relation(fields: [productId], references: [id])
+  factor   Factor @relation(fields: [factorId], references: [id], onDelete: Cascade)
+  factorId Int
+
+  service   ServiceReference @relation(fields: [serviceId], references: [id])
+  serviceId Int
 }
 
 model Payment {
   id            Int           @id @default(autoincrement())
-  factorId      Int
   amount        Float
   method        PaymentMethod
   status        PaymentStatus @default(PENDING)
@@ -51,10 +52,11 @@ model Payment {
   paidAt        DateTime?
   description   String?
 
-  factor Factor @relation(fields: [factorId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  factor   Factor @relation(fields: [factorId], references: [id], onDelete: Cascade)
+  factorId Int
 }
 
 //Reference Tables--------------------------------------------------------
@@ -69,7 +71,7 @@ model CustomerReference {
   factors Factor[]
 }
 
-model ProductReference {
+model ServiceReference {
   id    Int    @id @default(autoincrement())
   name  String
   price Float

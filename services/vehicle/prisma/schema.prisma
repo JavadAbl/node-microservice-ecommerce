@@ -23,29 +23,54 @@ model Vehicle {
   mileage      Int?
   licensePlate String?
   state        String?
-  ownerId      String?
   status       VehicleStatus     @default(Active)
   isDeleted    Boolean           @default(false)
+  description  String?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
   services VehicleServiceHistory[]
+
+  customer   CustomerReference @relation(fields: [customerId], references: [id])
+  customerId Int
 }
 
 model VehicleServiceHistory {
-  id               Int                @id @default(autoincrement())
-  serviceType      VehicleServiceType
+  id               Int      @id @default(autoincrement())
   serviceDate      DateTime
   mileageAtService Int
   technicianName   String
-  notes            String?
-
-  vehicleId Int
-  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  description      String?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicleId Int
+
+  service   ServiceReference @relation(fields: [serviceId], references: [id])
+  serviceId Int
+}
+
+//Reference Tables--------------------------------------------------------
+model CustomerReference {
+  id           Int    @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  nationalCode String
+  mobile       String
+  email        String
+
+  vehicles Vehicle[]
+}
+
+model ServiceReference {
+  id    Int    @id @default(autoincrement())
+  name  String
+  price Float
+
+  vehicleServiceHistories VehicleServiceHistory[]
 }
 
 // Enums-------------------------------------------------------------------------
