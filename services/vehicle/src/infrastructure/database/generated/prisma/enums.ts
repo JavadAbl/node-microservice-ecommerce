@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const InboxEventStatus = {
+  PENDING: 'PENDING',
+  Handled: 'Handled',
+  Error: 'Error'
+} as const
+
+export type InboxEventStatus = (typeof InboxEventStatus)[keyof typeof InboxEventStatus]
+
+
 export const FuelType = {
   Gasoline: 'Gasoline',
   Diesel: 'Diesel',
@@ -32,24 +41,6 @@ export const TransmissionType = {
 } as const
 
 export type TransmissionType = (typeof TransmissionType)[keyof typeof TransmissionType]
-
-
-export const VehicleServiceType = {
-  OilChange: 'OilChange',
-  TireRotation: 'TireRotation',
-  BrakeService: 'BrakeService',
-  EngineDiagnostic: 'EngineDiagnostic',
-  TransmissionFlush: 'TransmissionFlush',
-  BatteryReplacement: 'BatteryReplacement',
-  AirFilterReplacement: 'AirFilterReplacement',
-  SuspensionService: 'SuspensionService',
-  Alignment: 'Alignment',
-  RecallService: 'RecallService',
-  GeneralMaintenance: 'GeneralMaintenance',
-  Other: 'Other'
-} as const
-
-export type VehicleServiceType = (typeof VehicleServiceType)[keyof typeof VehicleServiceType]
 
 
 export const VehicleStatus = {

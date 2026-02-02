@@ -45,7 +45,22 @@ export { Prisma }
  */
 export type Vehicle = Prisma.VehicleModel
 /**
- * Model VehicleServiceHistory
+ * Model VehicleService
  * 
  */
-export type VehicleServiceHistory = Prisma.VehicleServiceHistoryModel
+export type VehicleService = Prisma.VehicleServiceModel
+/**
+ * Model CustomerReference
+ * 
+ */
+export type CustomerReference = Prisma.CustomerReferenceModel
+/**
+ * Model ServiceReference
+ * 
+ */
+export type ServiceReference = Prisma.ServiceReferenceModel
+/**
+ * Model InboxEvent
+ * 
+ */
+export type InboxEvent = Prisma.InboxEventModel

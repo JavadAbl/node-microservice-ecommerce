@@ -30,13 +30,13 @@ model Vehicle {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  services VehicleServiceHistory[]
+  services VehicleService[]
 
   customer   CustomerReference @relation(fields: [customerId], references: [id])
   customerId Int
 }
 
-model VehicleServiceHistory {
+model VehicleService {
   id               Int      @id @default(autoincrement())
   serviceDate      DateTime
   mileageAtService Int
@@ -70,10 +70,27 @@ model ServiceReference {
   name  String
   price Float
 
-  vehicleServiceHistories VehicleServiceHistory[]
+  vehicleServiceHistories VehicleService[]
+}
+
+model InboxEvent {
+  id          Int              @id @default(autoincrement())
+  queue       String
+  serviceName String
+  status      InboxEventStatus @default(PENDING)
+  handledAt   DateTime?
+  payload     Json
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
 // Enums-------------------------------------------------------------------------
+enum InboxEventStatus {
+  PENDING
+  Handled
+  Error
+}
+
 enum FuelType {
   Gasoline
   Diesel
@@ -90,21 +107,6 @@ enum TransmissionType {
   CVT
   DualClutch
   Robotic
-  Other
-}
-
-enum VehicleServiceType {
-  OilChange
-  TireRotation
-  BrakeService
-  EngineDiagnostic
-  TransmissionFlush
-  BatteryReplacement
-  AirFilterReplacement
-  SuspensionService
-  Alignment
-  RecallService
-  GeneralMaintenance
   Other
 }
 

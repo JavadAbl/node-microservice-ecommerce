@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Vehicle: 'Vehicle',
-  VehicleServiceHistory: 'VehicleServiceHistory'
+  VehicleService: 'VehicleService',
+  CustomerReference: 'CustomerReference',
+  ServiceReference: 'ServiceReference',
+  InboxEvent: 'InboxEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -85,29 +88,65 @@ export const VehicleScalarFieldEnum = {
   mileage: 'mileage',
   licensePlate: 'licensePlate',
   state: 'state',
-  ownerId: 'ownerId',
   status: 'status',
   isDeleted: 'isDeleted',
+  description: 'description',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  customerId: 'customerId'
 } as const
 
 export type VehicleScalarFieldEnum = (typeof VehicleScalarFieldEnum)[keyof typeof VehicleScalarFieldEnum]
 
 
-export const VehicleServiceHistoryScalarFieldEnum = {
+export const VehicleServiceScalarFieldEnum = {
   id: 'id',
-  serviceType: 'serviceType',
   serviceDate: 'serviceDate',
   mileageAtService: 'mileageAtService',
   technicianName: 'technicianName',
-  notes: 'notes',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   vehicleId: 'vehicleId',
+  serviceId: 'serviceId'
+} as const
+
+export type VehicleServiceScalarFieldEnum = (typeof VehicleServiceScalarFieldEnum)[keyof typeof VehicleServiceScalarFieldEnum]
+
+
+export const CustomerReferenceScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  nationalCode: 'nationalCode',
+  mobile: 'mobile',
+  email: 'email'
+} as const
+
+export type CustomerReferenceScalarFieldEnum = (typeof CustomerReferenceScalarFieldEnum)[keyof typeof CustomerReferenceScalarFieldEnum]
+
+
+export const ServiceReferenceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  price: 'price'
+} as const
+
+export type ServiceReferenceScalarFieldEnum = (typeof ServiceReferenceScalarFieldEnum)[keyof typeof ServiceReferenceScalarFieldEnum]
+
+
+export const InboxEventScalarFieldEnum = {
+  id: 'id',
+  queue: 'queue',
+  serviceName: 'serviceName',
+  status: 'status',
+  handledAt: 'handledAt',
+  payload: 'payload',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type VehicleServiceHistoryScalarFieldEnum = (typeof VehicleServiceHistoryScalarFieldEnum)[keyof typeof VehicleServiceHistoryScalarFieldEnum]
+export type InboxEventScalarFieldEnum = (typeof InboxEventScalarFieldEnum)[keyof typeof InboxEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -116,6 +155,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -135,16 +181,59 @@ export const VehicleOrderByRelevanceFieldEnum = {
   color: 'color',
   licensePlate: 'licensePlate',
   state: 'state',
-  ownerId: 'ownerId'
+  description: 'description'
 } as const
 
 export type VehicleOrderByRelevanceFieldEnum = (typeof VehicleOrderByRelevanceFieldEnum)[keyof typeof VehicleOrderByRelevanceFieldEnum]
 
 
-export const VehicleServiceHistoryOrderByRelevanceFieldEnum = {
+export const VehicleServiceOrderByRelevanceFieldEnum = {
   technicianName: 'technicianName',
-  notes: 'notes'
+  description: 'description'
 } as const
 
-export type VehicleServiceHistoryOrderByRelevanceFieldEnum = (typeof VehicleServiceHistoryOrderByRelevanceFieldEnum)[keyof typeof VehicleServiceHistoryOrderByRelevanceFieldEnum]
+export type VehicleServiceOrderByRelevanceFieldEnum = (typeof VehicleServiceOrderByRelevanceFieldEnum)[keyof typeof VehicleServiceOrderByRelevanceFieldEnum]
+
+
+export const CustomerReferenceOrderByRelevanceFieldEnum = {
+  firstName: 'firstName',
+  lastName: 'lastName',
+  nationalCode: 'nationalCode',
+  mobile: 'mobile',
+  email: 'email'
+} as const
+
+export type CustomerReferenceOrderByRelevanceFieldEnum = (typeof CustomerReferenceOrderByRelevanceFieldEnum)[keyof typeof CustomerReferenceOrderByRelevanceFieldEnum]
+
+
+export const ServiceReferenceOrderByRelevanceFieldEnum = {
+  name: 'name'
+} as const
+
+export type ServiceReferenceOrderByRelevanceFieldEnum = (typeof ServiceReferenceOrderByRelevanceFieldEnum)[keyof typeof ServiceReferenceOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const InboxEventOrderByRelevanceFieldEnum = {
+  queue: 'queue',
+  serviceName: 'serviceName'
+} as const
+
+export type InboxEventOrderByRelevanceFieldEnum = (typeof InboxEventOrderByRelevanceFieldEnum)[keyof typeof InboxEventOrderByRelevanceFieldEnum]
 

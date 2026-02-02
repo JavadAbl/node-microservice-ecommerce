@@ -16,7 +16,7 @@ const CreateVehicleBodySchema = Type.Object({
   mileage: Type.Optional(Type.Integer({ description: "Vehicle mileage" })),
   licensePlate: Type.Optional(Type.String({ description: "License plate number" })),
   state: Type.Optional(Type.String({ description: "Registration state" })),
-  ownerId: Type.Optional(Type.String({ description: "Owner ID" })),
+  customerId: Type.Optional(Type.String({ description: "Owner ID" })),
 });
 
 export const CreateVehicleSchema = {

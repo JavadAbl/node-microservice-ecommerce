@@ -33,5 +33,5 @@ const softDeleteModel = {
 };
 
 prisma.$extends(
-  Prisma.defineExtension({ query: { vehicle: softDeleteModel, vehicleServiceHistory: softDeleteModel } }),
+  Prisma.defineExtension({ query: { vehicle: softDeleteModel, vehicleService: softDeleteModel } }),
 );

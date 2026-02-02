@@ -3,6 +3,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import { config, isDev } from "./infrastructure/config.js";
 import { errorHandler } from "./plugins/error-handler.js";
 import { vehicleRoutes } from "./routes/vehicle-route.js";
+import { vehicleServiceRoutes } from "./routes/vehicle-service-route.js";
 import fastify from "fastify";
 
 export const app = fastify({ logger: false, caseSensitive: false });
@@ -29,6 +30,7 @@ export async function startHttpServer() {
   }
 
   app.register(vehicleRoutes, { prefix: "/Vehicles" });
+  app.register(vehicleServiceRoutes, { prefix: "/VehicleService" });
 
   app.setErrorHandler(errorHandler);
 

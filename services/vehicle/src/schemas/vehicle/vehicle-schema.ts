@@ -19,7 +19,7 @@ export const VehicleDtoSchema = Type.Object({
   mileage: Type.Optional(Type.Integer({ description: "Vehicle mileage" })),
   licensePlate: Type.Optional(Type.String({ description: "License plate number" })),
   state: Type.Optional(Type.String({ description: "Registration state" })),
-  ownerId: Type.Optional(Type.String({ description: "Owner ID" })),
+  customerId: Type.Integer({ description: "Customer ID associated with the vehicle" }),
   status: Type.Enum(VehicleStatus, { description: "Vehicle status", default: VehicleStatus.Active }),
   createdAt: Type.String({ format: "date-time", description: "Creation timestamp" }),
   updatedAt: Type.Optional(Type.String({ format: "date-time", description: "Last update timestamp" })),
