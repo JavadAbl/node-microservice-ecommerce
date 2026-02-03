@@ -1,1 +1,1 @@
-export const JOB_EVENT_INBOX = "job_event_inbox";
+export const CRON_EVENT_INBOX = "cron_event_inbox";

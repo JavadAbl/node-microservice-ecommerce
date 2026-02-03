@@ -1,11 +1,12 @@
-import amqp, { AmqpConnectionManager, Channel, ChannelWrapper } from "amqp-connection-manager";
+import amqp, { AmqpConnectionManager } from "amqp-connection-manager";
 import { rmqSetupConsumers } from "./rabbitmq-consumers.js";
 import { rmqSetup } from "./rabbitmq-setup.js";
 import { config } from "../config.js";
+import { pause } from "../../utils/app-utils.js";
 
 export let rmqConnection: AmqpConnectionManager;
 
-export function rmqConnect() {
+export function startRmq() {
   rmqConnection = amqp.connect([config.RABBITMQ_URL]);
 
   rmqConnection.on("connect", () => console.log("Connected to RabbitMQ!"));

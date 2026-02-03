@@ -1,14 +1,13 @@
 import Queue from "bee-queue";
-import { RMQ_QUEUE_EMAIL_WELCOME } from "../rabbitmq/rabbitmq-config.js";
-import { QUEUE_EMAIL_VERIFICATION } from "./queue-config.js";
-import { config } from "../app-config.js";
+import { config } from "../config.js";
+import { QUEUE_EVENT_CUSTOMER_CREATE, QUEUE_EVENT_SERVICE_CREATE } from "./queue-config.js";
 
-export let queueEmailVerification: Queue;
-export let queueEmailWelcome: Queue;
+export let queueEventCustomerCreate: Queue;
+export let queueEventServiceCreate: Queue;
 
-export function queuesConnect() {
-  queueEmailVerification = queueCreate(QUEUE_EMAIL_VERIFICATION);
-  queueEmailWelcome = queueCreate(RMQ_QUEUE_EMAIL_WELCOME);
+export function startQueues() {
+  queueEventCustomerCreate = queueCreate(QUEUE_EVENT_CUSTOMER_CREATE);
+  queueEventServiceCreate = queueCreate(QUEUE_EVENT_SERVICE_CREATE);
 }
 
 function queueCreate(queueName: string) {
@@ -28,7 +27,7 @@ function queueCreate(queueName: string) {
 }
 
 export const queueGracefulShutdown = async () => {
-  await queueEmailVerification.close();
-  await queueEmailWelcome.close();
-  // console.log(`Worker ${queueEmailVerification.name} stopped.`);
+  await queueEventCustomerCreate.close();
+  await queueEventServiceCreate.close();
+  // console.log(`Worker ${queueEventCustomerCreate.name} stopped.`);
 };

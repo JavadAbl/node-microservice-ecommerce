@@ -1,14 +1,15 @@
 import { Channel } from "amqp-connection-manager";
 import { rmqConnection } from "./rabbitmq-provider.js";
 import { EventHandler, rmqInboxEventHandler } from "./rabbitmq-handlers.js";
-import { RMQ_QUEUE_CUSTOMER_CREATE } from "./rabbitmq-config.js";
+import { RMQ_QUEUE_CUSTOMER_CREATE, RMQ_QUEUE_SERVICE_CREATE } from "./rabbitmq-config.js";
 
 export function rmqSetupConsumers() {
   createConsumer(RMQ_QUEUE_CUSTOMER_CREATE, rmqInboxEventHandler);
+  createConsumer(RMQ_QUEUE_SERVICE_CREATE, rmqInboxEventHandler);
 }
 
 function createConsumer(queueName: string, handler: EventHandler) {
-  rmqConnection.createChannel({
+  const channelWrapper = rmqConnection.createChannel({
     json: true,
     setup: async (channel: Channel) => {
       await channel.consume(
@@ -20,8 +21,6 @@ function createConsumer(queueName: string, handler: EventHandler) {
             const eventPayload = JSON.parse(event.content.toString());
 
             await handler(eventPayload, queueName, event.properties.appId);
-
-            console.log(`[✅] Processed and acknowledged rabbitmq message from ${queueName}`);
           } catch (error) {
             console.error(`[❌] Failed to process rabbitmq message from ${queueName}:`, error);
             //todo
@@ -35,5 +34,11 @@ function createConsumer(queueName: string, handler: EventHandler) {
     },
   });
 
-  console.log(`[🚀] Consumer setup for queue: ${queueName}`);
+  channelWrapper.on("error", (err) => {
+    console.error(`Channel error for queue ${queueName}:`, err);
+  });
+
+  channelWrapper.on("connect", () => {
+    console.log(`[🚀] Consumer connected for queue: ${queueName}`);
+  });
 }

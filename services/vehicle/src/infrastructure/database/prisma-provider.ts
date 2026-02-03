@@ -14,6 +14,12 @@ const prismaAdapter = new PrismaMariaDb({
 
 export const prisma = new PrismaClient({ adapter: prismaAdapter });
 
+export async function startDatabase() {
+  await prisma.$connect();
+  await prisma.$queryRaw`SELECT 1`;
+  console.log("Connected to database");
+}
+
 const softDeleteModel = {
   async delete({ args, query }) {
     return query({ ...args, data: { isDeleted: true } });

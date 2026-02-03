@@ -1,7 +1,7 @@
 import Queue from "bee-queue";
-import { pause } from "../../utils/app.util.js";
-import { queueEmailVerification, queueEmailWelcome } from "./queue-provider.js";
-import { queueEmailVerificationHandler, queueEmailWelcomeHandler } from "./queue-handlers.js";
+import { pause } from "../../utils/app-utils.js";
+import { queueEventCustomerCreate, queueEventServiceCreate } from "./queue-provider.js";
+import { queueCustomerCreateHandler, queueServiceCreateHandler } from "./queue-handlers.js";
 
 function queueWorkerRegister(
   queue: Queue,
@@ -17,6 +17,6 @@ function queueWorkerRegister(
 }
 
 export function queueWorkersRegister() {
-  queueWorkerRegister(queueEmailVerification, queueEmailVerificationHandler);
-  queueWorkerRegister(queueEmailWelcome, queueEmailWelcomeHandler);
+  queueWorkerRegister(queueEventCustomerCreate, queueCustomerCreateHandler);
+  queueWorkerRegister(queueEventServiceCreate, queueServiceCreateHandler);
 }
