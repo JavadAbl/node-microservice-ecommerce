@@ -8,6 +8,7 @@ const GetVehicleServiceByIdParamSchema = Type.Object({
 
 export const GetVehicleServiceByIdSchema = {
   params: GetVehicleServiceByIdParamSchema,
+  tags: ["VehicleService"],
   response: { 200: VehicleServiceDtoSchema },
 };
 

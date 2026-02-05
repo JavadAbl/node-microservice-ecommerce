@@ -1,16 +1,16 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { factorService } from "../services/vehicle-service.js";
+import { factorService } from "../services/factor-service.js";
+import { TypedRequest } from "../types/express-types.js";
+import { CreateFactor } from "../schemas/factor/create-factor-schema.js";
 
-// Optional: Define request types if you're using Zod or similar with Express (e.g., via middleware)
-// For simplicity, we'll use generic Request with type assertions
-
-export async function getFactors(req: Request, res: Response, next: NextFunction) {
+export async function getFactors(req: Request, res: Response) {
   const factors = await factorService.getMany(req.query);
-  res.json(factors as FactorDto[]);
+
+  return res.json(factors);
 }
 
-export async function getFactorById(req: Request, res: Response, next: NextFunction) {
+export async function getFactorById(req: Request, res: Response) {
   const factor = await factorService.getById(req.params.id);
   if (!factor) {
     return res.status(StatusCodes.NOT_FOUND).json({ message: "Factor not found" });
@@ -18,12 +18,12 @@ export async function getFactorById(req: Request, res: Response, next: NextFunct
   res.json(factor as FactorDto);
 }
 
-export async function createFactor(req: Request, res: Response, next: NextFunction) {
+export async function createFactor(req: TypedRequest<CreateFactor, {}, {}>, res: Response) {
   const factor = await factorService.create(req.body);
-  res.status(StatusCodes.CREATED).json(factor as FactorDto);
+  res.status(StatusCodes.CREATED).json(factor);
 }
 
-export async function updateFactor(req: Request, res: Response, next: NextFunction) {
+export async function updateFactor(req: Request, res: Response) {
   const updated = await factorService.update(req.params.id, req.body);
   if (!updated) {
     return res.status(StatusCodes.NOT_FOUND).json({ message: "Factor not found" });
@@ -31,7 +31,7 @@ export async function updateFactor(req: Request, res: Response, next: NextFuncti
   res.json(updated);
 }
 
-export async function deleteFactor(req: Request, res: Response, next: NextFunction) {
+export async function deleteFactor(req: Request, res: Response) {
   const deleted = await factorService.deleteById(req.params.id);
   if (!deleted) {
     return res.status(StatusCodes.NOT_FOUND).json({ message: "Factor not found" });

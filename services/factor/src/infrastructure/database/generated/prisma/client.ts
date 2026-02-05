@@ -60,7 +60,17 @@ export type Payment = Prisma.PaymentModel
  */
 export type CustomerReference = Prisma.CustomerReferenceModel
 /**
- * Model ProductReference
+ * Model ServiceReference
  * 
  */
-export type ProductReference = Prisma.ProductReferenceModel
+export type ServiceReference = Prisma.ServiceReferenceModel
+/**
+ * Model InboxEvent
+ * 
+ */
+export type InboxEvent = Prisma.InboxEventModel
+/**
+ * Model OutboxEvent
+ * 
+ */
+export type OutboxEvent = Prisma.OutboxEventModel

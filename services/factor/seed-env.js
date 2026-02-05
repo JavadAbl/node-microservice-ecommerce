@@ -4,7 +4,7 @@ import path from "path";
 // Define the configuration with the same logic as your source file
 const config = {
   NODE_ENV: "development",
-  HTTP_PORT: 3021,
+  HTTP_PORT: 3022,
   HTTP_HOST: "localhost",
   DATABASE_URL: "mysql://admin:admin@localhost:3306/factor_db",
   DATABASE_HOST: "localhost",

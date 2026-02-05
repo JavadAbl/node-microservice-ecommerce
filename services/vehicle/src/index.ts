@@ -2,6 +2,7 @@ import { validateConfig } from "./infrastructure/config.js";
 import { prisma, startDatabase } from "./infrastructure/database/prisma-provider.js";
 import { startCronJobs } from "./infrastructure/node-cron/cron-jobs.js";
 import { queueGracefulShutdown, startQueues } from "./infrastructure/queue/queue-provider.js";
+import { startQueueWorkers } from "./infrastructure/queue/queue-workers.js";
 import { rmqGracefulShutdown, startRmq } from "./infrastructure/rabbitmq/rabbitmq-provider.js";
 import { startHttpServer } from "./server.js";
 
@@ -10,8 +11,9 @@ async function run() {
   await startDatabase();
   await startHttpServer();
   startCronJobs();
-  startRmq();
+  await startRmq();
   startQueues();
+  startQueueWorkers();
   try {
   } catch (error) {
     console.error(error);

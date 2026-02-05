@@ -20,6 +20,7 @@ const UpdateVehicleServiceParamSchema = Type.Object({
 export const UpdateVehicleServiceSchema = {
   body: UpdateVehicleServiceBodySchema,
   params: UpdateVehicleServiceParamSchema,
+  tags: ["VehicleService"],
   response: { 200: VehicleServiceDtoSchema },
 };
 

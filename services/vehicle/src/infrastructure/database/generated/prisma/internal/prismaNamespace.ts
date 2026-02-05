@@ -388,7 +388,8 @@ export const ModelName = {
   VehicleService: 'VehicleService',
   CustomerReference: 'CustomerReference',
   ServiceReference: 'ServiceReference',
-  InboxEvent: 'InboxEvent'
+  InboxEvent: 'InboxEvent',
+  OutboxEvent: 'OutboxEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "vehicle" | "vehicleService" | "customerReference" | "serviceReference" | "inboxEvent"
+    modelProps: "vehicle" | "vehicleService" | "customerReference" | "serviceReference" | "inboxEvent" | "outboxEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -738,6 +739,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OutboxEvent: {
+      payload: Prisma.$OutboxEventPayload<ExtArgs>
+      fields: Prisma.OutboxEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OutboxEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OutboxEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload>
+        }
+        findFirst: {
+          args: Prisma.OutboxEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OutboxEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload>
+        }
+        findMany: {
+          args: Prisma.OutboxEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload>[]
+        }
+        create: {
+          args: Prisma.OutboxEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload>
+        }
+        createMany: {
+          args: Prisma.OutboxEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OutboxEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload>
+        }
+        update: {
+          args: Prisma.OutboxEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.OutboxEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OutboxEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OutboxEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OutboxEventPayload>
+        }
+        aggregate: {
+          args: Prisma.OutboxEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOutboxEvent>
+        }
+        groupBy: {
+          args: Prisma.OutboxEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OutboxEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OutboxEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OutboxEventCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -841,15 +908,29 @@ export type ServiceReferenceScalarFieldEnum = (typeof ServiceReferenceScalarFiel
 export const InboxEventScalarFieldEnum = {
   id: 'id',
   queue: 'queue',
+  routingKey: 'routingKey',
   serviceName: 'serviceName',
   status: 'status',
+  captureAt: 'captureAt',
   handledAt: 'handledAt',
-  payload: 'payload',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  error: 'error',
+  payload: 'payload'
 } as const
 
 export type InboxEventScalarFieldEnum = (typeof InboxEventScalarFieldEnum)[keyof typeof InboxEventScalarFieldEnum]
+
+
+export const OutboxEventScalarFieldEnum = {
+  id: 'id',
+  routingKey: 'routingKey',
+  status: 'status',
+  captureAt: 'captureAt',
+  handledAt: 'handledAt',
+  error: 'error',
+  payload: 'payload'
+} as const
+
+export type OutboxEventScalarFieldEnum = (typeof OutboxEventScalarFieldEnum)[keyof typeof OutboxEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -935,10 +1016,20 @@ export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 export const InboxEventOrderByRelevanceFieldEnum = {
   queue: 'queue',
-  serviceName: 'serviceName'
+  routingKey: 'routingKey',
+  serviceName: 'serviceName',
+  error: 'error'
 } as const
 
 export type InboxEventOrderByRelevanceFieldEnum = (typeof InboxEventOrderByRelevanceFieldEnum)[keyof typeof InboxEventOrderByRelevanceFieldEnum]
+
+
+export const OutboxEventOrderByRelevanceFieldEnum = {
+  routingKey: 'routingKey',
+  error: 'error'
+} as const
+
+export type OutboxEventOrderByRelevanceFieldEnum = (typeof OutboxEventOrderByRelevanceFieldEnum)[keyof typeof OutboxEventOrderByRelevanceFieldEnum]
 
 
 
@@ -1021,6 +1112,13 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'OutboxEventStatus'
+ */
+export type EnumOutboxEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OutboxEventStatus'>
     
 
 /**
@@ -1123,6 +1221,7 @@ export type GlobalOmitConfig = {
   customerReference?: Prisma.CustomerReferenceOmit
   serviceReference?: Prisma.ServiceReferenceOmit
   inboxEvent?: Prisma.InboxEventOmit
+  outboxEvent?: Prisma.OutboxEventOmit
 }
 
 /* Types for Logging */

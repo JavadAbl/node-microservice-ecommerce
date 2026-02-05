@@ -10,6 +10,7 @@ const GetVehicleServiceHistoriesQuerystring = Type.Object({
 
 export const GetVehicleServiceHistoriesSchema = {
   querystring: GetVehicleServiceHistoriesQuerystring,
+    tags: ["VehicleService"],
   response: { 200: Type.Array(VehicleServiceDtoSchema) },
 };
 

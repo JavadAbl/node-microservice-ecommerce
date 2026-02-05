@@ -8,7 +8,7 @@ export const useErrorHandler = (err: any, req: Request, res: Response, next: Nex
   const formattedStack = err.stack ? err.stack.split("\n") : undefined;
 
   // Log the error (replace with your actual logger if not using console)
-  console.error({
+  /*   console.error({
     message,
     statusCode,
     url: req.originalUrl,
@@ -17,7 +17,7 @@ export const useErrorHandler = (err: any, req: Request, res: Response, next: Nex
     params: req.params,
     body: req.body,
     stack: formattedStack,
-  });
+  }); */
 
   res
     .status(statusCode)

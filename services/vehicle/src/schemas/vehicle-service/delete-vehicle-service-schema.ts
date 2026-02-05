@@ -8,6 +8,7 @@ const DeleteVehicleServiceParamSchema = Type.Object({
 
 export const DeleteVehicleServiceSchema = {
   params: DeleteVehicleServiceParamSchema,
+  tags: ["VehicleService"],
   response: { 200: VehicleServiceDtoSchema },
 };
 

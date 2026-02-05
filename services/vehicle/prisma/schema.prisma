@@ -55,7 +55,7 @@ model VehicleService {
 
 //Reference Tables--------------------------------------------------------
 model CustomerReference {
-  id           Int    @id @default(autoincrement())
+  id           Int    @id
   firstName    String
   lastName     String
   nationalCode String
@@ -66,7 +66,7 @@ model CustomerReference {
 }
 
 model ServiceReference {
-  id    Int    @id @default(autoincrement())
+  id    Int    @id
   name  String
   price Float
 
@@ -76,16 +76,33 @@ model ServiceReference {
 model InboxEvent {
   id          Int              @id @default(autoincrement())
   queue       String
+  routingKey  String
   serviceName String
   status      InboxEventStatus @default(PENDING)
+  captureAt   DateTime         @default(now())
   handledAt   DateTime?
+  error       String?
   payload     Json
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+}
+
+model OutboxEvent {
+  id         Int               @id @default(autoincrement())
+  routingKey String
+  status     OutboxEventStatus @default(PENDING)
+  captureAt  DateTime          @default(now())
+  handledAt  DateTime?
+  error      String?
+  payload    Json
 }
 
 // Enums-------------------------------------------------------------------------
 enum InboxEventStatus {
+  PENDING
+  Handled
+  Error
+}
+
+enum OutboxEventStatus {
   PENDING
   Handled
   Error

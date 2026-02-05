@@ -22,11 +22,11 @@ function createVehicleService(req: FastifyRequest<CreateVehicleServiceRouteType>
 }
 
 function updateVehicleService(req: FastifyRequest<UpdateVehicleServiceRouteType>, rep: FastifyReply) {
-  return vehicleServiceService.update(req.params.id, req.body);
+  return vehicleServiceService.update(req.params.id, req.body) as unknown as VehicleServiceDto;
 }
 
 function deleteVehicleService(req: FastifyRequest<DeleteVehicleServiceRouteType>, rep: FastifyReply) {
-  return vehicleServiceService.deleteById(req.params.id);
+  return vehicleServiceService.deleteById(req.params.id) as unknown as VehicleServiceDto;
 }
 
 export const vehicleServiceController = {

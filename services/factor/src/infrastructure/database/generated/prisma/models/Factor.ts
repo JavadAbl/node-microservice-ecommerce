@@ -28,116 +28,100 @@ export type AggregateFactor = {
 
 export type FactorAvgAggregateOutputType = {
   id: number | null
-  customerId: number | null
-  orderId: number | null
   totalPrice: number | null
+  customerId: number | null
 }
 
 export type FactorSumAggregateOutputType = {
   id: number | null
-  customerId: number | null
-  orderId: number | null
   totalPrice: number | null
+  customerId: number | null
 }
 
 export type FactorMinAggregateOutputType = {
   id: number | null
   factorNumber: string | null
-  customerId: number | null
-  orderId: number | null
   status: $Enums.FactorStatus | null
   issuedAt: Date | null
-  dueAt: Date | null
   totalPrice: number | null
   description: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  customerId: number | null
 }
 
 export type FactorMaxAggregateOutputType = {
   id: number | null
   factorNumber: string | null
-  customerId: number | null
-  orderId: number | null
   status: $Enums.FactorStatus | null
   issuedAt: Date | null
-  dueAt: Date | null
   totalPrice: number | null
   description: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  customerId: number | null
 }
 
 export type FactorCountAggregateOutputType = {
   id: number
   factorNumber: number
-  customerId: number
-  orderId: number
   status: number
   issuedAt: number
-  dueAt: number
   totalPrice: number
   description: number
   createdAt: number
   updatedAt: number
+  customerId: number
   _all: number
 }
 
 
 export type FactorAvgAggregateInputType = {
   id?: true
-  customerId?: true
-  orderId?: true
   totalPrice?: true
+  customerId?: true
 }
 
 export type FactorSumAggregateInputType = {
   id?: true
-  customerId?: true
-  orderId?: true
   totalPrice?: true
+  customerId?: true
 }
 
 export type FactorMinAggregateInputType = {
   id?: true
   factorNumber?: true
-  customerId?: true
-  orderId?: true
   status?: true
   issuedAt?: true
-  dueAt?: true
   totalPrice?: true
   description?: true
   createdAt?: true
   updatedAt?: true
+  customerId?: true
 }
 
 export type FactorMaxAggregateInputType = {
   id?: true
   factorNumber?: true
-  customerId?: true
-  orderId?: true
   status?: true
   issuedAt?: true
-  dueAt?: true
   totalPrice?: true
   description?: true
   createdAt?: true
   updatedAt?: true
+  customerId?: true
 }
 
 export type FactorCountAggregateInputType = {
   id?: true
   factorNumber?: true
-  customerId?: true
-  orderId?: true
   status?: true
   issuedAt?: true
-  dueAt?: true
   totalPrice?: true
   description?: true
   createdAt?: true
   updatedAt?: true
+  customerId?: true
   _all?: true
 }
 
@@ -230,15 +214,13 @@ export type FactorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type FactorGroupByOutputType = {
   id: number
   factorNumber: string
-  customerId: number
-  orderId: number
   status: $Enums.FactorStatus
   issuedAt: Date
-  dueAt: Date | null
   totalPrice: number
   description: string | null
   createdAt: Date
   updatedAt: Date
+  customerId: number
   _count: FactorCountAggregateOutputType | null
   _avg: FactorAvgAggregateOutputType | null
   _sum: FactorSumAggregateOutputType | null
@@ -267,35 +249,31 @@ export type FactorWhereInput = {
   NOT?: Prisma.FactorWhereInput | Prisma.FactorWhereInput[]
   id?: Prisma.IntFilter<"Factor"> | number
   factorNumber?: Prisma.StringFilter<"Factor"> | string
-  customerId?: Prisma.IntFilter<"Factor"> | number
-  orderId?: Prisma.IntFilter<"Factor"> | number
   status?: Prisma.EnumFactorStatusFilter<"Factor"> | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
-  dueAt?: Prisma.DateTimeNullableFilter<"Factor"> | Date | string | null
   totalPrice?: Prisma.FloatFilter<"Factor"> | number
   description?: Prisma.StringNullableFilter<"Factor"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
+  customerId?: Prisma.IntFilter<"Factor"> | number
   customer?: Prisma.XOR<Prisma.CustomerReferenceScalarRelationFilter, Prisma.CustomerReferenceWhereInput>
+  payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   items?: Prisma.FactorItemListRelationFilter
-  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type FactorOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   factorNumber?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrderInput | Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
   customer?: Prisma.CustomerReferenceOrderByWithRelationInput
+  payment?: Prisma.PaymentOrderByWithRelationInput
   items?: Prisma.FactorItemOrderByRelationAggregateInput
-  payments?: Prisma.PaymentOrderByRelationAggregateInput
   _relevance?: Prisma.FactorOrderByRelevanceInput
 }
 
@@ -305,32 +283,28 @@ export type FactorWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.FactorWhereInput | Prisma.FactorWhereInput[]
   OR?: Prisma.FactorWhereInput[]
   NOT?: Prisma.FactorWhereInput | Prisma.FactorWhereInput[]
-  customerId?: Prisma.IntFilter<"Factor"> | number
-  orderId?: Prisma.IntFilter<"Factor"> | number
   status?: Prisma.EnumFactorStatusFilter<"Factor"> | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
-  dueAt?: Prisma.DateTimeNullableFilter<"Factor"> | Date | string | null
   totalPrice?: Prisma.FloatFilter<"Factor"> | number
   description?: Prisma.StringNullableFilter<"Factor"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
+  customerId?: Prisma.IntFilter<"Factor"> | number
   customer?: Prisma.XOR<Prisma.CustomerReferenceScalarRelationFilter, Prisma.CustomerReferenceWhereInput>
+  payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   items?: Prisma.FactorItemListRelationFilter
-  payments?: Prisma.PaymentListRelationFilter
 }, "id" | "factorNumber">
 
 export type FactorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   factorNumber?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrderInput | Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
   _count?: Prisma.FactorCountOrderByAggregateInput
   _avg?: Prisma.FactorAvgOrderByAggregateInput
   _max?: Prisma.FactorMaxOrderByAggregateInput
@@ -344,99 +318,85 @@ export type FactorScalarWhereWithAggregatesInput = {
   NOT?: Prisma.FactorScalarWhereWithAggregatesInput | Prisma.FactorScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Factor"> | number
   factorNumber?: Prisma.StringWithAggregatesFilter<"Factor"> | string
-  customerId?: Prisma.IntWithAggregatesFilter<"Factor"> | number
-  orderId?: Prisma.IntWithAggregatesFilter<"Factor"> | number
   status?: Prisma.EnumFactorStatusWithAggregatesFilter<"Factor"> | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeWithAggregatesFilter<"Factor"> | Date | string
-  dueAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Factor"> | Date | string | null
   totalPrice?: Prisma.FloatWithAggregatesFilter<"Factor"> | number
   description?: Prisma.StringNullableWithAggregatesFilter<"Factor"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Factor"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Factor"> | Date | string
+  customerId?: Prisma.IntWithAggregatesFilter<"Factor"> | number
 }
 
 export type FactorCreateInput = {
   factorNumber: string
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerReferenceCreateNestedOneWithoutFactorsInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutFactorInput
   items?: Prisma.FactorItemCreateNestedManyWithoutFactorInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutFactorInput
 }
 
 export type FactorUncheckedCreateInput = {
   id?: number
   factorNumber: string
-  customerId: number
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  customerId: number
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutFactorInput
   items?: Prisma.FactorItemUncheckedCreateNestedManyWithoutFactorInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutFactorInput
 }
 
 export type FactorUpdateInput = {
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerReferenceUpdateOneRequiredWithoutFactorsNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutFactorNestedInput
   items?: Prisma.FactorItemUpdateManyWithoutFactorNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutFactorNestedInput
 }
 
 export type FactorUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customerId?: Prisma.IntFieldUpdateOperationsInput | number
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutFactorNestedInput
   items?: Prisma.FactorItemUncheckedUpdateManyWithoutFactorNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutFactorNestedInput
 }
 
 export type FactorCreateManyInput = {
   id?: number
   factorNumber: string
-  customerId: number
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  customerId: number
 }
 
 export type FactorUpdateManyMutationInput = {
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -446,15 +406,13 @@ export type FactorUpdateManyMutationInput = {
 export type FactorUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customerId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type FactorOrderByRelevanceInput = {
@@ -466,57 +424,49 @@ export type FactorOrderByRelevanceInput = {
 export type FactorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   factorNumber?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
 }
 
 export type FactorAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
 }
 
 export type FactorMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   factorNumber?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
 }
 
 export type FactorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   factorNumber?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
 }
 
 export type FactorSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
-  orderId?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  customerId?: Prisma.SortOrder
 }
 
 export type FactorScalarRelationFilter = {
@@ -538,24 +488,12 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type EnumFactorStatusFieldUpdateOperationsInput = {
   set?: $Enums.FactorStatus
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -568,6 +506,14 @@ export type FloatFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type FactorCreateNestedOneWithoutItemsInput = {
@@ -584,18 +530,18 @@ export type FactorUpdateOneRequiredWithoutItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FactorUpdateToOneWithWhereWithoutItemsInput, Prisma.FactorUpdateWithoutItemsInput>, Prisma.FactorUncheckedUpdateWithoutItemsInput>
 }
 
-export type FactorCreateNestedOneWithoutPaymentsInput = {
-  create?: Prisma.XOR<Prisma.FactorCreateWithoutPaymentsInput, Prisma.FactorUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.FactorCreateOrConnectWithoutPaymentsInput
+export type FactorCreateNestedOneWithoutPaymentInput = {
+  create?: Prisma.XOR<Prisma.FactorCreateWithoutPaymentInput, Prisma.FactorUncheckedCreateWithoutPaymentInput>
+  connectOrCreate?: Prisma.FactorCreateOrConnectWithoutPaymentInput
   connect?: Prisma.FactorWhereUniqueInput
 }
 
-export type FactorUpdateOneRequiredWithoutPaymentsNestedInput = {
-  create?: Prisma.XOR<Prisma.FactorCreateWithoutPaymentsInput, Prisma.FactorUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.FactorCreateOrConnectWithoutPaymentsInput
-  upsert?: Prisma.FactorUpsertWithoutPaymentsInput
+export type FactorUpdateOneRequiredWithoutPaymentNestedInput = {
+  create?: Prisma.XOR<Prisma.FactorCreateWithoutPaymentInput, Prisma.FactorUncheckedCreateWithoutPaymentInput>
+  connectOrCreate?: Prisma.FactorCreateOrConnectWithoutPaymentInput
+  upsert?: Prisma.FactorUpsertWithoutPaymentInput
   connect?: Prisma.FactorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.FactorUpdateToOneWithWhereWithoutPaymentsInput, Prisma.FactorUpdateWithoutPaymentsInput>, Prisma.FactorUncheckedUpdateWithoutPaymentsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FactorUpdateToOneWithWhereWithoutPaymentInput, Prisma.FactorUpdateWithoutPaymentInput>, Prisma.FactorUncheckedUpdateWithoutPaymentInput>
 }
 
 export type FactorCreateNestedManyWithoutCustomerInput = {
@@ -642,31 +588,27 @@ export type FactorUncheckedUpdateManyWithoutCustomerNestedInput = {
 
 export type FactorCreateWithoutItemsInput = {
   factorNumber: string
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerReferenceCreateNestedOneWithoutFactorsInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutFactorInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutFactorInput
 }
 
 export type FactorUncheckedCreateWithoutItemsInput = {
   id?: number
   factorNumber: string
-  customerId: number
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutFactorInput
+  customerId: number
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutFactorInput
 }
 
 export type FactorCreateOrConnectWithoutItemsInput = {
@@ -687,39 +629,33 @@ export type FactorUpdateToOneWithWhereWithoutItemsInput = {
 
 export type FactorUpdateWithoutItemsInput = {
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerReferenceUpdateOneRequiredWithoutFactorsNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutFactorNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutFactorNestedInput
 }
 
 export type FactorUncheckedUpdateWithoutItemsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutFactorNestedInput
+  customerId?: Prisma.IntFieldUpdateOperationsInput | number
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutFactorNestedInput
 }
 
-export type FactorCreateWithoutPaymentsInput = {
+export type FactorCreateWithoutPaymentInput = {
   factorNumber: string
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
@@ -728,43 +664,39 @@ export type FactorCreateWithoutPaymentsInput = {
   items?: Prisma.FactorItemCreateNestedManyWithoutFactorInput
 }
 
-export type FactorUncheckedCreateWithoutPaymentsInput = {
+export type FactorUncheckedCreateWithoutPaymentInput = {
   id?: number
   factorNumber: string
-  customerId: number
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  customerId: number
   items?: Prisma.FactorItemUncheckedCreateNestedManyWithoutFactorInput
 }
 
-export type FactorCreateOrConnectWithoutPaymentsInput = {
+export type FactorCreateOrConnectWithoutPaymentInput = {
   where: Prisma.FactorWhereUniqueInput
-  create: Prisma.XOR<Prisma.FactorCreateWithoutPaymentsInput, Prisma.FactorUncheckedCreateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.FactorCreateWithoutPaymentInput, Prisma.FactorUncheckedCreateWithoutPaymentInput>
 }
 
-export type FactorUpsertWithoutPaymentsInput = {
-  update: Prisma.XOR<Prisma.FactorUpdateWithoutPaymentsInput, Prisma.FactorUncheckedUpdateWithoutPaymentsInput>
-  create: Prisma.XOR<Prisma.FactorCreateWithoutPaymentsInput, Prisma.FactorUncheckedCreateWithoutPaymentsInput>
+export type FactorUpsertWithoutPaymentInput = {
+  update: Prisma.XOR<Prisma.FactorUpdateWithoutPaymentInput, Prisma.FactorUncheckedUpdateWithoutPaymentInput>
+  create: Prisma.XOR<Prisma.FactorCreateWithoutPaymentInput, Prisma.FactorUncheckedCreateWithoutPaymentInput>
   where?: Prisma.FactorWhereInput
 }
 
-export type FactorUpdateToOneWithWhereWithoutPaymentsInput = {
+export type FactorUpdateToOneWithWhereWithoutPaymentInput = {
   where?: Prisma.FactorWhereInput
-  data: Prisma.XOR<Prisma.FactorUpdateWithoutPaymentsInput, Prisma.FactorUncheckedUpdateWithoutPaymentsInput>
+  data: Prisma.XOR<Prisma.FactorUpdateWithoutPaymentInput, Prisma.FactorUncheckedUpdateWithoutPaymentInput>
 }
 
-export type FactorUpdateWithoutPaymentsInput = {
+export type FactorUpdateWithoutPaymentInput = {
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -773,48 +705,42 @@ export type FactorUpdateWithoutPaymentsInput = {
   items?: Prisma.FactorItemUpdateManyWithoutFactorNestedInput
 }
 
-export type FactorUncheckedUpdateWithoutPaymentsInput = {
+export type FactorUncheckedUpdateWithoutPaymentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customerId?: Prisma.IntFieldUpdateOperationsInput | number
   items?: Prisma.FactorItemUncheckedUpdateManyWithoutFactorNestedInput
 }
 
 export type FactorCreateWithoutCustomerInput = {
   factorNumber: string
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  payment?: Prisma.PaymentCreateNestedOneWithoutFactorInput
   items?: Prisma.FactorItemCreateNestedManyWithoutFactorInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutFactorInput
 }
 
 export type FactorUncheckedCreateWithoutCustomerInput = {
   id?: number
   factorNumber: string
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutFactorInput
   items?: Prisma.FactorItemUncheckedCreateNestedManyWithoutFactorInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutFactorInput
 }
 
 export type FactorCreateOrConnectWithoutCustomerInput = {
@@ -849,24 +775,20 @@ export type FactorScalarWhereInput = {
   NOT?: Prisma.FactorScalarWhereInput | Prisma.FactorScalarWhereInput[]
   id?: Prisma.IntFilter<"Factor"> | number
   factorNumber?: Prisma.StringFilter<"Factor"> | string
-  customerId?: Prisma.IntFilter<"Factor"> | number
-  orderId?: Prisma.IntFilter<"Factor"> | number
   status?: Prisma.EnumFactorStatusFilter<"Factor"> | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
-  dueAt?: Prisma.DateTimeNullableFilter<"Factor"> | Date | string | null
   totalPrice?: Prisma.FloatFilter<"Factor"> | number
   description?: Prisma.StringNullableFilter<"Factor"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Factor"> | Date | string
+  customerId?: Prisma.IntFilter<"Factor"> | number
 }
 
 export type FactorCreateManyCustomerInput = {
   id?: number
   factorNumber: string
-  orderId: number
   status?: $Enums.FactorStatus
   issuedAt?: Date | string
-  dueAt?: Date | string | null
   totalPrice: number
   description?: string | null
   createdAt?: Date | string
@@ -875,40 +797,34 @@ export type FactorCreateManyCustomerInput = {
 
 export type FactorUpdateWithoutCustomerInput = {
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payment?: Prisma.PaymentUpdateOneWithoutFactorNestedInput
   items?: Prisma.FactorItemUpdateManyWithoutFactorNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutFactorNestedInput
 }
 
 export type FactorUncheckedUpdateWithoutCustomerInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutFactorNestedInput
   items?: Prisma.FactorItemUncheckedUpdateManyWithoutFactorNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutFactorNestedInput
 }
 
 export type FactorUncheckedUpdateManyWithoutCustomerInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   factorNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  orderId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumFactorStatusFieldUpdateOperationsInput | $Enums.FactorStatus
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -922,12 +838,10 @@ export type FactorUncheckedUpdateManyWithoutCustomerInput = {
 
 export type FactorCountOutputType = {
   items: number
-  payments: number
 }
 
 export type FactorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   items?: boolean | FactorCountOutputTypeCountItemsArgs
-  payments?: boolean | FactorCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -947,29 +861,20 @@ export type FactorCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.FactorItemWhereInput
 }
 
-/**
- * FactorCountOutputType without action
- */
-export type FactorCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PaymentWhereInput
-}
-
 
 export type FactorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   factorNumber?: boolean
-  customerId?: boolean
-  orderId?: boolean
   status?: boolean
   issuedAt?: boolean
-  dueAt?: boolean
   totalPrice?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  customerId?: boolean
   customer?: boolean | Prisma.CustomerReferenceDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Factor$paymentArgs<ExtArgs>
   items?: boolean | Prisma.Factor$itemsArgs<ExtArgs>
-  payments?: boolean | Prisma.Factor$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.FactorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["factor"]>
 
@@ -978,22 +883,20 @@ export type FactorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type FactorSelectScalar = {
   id?: boolean
   factorNumber?: boolean
-  customerId?: boolean
-  orderId?: boolean
   status?: boolean
   issuedAt?: boolean
-  dueAt?: boolean
   totalPrice?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  customerId?: boolean
 }
 
-export type FactorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "factorNumber" | "customerId" | "orderId" | "status" | "issuedAt" | "dueAt" | "totalPrice" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["factor"]>
+export type FactorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "factorNumber" | "status" | "issuedAt" | "totalPrice" | "description" | "createdAt" | "updatedAt" | "customerId", ExtArgs["result"]["factor"]>
 export type FactorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerReferenceDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Factor$paymentArgs<ExtArgs>
   items?: boolean | Prisma.Factor$itemsArgs<ExtArgs>
-  payments?: boolean | Prisma.Factor$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.FactorCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1001,21 +904,19 @@ export type $FactorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Factor"
   objects: {
     customer: Prisma.$CustomerReferencePayload<ExtArgs>
+    payment: Prisma.$PaymentPayload<ExtArgs> | null
     items: Prisma.$FactorItemPayload<ExtArgs>[]
-    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     factorNumber: string
-    customerId: number
-    orderId: number
     status: $Enums.FactorStatus
     issuedAt: Date
-    dueAt: Date | null
     totalPrice: number
     description: string | null
     createdAt: Date
     updatedAt: Date
+    customerId: number
   }, ExtArgs["result"]["factor"]>
   composites: {}
 }
@@ -1357,8 +1258,8 @@ readonly fields: FactorFieldRefs;
 export interface Prisma__FactorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   customer<T extends Prisma.CustomerReferenceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CustomerReferenceDefaultArgs<ExtArgs>>): Prisma.Prisma__CustomerReferenceClient<runtime.Types.Result.GetResult<Prisma.$CustomerReferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  payment<T extends Prisma.Factor$paymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Factor$paymentArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   items<T extends Prisma.Factor$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Factor$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FactorItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  payments<T extends Prisma.Factor$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Factor$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1390,15 +1291,13 @@ export interface Prisma__FactorClient<T, Null = never, ExtArgs extends runtime.T
 export interface FactorFieldRefs {
   readonly id: Prisma.FieldRef<"Factor", 'Int'>
   readonly factorNumber: Prisma.FieldRef<"Factor", 'String'>
-  readonly customerId: Prisma.FieldRef<"Factor", 'Int'>
-  readonly orderId: Prisma.FieldRef<"Factor", 'Int'>
   readonly status: Prisma.FieldRef<"Factor", 'FactorStatus'>
   readonly issuedAt: Prisma.FieldRef<"Factor", 'DateTime'>
-  readonly dueAt: Prisma.FieldRef<"Factor", 'DateTime'>
   readonly totalPrice: Prisma.FieldRef<"Factor", 'Float'>
   readonly description: Prisma.FieldRef<"Factor", 'String'>
   readonly createdAt: Prisma.FieldRef<"Factor", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Factor", 'DateTime'>
+  readonly customerId: Prisma.FieldRef<"Factor", 'Int'>
 }
     
 
@@ -1742,6 +1641,25 @@ export type FactorDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * Factor.payment
+ */
+export type Factor$paymentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+}
+
+/**
  * Factor.items
  */
 export type Factor$itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1763,30 +1681,6 @@ export type Factor$itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.FactorItemScalarFieldEnum | Prisma.FactorItemScalarFieldEnum[]
-}
-
-/**
- * Factor.payments
- */
-export type Factor$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Payment
-   */
-  select?: Prisma.PaymentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Payment
-   */
-  omit?: Prisma.PaymentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PaymentInclude<ExtArgs> | null
-  where?: Prisma.PaymentWhereInput
-  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
-  cursor?: Prisma.PaymentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

@@ -55,7 +55,9 @@ export const ModelName = {
   FactorItem: 'FactorItem',
   Payment: 'Payment',
   CustomerReference: 'CustomerReference',
-  ProductReference: 'ProductReference'
+  ServiceReference: 'ServiceReference',
+  InboxEvent: 'InboxEvent',
+  OutboxEvent: 'OutboxEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -77,15 +79,13 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const FactorScalarFieldEnum = {
   id: 'id',
   factorNumber: 'factorNumber',
-  customerId: 'customerId',
-  orderId: 'orderId',
   status: 'status',
   issuedAt: 'issuedAt',
-  dueAt: 'dueAt',
   totalPrice: 'totalPrice',
   description: 'description',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  customerId: 'customerId'
 } as const
 
 export type FactorScalarFieldEnum = (typeof FactorScalarFieldEnum)[keyof typeof FactorScalarFieldEnum]
@@ -93,12 +93,13 @@ export type FactorScalarFieldEnum = (typeof FactorScalarFieldEnum)[keyof typeof 
 
 export const FactorItemScalarFieldEnum = {
   id: 'id',
-  factorId: 'factorId',
-  productId: 'productId',
   description: 'description',
   quantity: 'quantity',
   unitPrice: 'unitPrice',
-  totalPrice: 'totalPrice'
+  totalPrice: 'totalPrice',
+  serviceName: 'serviceName',
+  factorId: 'factorId',
+  serviceId: 'serviceId'
 } as const
 
 export type FactorItemScalarFieldEnum = (typeof FactorItemScalarFieldEnum)[keyof typeof FactorItemScalarFieldEnum]
@@ -106,7 +107,6 @@ export type FactorItemScalarFieldEnum = (typeof FactorItemScalarFieldEnum)[keyof
 
 export const PaymentScalarFieldEnum = {
   id: 'id',
-  factorId: 'factorId',
   amount: 'amount',
   method: 'method',
   status: 'status',
@@ -114,7 +114,8 @@ export const PaymentScalarFieldEnum = {
   paidAt: 'paidAt',
   description: 'description',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  factorId: 'factorId'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -132,13 +133,41 @@ export const CustomerReferenceScalarFieldEnum = {
 export type CustomerReferenceScalarFieldEnum = (typeof CustomerReferenceScalarFieldEnum)[keyof typeof CustomerReferenceScalarFieldEnum]
 
 
-export const ProductReferenceScalarFieldEnum = {
+export const ServiceReferenceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   price: 'price'
 } as const
 
-export type ProductReferenceScalarFieldEnum = (typeof ProductReferenceScalarFieldEnum)[keyof typeof ProductReferenceScalarFieldEnum]
+export type ServiceReferenceScalarFieldEnum = (typeof ServiceReferenceScalarFieldEnum)[keyof typeof ServiceReferenceScalarFieldEnum]
+
+
+export const InboxEventScalarFieldEnum = {
+  id: 'id',
+  queue: 'queue',
+  routingKey: 'routingKey',
+  serviceName: 'serviceName',
+  status: 'status',
+  captureAt: 'captureAt',
+  handledAt: 'handledAt',
+  error: 'error',
+  payload: 'payload'
+} as const
+
+export type InboxEventScalarFieldEnum = (typeof InboxEventScalarFieldEnum)[keyof typeof InboxEventScalarFieldEnum]
+
+
+export const OutboxEventScalarFieldEnum = {
+  id: 'id',
+  routingKey: 'routingKey',
+  status: 'status',
+  captureAt: 'captureAt',
+  handledAt: 'handledAt',
+  error: 'error',
+  payload: 'payload'
+} as const
+
+export type OutboxEventScalarFieldEnum = (typeof OutboxEventScalarFieldEnum)[keyof typeof OutboxEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -147,6 +176,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -166,7 +202,8 @@ export type FactorOrderByRelevanceFieldEnum = (typeof FactorOrderByRelevanceFiel
 
 
 export const FactorItemOrderByRelevanceFieldEnum = {
-  description: 'description'
+  description: 'description',
+  serviceName: 'serviceName'
 } as const
 
 export type FactorItemOrderByRelevanceFieldEnum = (typeof FactorItemOrderByRelevanceFieldEnum)[keyof typeof FactorItemOrderByRelevanceFieldEnum]
@@ -191,9 +228,44 @@ export const CustomerReferenceOrderByRelevanceFieldEnum = {
 export type CustomerReferenceOrderByRelevanceFieldEnum = (typeof CustomerReferenceOrderByRelevanceFieldEnum)[keyof typeof CustomerReferenceOrderByRelevanceFieldEnum]
 
 
-export const ProductReferenceOrderByRelevanceFieldEnum = {
+export const ServiceReferenceOrderByRelevanceFieldEnum = {
   name: 'name'
 } as const
 
-export type ProductReferenceOrderByRelevanceFieldEnum = (typeof ProductReferenceOrderByRelevanceFieldEnum)[keyof typeof ProductReferenceOrderByRelevanceFieldEnum]
+export type ServiceReferenceOrderByRelevanceFieldEnum = (typeof ServiceReferenceOrderByRelevanceFieldEnum)[keyof typeof ServiceReferenceOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const InboxEventOrderByRelevanceFieldEnum = {
+  queue: 'queue',
+  routingKey: 'routingKey',
+  serviceName: 'serviceName',
+  error: 'error'
+} as const
+
+export type InboxEventOrderByRelevanceFieldEnum = (typeof InboxEventOrderByRelevanceFieldEnum)[keyof typeof InboxEventOrderByRelevanceFieldEnum]
+
+
+export const OutboxEventOrderByRelevanceFieldEnum = {
+  routingKey: 'routingKey',
+  error: 'error'
+} as const
+
+export type OutboxEventOrderByRelevanceFieldEnum = (typeof OutboxEventOrderByRelevanceFieldEnum)[keyof typeof OutboxEventOrderByRelevanceFieldEnum]
 

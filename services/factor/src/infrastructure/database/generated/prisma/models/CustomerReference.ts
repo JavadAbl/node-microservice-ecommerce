@@ -278,6 +278,7 @@ export type CustomerReferenceScalarWhereWithAggregatesInput = {
 }
 
 export type CustomerReferenceCreateInput = {
+  id: number
   firstName: string
   lastName: string
   nationalCode: string
@@ -287,7 +288,7 @@ export type CustomerReferenceCreateInput = {
 }
 
 export type CustomerReferenceUncheckedCreateInput = {
-  id?: number
+  id: number
   firstName: string
   lastName: string
   nationalCode: string
@@ -297,6 +298,7 @@ export type CustomerReferenceUncheckedCreateInput = {
 }
 
 export type CustomerReferenceUpdateInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   nationalCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -316,7 +318,7 @@ export type CustomerReferenceUncheckedUpdateInput = {
 }
 
 export type CustomerReferenceCreateManyInput = {
-  id?: number
+  id: number
   firstName: string
   lastName: string
   nationalCode: string
@@ -325,6 +327,7 @@ export type CustomerReferenceCreateManyInput = {
 }
 
 export type CustomerReferenceUpdateManyMutationInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   nationalCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -402,6 +405,7 @@ export type CustomerReferenceUpdateOneRequiredWithoutFactorsNestedInput = {
 }
 
 export type CustomerReferenceCreateWithoutFactorsInput = {
+  id: number
   firstName: string
   lastName: string
   nationalCode: string
@@ -410,7 +414,7 @@ export type CustomerReferenceCreateWithoutFactorsInput = {
 }
 
 export type CustomerReferenceUncheckedCreateWithoutFactorsInput = {
-  id?: number
+  id: number
   firstName: string
   lastName: string
   nationalCode: string
@@ -435,6 +439,7 @@ export type CustomerReferenceUpdateToOneWithWhereWithoutFactorsInput = {
 }
 
 export type CustomerReferenceUpdateWithoutFactorsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   nationalCode?: Prisma.StringFieldUpdateOperationsInput | string

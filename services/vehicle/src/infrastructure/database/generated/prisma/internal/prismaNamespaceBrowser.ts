@@ -55,7 +55,8 @@ export const ModelName = {
   VehicleService: 'VehicleService',
   CustomerReference: 'CustomerReference',
   ServiceReference: 'ServiceReference',
-  InboxEvent: 'InboxEvent'
+  InboxEvent: 'InboxEvent',
+  OutboxEvent: 'OutboxEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -138,15 +139,29 @@ export type ServiceReferenceScalarFieldEnum = (typeof ServiceReferenceScalarFiel
 export const InboxEventScalarFieldEnum = {
   id: 'id',
   queue: 'queue',
+  routingKey: 'routingKey',
   serviceName: 'serviceName',
   status: 'status',
+  captureAt: 'captureAt',
   handledAt: 'handledAt',
-  payload: 'payload',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  error: 'error',
+  payload: 'payload'
 } as const
 
 export type InboxEventScalarFieldEnum = (typeof InboxEventScalarFieldEnum)[keyof typeof InboxEventScalarFieldEnum]
+
+
+export const OutboxEventScalarFieldEnum = {
+  id: 'id',
+  routingKey: 'routingKey',
+  status: 'status',
+  captureAt: 'captureAt',
+  handledAt: 'handledAt',
+  error: 'error',
+  payload: 'payload'
+} as const
+
+export type OutboxEventScalarFieldEnum = (typeof OutboxEventScalarFieldEnum)[keyof typeof OutboxEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -232,8 +247,18 @@ export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 export const InboxEventOrderByRelevanceFieldEnum = {
   queue: 'queue',
-  serviceName: 'serviceName'
+  routingKey: 'routingKey',
+  serviceName: 'serviceName',
+  error: 'error'
 } as const
 
 export type InboxEventOrderByRelevanceFieldEnum = (typeof InboxEventOrderByRelevanceFieldEnum)[keyof typeof InboxEventOrderByRelevanceFieldEnum]
+
+
+export const OutboxEventOrderByRelevanceFieldEnum = {
+  routingKey: 'routingKey',
+  error: 'error'
+} as const
+
+export type OutboxEventOrderByRelevanceFieldEnum = (typeof OutboxEventOrderByRelevanceFieldEnum)[keyof typeof OutboxEventOrderByRelevanceFieldEnum]
 

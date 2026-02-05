@@ -18,6 +18,15 @@ export const InboxEventStatus = {
 export type InboxEventStatus = (typeof InboxEventStatus)[keyof typeof InboxEventStatus]
 
 
+export const OutboxEventStatus = {
+  PENDING: 'PENDING',
+  Handled: 'Handled',
+  Error: 'Error'
+} as const
+
+export type OutboxEventStatus = (typeof OutboxEventStatus)[keyof typeof OutboxEventStatus]
+
+
 export const FuelType = {
   Gasoline: 'Gasoline',
   Diesel: 'Diesel',

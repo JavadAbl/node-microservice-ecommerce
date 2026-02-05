@@ -24,35 +24,29 @@ import {
 export const vehicleServiceRoutes: FastifyPluginAsync = async (app) => {
   // Get all vehicle service histories----------------------------------------------
   app.get<GetVehicleServiceHistoriesRouteType>(
-    "/service-history",
+    "/",
     { schema: GetVehicleServiceHistoriesSchema },
     (request, reply) => vehicleServiceController.getVehicleServiceHistories(request, reply),
   );
 
   // Get vehicle service history by id---------------------------------------------
-  app.get<GetVehicleServiceByIdRouteType>(
-    "/service-history/:id",
-    { schema: GetVehicleServiceByIdSchema },
-    (request, reply) => vehicleServiceController.getVehicleServiceById(request, reply),
+  app.get<GetVehicleServiceByIdRouteType>("/:id", { schema: GetVehicleServiceByIdSchema }, (request, reply) =>
+    vehicleServiceController.getVehicleServiceById(request, reply),
   );
 
   // Create vehicle service history ------------------------------------------------
-  app.post<CreateVehicleServiceRouteType>(
-    "/service-history",
-    { schema: CreateVehicleServiceSchema },
-    (request, reply) => vehicleServiceController.createVehicleService(request, reply),
+  app.post<CreateVehicleServiceRouteType>("", { schema: CreateVehicleServiceSchema }, (request, reply) =>
+    vehicleServiceController.createVehicleService(request, reply),
   );
 
   // Update vehicle service history ------------------------------------------------
-  app.put<UpdateVehicleServiceRouteType>(
-    "/service-history/:id",
-    { schema: UpdateVehicleServiceSchema },
-    (request, reply) => vehicleServiceController.updateVehicleService(request, reply),
+  app.put<UpdateVehicleServiceRouteType>("/:id", { schema: UpdateVehicleServiceSchema }, (request, reply) =>
+    vehicleServiceController.updateVehicleService(request, reply),
   );
 
   // Delete vehicle service history ------------------------------------------------
   app.delete<DeleteVehicleServiceRouteType>(
-    "/service-history/:id",
+    "/:id",
     { schema: DeleteVehicleServiceSchema },
     (request, reply) => vehicleServiceController.deleteVehicleService(request, reply),
   );

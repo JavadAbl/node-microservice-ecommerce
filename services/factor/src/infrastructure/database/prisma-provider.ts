@@ -14,24 +14,8 @@ const prismaAdapter = new PrismaMariaDb({
 
 export const prisma = new PrismaClient({ adapter: prismaAdapter });
 
-const softDeleteModel = {
-  async delete({ args, query }) {
-    return query({ ...args, data: { isDeleted: true } });
-  },
-  async findMany({ args, query }) {
-    args.where = { ...args.where, isDeleted: false };
-    return query(args);
-  },
-  async findFirst({ args, query }) {
-    args.where = { ...args.where, isDeleted: false };
-    return query(args);
-  },
-  async findUnique({ args, query }) {
-    args.where = { ...args.where, isDeleted: false };
-    return query(args);
-  },
-};
-
-prisma.$extends(
-  Prisma.defineExtension({ query: { vehicle: softDeleteModel, vehicleServiceHistory: softDeleteModel } }),
-);
+export async function startDatabase() {
+  await prisma.$connect();
+  await prisma.$queryRaw`SELECT 1`;
+  console.log("Connected to database");
+}

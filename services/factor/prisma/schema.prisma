@@ -13,10 +13,8 @@ datasource db {
 model Factor {
   id           Int          @id @default(autoincrement())
   factorNumber String       @unique
-  orderId      Int
   status       FactorStatus @default(DRAFT)
   issuedAt     DateTime     @default(now())
-  dueAt        DateTime?
   totalPrice   Float
   description  String?
   createdAt    DateTime     @default(now())
@@ -25,18 +23,20 @@ model Factor {
   customer   CustomerReference @relation(fields: [customerId], references: [id])
   customerId Int
 
-  items    FactorItem[]
-  payments Payment[]
+  payment Payment?
+
+  items FactorItem[]
 }
 
 model FactorItem {
-  id          Int    @id @default(autoincrement())
-  description String
-  quantity    Int    @default(1)
+  id          Int     @id @default(autoincrement())
+  description String?
+  quantity    Int     @default(1)
   unitPrice   Float
-  totalPrice  Float // quantity * unitPrice
+  totalPrice  Float
+  serviceName String
 
-  factor   Factor @relation(fields: [factorId], references: [id], onDelete: Cascade)
+  factor   Factor @relation(fields: [factorId], references: [id])
   factorId Int
 
   service   ServiceReference @relation(fields: [serviceId], references: [id])
@@ -55,13 +55,13 @@ model Payment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  factor   Factor @relation(fields: [factorId], references: [id], onDelete: Cascade)
-  factorId Int
+  factor   Factor @relation(fields: [factorId], references: [id])
+  factorId Int    @unique
 }
 
 //Reference Tables--------------------------------------------------------
 model CustomerReference {
-  id           Int    @id @default(autoincrement())
+  id           Int    @id
   firstName    String
   lastName     String
   nationalCode String
@@ -72,14 +72,48 @@ model CustomerReference {
 }
 
 model ServiceReference {
-  id    Int    @id @default(autoincrement())
+  id    Int    @id
   name  String
   price Float
 
   factorItems FactorItem[]
 }
 
+model InboxEvent {
+  id          Int              @id @default(autoincrement())
+  queue       String
+  routingKey  String
+  serviceName String
+  status      InboxEventStatus @default(PENDING)
+  captureAt   DateTime         @default(now())
+  handledAt   DateTime?
+  error       String?
+  payload     Json
+}
+
+model OutboxEvent {
+  id         Int               @id @default(autoincrement())
+  routingKey String
+  status     OutboxEventStatus @default(PENDING)
+  captureAt  DateTime          @default(now())
+  handledAt  DateTime?
+  error      String?
+  payload    Json
+}
+
 // Enums---------------------------------------------------------------
+enum InboxEventStatus {
+  PENDING
+  Handled
+  Error
+}
+
+enum OutboxEventStatus {
+  PENDING
+  Handled
+  Error
+}
+
 enum FactorStatus {
   DRAFT
   ISSUED

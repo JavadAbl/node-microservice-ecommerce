@@ -64,3 +64,8 @@ export type ServiceReference = Prisma.ServiceReferenceModel
  * 
  */
 export type InboxEvent = Prisma.InboxEventModel
+/**
+ * Model OutboxEvent
+ * 
+ */
+export type OutboxEvent = Prisma.OutboxEventModel

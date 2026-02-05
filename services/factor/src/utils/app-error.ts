@@ -17,12 +17,12 @@ export class AppError extends Error {
   }
 }
 
-export const throwNotFound = (field: string) => {
-  throw new AppError(`${field} is not found`, StatusCodes.NOT_FOUND);
+export const throwNotFound = (field: string, value: any): never => {
+  throw new AppError(`${field} with value ${value} is not found`, StatusCodes.NOT_FOUND);
 };
 
-export const throwConflict = (field: string) => {
-  throw new AppError(`${field} already exists`, StatusCodes.CONFLICT);
+export const throwConflict = (field: string, value: any) => {
+  throw new AppError(`${field} with value ${value} already exists`, StatusCodes.CONFLICT);
 };
 
 export const throwUnAuthorized = () => {

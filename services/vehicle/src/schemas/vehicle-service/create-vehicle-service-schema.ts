@@ -13,6 +13,7 @@ const CreateVehicleServiceBodySchema = Type.Object({
 
 export const CreateVehicleServiceSchema = {
   body: CreateVehicleServiceBodySchema,
+  tags: ["VehicleService"],
   response: { 201: VehicleServiceDtoSchema },
 };
 

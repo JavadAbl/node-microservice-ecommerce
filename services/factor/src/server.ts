@@ -2,6 +2,7 @@ import { config, isDev } from "./infrastructure/config.js";
 import express from "express";
 import { factorRoutes } from "./routes/factor-route.js";
 import { useErrorHandler } from "./middlewares/use-error-handler.js";
+import { StatusCodes } from "http-status-codes";
 
 export const app = express();
 
@@ -12,6 +13,11 @@ export async function startHttpServer() {
 
   //Register Routes
   app.use("/factors", factorRoutes);
+
+  // catch 404
+  app.use((req, res, next) => {
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Not Found" });
+  });
 
   //Error Handler
   app.use(useErrorHandler);

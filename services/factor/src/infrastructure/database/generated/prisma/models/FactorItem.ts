@@ -28,100 +28,106 @@ export type AggregateFactorItem = {
 
 export type FactorItemAvgAggregateOutputType = {
   id: number | null
-  factorId: number | null
-  productId: number | null
   quantity: number | null
   unitPrice: number | null
   totalPrice: number | null
+  factorId: number | null
+  serviceId: number | null
 }
 
 export type FactorItemSumAggregateOutputType = {
   id: number | null
-  factorId: number | null
-  productId: number | null
   quantity: number | null
   unitPrice: number | null
   totalPrice: number | null
+  factorId: number | null
+  serviceId: number | null
 }
 
 export type FactorItemMinAggregateOutputType = {
   id: number | null
-  factorId: number | null
-  productId: number | null
   description: string | null
   quantity: number | null
   unitPrice: number | null
   totalPrice: number | null
+  serviceName: string | null
+  factorId: number | null
+  serviceId: number | null
 }
 
 export type FactorItemMaxAggregateOutputType = {
   id: number | null
-  factorId: number | null
-  productId: number | null
   description: string | null
   quantity: number | null
   unitPrice: number | null
   totalPrice: number | null
+  serviceName: string | null
+  factorId: number | null
+  serviceId: number | null
 }
 
 export type FactorItemCountAggregateOutputType = {
   id: number
-  factorId: number
-  productId: number
   description: number
   quantity: number
   unitPrice: number
   totalPrice: number
+  serviceName: number
+  factorId: number
+  serviceId: number
   _all: number
 }
 
 
 export type FactorItemAvgAggregateInputType = {
   id?: true
-  factorId?: true
-  productId?: true
   quantity?: true
   unitPrice?: true
   totalPrice?: true
+  factorId?: true
+  serviceId?: true
 }
 
 export type FactorItemSumAggregateInputType = {
   id?: true
-  factorId?: true
-  productId?: true
   quantity?: true
   unitPrice?: true
   totalPrice?: true
+  factorId?: true
+  serviceId?: true
 }
 
 export type FactorItemMinAggregateInputType = {
   id?: true
-  factorId?: true
-  productId?: true
   description?: true
   quantity?: true
   unitPrice?: true
   totalPrice?: true
+  serviceName?: true
+  factorId?: true
+  serviceId?: true
 }
 
 export type FactorItemMaxAggregateInputType = {
   id?: true
-  factorId?: true
-  productId?: true
   description?: true
   quantity?: true
   unitPrice?: true
   totalPrice?: true
+  serviceName?: true
+  factorId?: true
+  serviceId?: true
 }
 
 export type FactorItemCountAggregateInputType = {
   id?: true
-  factorId?: true
-  productId?: true
   description?: true
   quantity?: true
   unitPrice?: true
   totalPrice?: true
+  serviceName?: true
+  factorId?: true
+  serviceId?: true
   _all?: true
 }
 
@@ -213,12 +219,13 @@ export type FactorItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type FactorItemGroupByOutputType = {
   id: number
-  factorId: number
-  productId: number
-  description: string
+  description: string | null
   quantity: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
+  factorId: number
+  serviceId: number
   _count: FactorItemCountAggregateOutputType | null
   _avg: FactorItemAvgAggregateOutputType | null
   _sum: FactorItemSumAggregateOutputType | null
@@ -246,26 +253,28 @@ export type FactorItemWhereInput = {
   OR?: Prisma.FactorItemWhereInput[]
   NOT?: Prisma.FactorItemWhereInput | Prisma.FactorItemWhereInput[]
   id?: Prisma.IntFilter<"FactorItem"> | number
-  factorId?: Prisma.IntFilter<"FactorItem"> | number
-  productId?: Prisma.IntFilter<"FactorItem"> | number
-  description?: Prisma.StringFilter<"FactorItem"> | string
+  description?: Prisma.StringNullableFilter<"FactorItem"> | string | null
   quantity?: Prisma.IntFilter<"FactorItem"> | number
   unitPrice?: Prisma.FloatFilter<"FactorItem"> | number
   totalPrice?: Prisma.FloatFilter<"FactorItem"> | number
+  serviceName?: Prisma.StringFilter<"FactorItem"> | string
+  factorId?: Prisma.IntFilter<"FactorItem"> | number
+  serviceId?: Prisma.IntFilter<"FactorItem"> | number
   factor?: Prisma.XOR<Prisma.FactorScalarRelationFilter, Prisma.FactorWhereInput>
-  product?: Prisma.XOR<Prisma.ProductReferenceScalarRelationFilter, Prisma.ProductReferenceWhereInput>
+  service?: Prisma.XOR<Prisma.ServiceReferenceScalarRelationFilter, Prisma.ServiceReferenceWhereInput>
 }
 
 export type FactorItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  factorId?: Prisma.SortOrder
-  productId?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  serviceName?: Prisma.SortOrder
+  factorId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
   factor?: Prisma.FactorOrderByWithRelationInput
-  product?: Prisma.ProductReferenceOrderByWithRelationInput
+  service?: Prisma.ServiceReferenceOrderByWithRelationInput
   _relevance?: Prisma.FactorItemOrderByRelevanceInput
 }
 
@@ -274,24 +283,26 @@ export type FactorItemWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.FactorItemWhereInput | Prisma.FactorItemWhereInput[]
   OR?: Prisma.FactorItemWhereInput[]
   NOT?: Prisma.FactorItemWhereInput | Prisma.FactorItemWhereInput[]
-  factorId?: Prisma.IntFilter<"FactorItem"> | number
-  productId?: Prisma.IntFilter<"FactorItem"> | number
-  description?: Prisma.StringFilter<"FactorItem"> | string
+  description?: Prisma.StringNullableFilter<"FactorItem"> | string | null
   quantity?: Prisma.IntFilter<"FactorItem"> | number
   unitPrice?: Prisma.FloatFilter<"FactorItem"> | number
   totalPrice?: Prisma.FloatFilter<"FactorItem"> | number
+  serviceName?: Prisma.StringFilter<"FactorItem"> | string
+  factorId?: Prisma.IntFilter<"FactorItem"> | number
+  serviceId?: Prisma.IntFilter<"FactorItem"> | number
   factor?: Prisma.XOR<Prisma.FactorScalarRelationFilter, Prisma.FactorWhereInput>
-  product?: Prisma.XOR<Prisma.ProductReferenceScalarRelationFilter, Prisma.ProductReferenceWhereInput>
+  service?: Prisma.XOR<Prisma.ServiceReferenceScalarRelationFilter, Prisma.ServiceReferenceWhereInput>
 }, "id">
 
 export type FactorItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  factorId?: Prisma.SortOrder
-  productId?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  serviceName?: Prisma.SortOrder
+  factorId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
   _count?: Prisma.FactorItemCountOrderByAggregateInput
   _avg?: Prisma.FactorItemAvgOrderByAggregateInput
   _max?: Prisma.FactorItemMaxOrderByAggregateInput
@@ -304,77 +315,85 @@ export type FactorItemScalarWhereWithAggregatesInput = {
   OR?: Prisma.FactorItemScalarWhereWithAggregatesInput[]
   NOT?: Prisma.FactorItemScalarWhereWithAggregatesInput | Prisma.FactorItemScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"FactorItem"> | number
-  factorId?: Prisma.IntWithAggregatesFilter<"FactorItem"> | number
-  productId?: Prisma.IntWithAggregatesFilter<"FactorItem"> | number
-  description?: Prisma.StringWithAggregatesFilter<"FactorItem"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"FactorItem"> | string | null
   quantity?: Prisma.IntWithAggregatesFilter<"FactorItem"> | number
   unitPrice?: Prisma.FloatWithAggregatesFilter<"FactorItem"> | number
   totalPrice?: Prisma.FloatWithAggregatesFilter<"FactorItem"> | number
+  serviceName?: Prisma.StringWithAggregatesFilter<"FactorItem"> | string
+  factorId?: Prisma.IntWithAggregatesFilter<"FactorItem"> | number
+  serviceId?: Prisma.IntWithAggregatesFilter<"FactorItem"> | number
 }
 
 export type FactorItemCreateInput = {
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
   factor: Prisma.FactorCreateNestedOneWithoutItemsInput
-  product: Prisma.ProductReferenceCreateNestedOneWithoutFactorItemsInput
+  service: Prisma.ServiceReferenceCreateNestedOneWithoutFactorItemsInput
 }
 
 export type FactorItemUncheckedCreateInput = {
   id?: number
-  factorId: number
-  productId: number
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
+  factorId: number
+  serviceId: number
 }
 
 export type FactorItemUpdateInput = {
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
   factor?: Prisma.FactorUpdateOneRequiredWithoutItemsNestedInput
-  product?: Prisma.ProductReferenceUpdateOneRequiredWithoutFactorItemsNestedInput
+  service?: Prisma.ServiceReferenceUpdateOneRequiredWithoutFactorItemsNestedInput
 }
 
 export type FactorItemUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  factorId?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
+  factorId?: Prisma.IntFieldUpdateOperationsInput | number
+  serviceId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type FactorItemCreateManyInput = {
   id?: number
-  factorId: number
-  productId: number
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
+  factorId: number
+  serviceId: number
 }
 
 export type FactorItemUpdateManyMutationInput = {
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type FactorItemUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  factorId?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
+  factorId?: Prisma.IntFieldUpdateOperationsInput | number
+  serviceId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type FactorItemListRelationFilter = {
@@ -395,50 +414,53 @@ export type FactorItemOrderByRelevanceInput = {
 
 export type FactorItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  factorId?: Prisma.SortOrder
-  productId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  serviceName?: Prisma.SortOrder
+  factorId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type FactorItemAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  factorId?: Prisma.SortOrder
-  productId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  factorId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type FactorItemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  factorId?: Prisma.SortOrder
-  productId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  serviceName?: Prisma.SortOrder
+  factorId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type FactorItemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  factorId?: Prisma.SortOrder
-  productId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  serviceName?: Prisma.SortOrder
+  factorId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type FactorItemSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  factorId?: Prisma.SortOrder
-  productId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  factorId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type FactorItemCreateNestedManyWithoutFactorInput = {
@@ -483,63 +505,65 @@ export type FactorItemUncheckedUpdateManyWithoutFactorNestedInput = {
   deleteMany?: Prisma.FactorItemScalarWhereInput | Prisma.FactorItemScalarWhereInput[]
 }
 
-export type FactorItemCreateNestedManyWithoutProductInput = {
-  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutProductInput, Prisma.FactorItemUncheckedCreateWithoutProductInput> | Prisma.FactorItemCreateWithoutProductInput[] | Prisma.FactorItemUncheckedCreateWithoutProductInput[]
-  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutProductInput | Prisma.FactorItemCreateOrConnectWithoutProductInput[]
-  createMany?: Prisma.FactorItemCreateManyProductInputEnvelope
+export type FactorItemCreateNestedManyWithoutServiceInput = {
+  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutServiceInput, Prisma.FactorItemUncheckedCreateWithoutServiceInput> | Prisma.FactorItemCreateWithoutServiceInput[] | Prisma.FactorItemUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutServiceInput | Prisma.FactorItemCreateOrConnectWithoutServiceInput[]
+  createMany?: Prisma.FactorItemCreateManyServiceInputEnvelope
   connect?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
 }
 
-export type FactorItemUncheckedCreateNestedManyWithoutProductInput = {
-  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutProductInput, Prisma.FactorItemUncheckedCreateWithoutProductInput> | Prisma.FactorItemCreateWithoutProductInput[] | Prisma.FactorItemUncheckedCreateWithoutProductInput[]
-  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutProductInput | Prisma.FactorItemCreateOrConnectWithoutProductInput[]
-  createMany?: Prisma.FactorItemCreateManyProductInputEnvelope
+export type FactorItemUncheckedCreateNestedManyWithoutServiceInput = {
+  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutServiceInput, Prisma.FactorItemUncheckedCreateWithoutServiceInput> | Prisma.FactorItemCreateWithoutServiceInput[] | Prisma.FactorItemUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutServiceInput | Prisma.FactorItemCreateOrConnectWithoutServiceInput[]
+  createMany?: Prisma.FactorItemCreateManyServiceInputEnvelope
   connect?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
 }
 
-export type FactorItemUpdateManyWithoutProductNestedInput = {
-  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutProductInput, Prisma.FactorItemUncheckedCreateWithoutProductInput> | Prisma.FactorItemCreateWithoutProductInput[] | Prisma.FactorItemUncheckedCreateWithoutProductInput[]
-  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutProductInput | Prisma.FactorItemCreateOrConnectWithoutProductInput[]
-  upsert?: Prisma.FactorItemUpsertWithWhereUniqueWithoutProductInput | Prisma.FactorItemUpsertWithWhereUniqueWithoutProductInput[]
-  createMany?: Prisma.FactorItemCreateManyProductInputEnvelope
+export type FactorItemUpdateManyWithoutServiceNestedInput = {
+  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutServiceInput, Prisma.FactorItemUncheckedCreateWithoutServiceInput> | Prisma.FactorItemCreateWithoutServiceInput[] | Prisma.FactorItemUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutServiceInput | Prisma.FactorItemCreateOrConnectWithoutServiceInput[]
+  upsert?: Prisma.FactorItemUpsertWithWhereUniqueWithoutServiceInput | Prisma.FactorItemUpsertWithWhereUniqueWithoutServiceInput[]
+  createMany?: Prisma.FactorItemCreateManyServiceInputEnvelope
   set?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
   disconnect?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
   delete?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
   connect?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
-  update?: Prisma.FactorItemUpdateWithWhereUniqueWithoutProductInput | Prisma.FactorItemUpdateWithWhereUniqueWithoutProductInput[]
-  updateMany?: Prisma.FactorItemUpdateManyWithWhereWithoutProductInput | Prisma.FactorItemUpdateManyWithWhereWithoutProductInput[]
+  update?: Prisma.FactorItemUpdateWithWhereUniqueWithoutServiceInput | Prisma.FactorItemUpdateWithWhereUniqueWithoutServiceInput[]
+  updateMany?: Prisma.FactorItemUpdateManyWithWhereWithoutServiceInput | Prisma.FactorItemUpdateManyWithWhereWithoutServiceInput[]
   deleteMany?: Prisma.FactorItemScalarWhereInput | Prisma.FactorItemScalarWhereInput[]
 }
 
-export type FactorItemUncheckedUpdateManyWithoutProductNestedInput = {
-  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutProductInput, Prisma.FactorItemUncheckedCreateWithoutProductInput> | Prisma.FactorItemCreateWithoutProductInput[] | Prisma.FactorItemUncheckedCreateWithoutProductInput[]
-  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutProductInput | Prisma.FactorItemCreateOrConnectWithoutProductInput[]
-  upsert?: Prisma.FactorItemUpsertWithWhereUniqueWithoutProductInput | Prisma.FactorItemUpsertWithWhereUniqueWithoutProductInput[]
-  createMany?: Prisma.FactorItemCreateManyProductInputEnvelope
+export type FactorItemUncheckedUpdateManyWithoutServiceNestedInput = {
+  create?: Prisma.XOR<Prisma.FactorItemCreateWithoutServiceInput, Prisma.FactorItemUncheckedCreateWithoutServiceInput> | Prisma.FactorItemCreateWithoutServiceInput[] | Prisma.FactorItemUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.FactorItemCreateOrConnectWithoutServiceInput | Prisma.FactorItemCreateOrConnectWithoutServiceInput[]
+  upsert?: Prisma.FactorItemUpsertWithWhereUniqueWithoutServiceInput | Prisma.FactorItemUpsertWithWhereUniqueWithoutServiceInput[]
+  createMany?: Prisma.FactorItemCreateManyServiceInputEnvelope
   set?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
   disconnect?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
   delete?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
   connect?: Prisma.FactorItemWhereUniqueInput | Prisma.FactorItemWhereUniqueInput[]
-  update?: Prisma.FactorItemUpdateWithWhereUniqueWithoutProductInput | Prisma.FactorItemUpdateWithWhereUniqueWithoutProductInput[]
-  updateMany?: Prisma.FactorItemUpdateManyWithWhereWithoutProductInput | Prisma.FactorItemUpdateManyWithWhereWithoutProductInput[]
+  update?: Prisma.FactorItemUpdateWithWhereUniqueWithoutServiceInput | Prisma.FactorItemUpdateWithWhereUniqueWithoutServiceInput[]
+  updateMany?: Prisma.FactorItemUpdateManyWithWhereWithoutServiceInput | Prisma.FactorItemUpdateManyWithWhereWithoutServiceInput[]
   deleteMany?: Prisma.FactorItemScalarWhereInput | Prisma.FactorItemScalarWhereInput[]
 }
 
 export type FactorItemCreateWithoutFactorInput = {
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
-  product: Prisma.ProductReferenceCreateNestedOneWithoutFactorItemsInput
+  serviceName: string
+  service: Prisma.ServiceReferenceCreateNestedOneWithoutFactorItemsInput
 }
 
 export type FactorItemUncheckedCreateWithoutFactorInput = {
   id?: number
-  productId: number
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
+  serviceId: number
 }
 
 export type FactorItemCreateOrConnectWithoutFactorInput = {
@@ -573,173 +597,187 @@ export type FactorItemScalarWhereInput = {
   OR?: Prisma.FactorItemScalarWhereInput[]
   NOT?: Prisma.FactorItemScalarWhereInput | Prisma.FactorItemScalarWhereInput[]
   id?: Prisma.IntFilter<"FactorItem"> | number
-  factorId?: Prisma.IntFilter<"FactorItem"> | number
-  productId?: Prisma.IntFilter<"FactorItem"> | number
-  description?: Prisma.StringFilter<"FactorItem"> | string
+  description?: Prisma.StringNullableFilter<"FactorItem"> | string | null
   quantity?: Prisma.IntFilter<"FactorItem"> | number
   unitPrice?: Prisma.FloatFilter<"FactorItem"> | number
   totalPrice?: Prisma.FloatFilter<"FactorItem"> | number
+  serviceName?: Prisma.StringFilter<"FactorItem"> | string
+  factorId?: Prisma.IntFilter<"FactorItem"> | number
+  serviceId?: Prisma.IntFilter<"FactorItem"> | number
 }
 
-export type FactorItemCreateWithoutProductInput = {
-  description: string
+export type FactorItemCreateWithoutServiceInput = {
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
   factor: Prisma.FactorCreateNestedOneWithoutItemsInput
 }
 
-export type FactorItemUncheckedCreateWithoutProductInput = {
+export type FactorItemUncheckedCreateWithoutServiceInput = {
   id?: number
-  factorId: number
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
+  factorId: number
 }
 
-export type FactorItemCreateOrConnectWithoutProductInput = {
+export type FactorItemCreateOrConnectWithoutServiceInput = {
   where: Prisma.FactorItemWhereUniqueInput
-  create: Prisma.XOR<Prisma.FactorItemCreateWithoutProductInput, Prisma.FactorItemUncheckedCreateWithoutProductInput>
+  create: Prisma.XOR<Prisma.FactorItemCreateWithoutServiceInput, Prisma.FactorItemUncheckedCreateWithoutServiceInput>
 }
 
-export type FactorItemCreateManyProductInputEnvelope = {
-  data: Prisma.FactorItemCreateManyProductInput | Prisma.FactorItemCreateManyProductInput[]
+export type FactorItemCreateManyServiceInputEnvelope = {
+  data: Prisma.FactorItemCreateManyServiceInput | Prisma.FactorItemCreateManyServiceInput[]
   skipDuplicates?: boolean
 }
 
-export type FactorItemUpsertWithWhereUniqueWithoutProductInput = {
+export type FactorItemUpsertWithWhereUniqueWithoutServiceInput = {
   where: Prisma.FactorItemWhereUniqueInput
-  update: Prisma.XOR<Prisma.FactorItemUpdateWithoutProductInput, Prisma.FactorItemUncheckedUpdateWithoutProductInput>
-  create: Prisma.XOR<Prisma.FactorItemCreateWithoutProductInput, Prisma.FactorItemUncheckedCreateWithoutProductInput>
+  update: Prisma.XOR<Prisma.FactorItemUpdateWithoutServiceInput, Prisma.FactorItemUncheckedUpdateWithoutServiceInput>
+  create: Prisma.XOR<Prisma.FactorItemCreateWithoutServiceInput, Prisma.FactorItemUncheckedCreateWithoutServiceInput>
 }
 
-export type FactorItemUpdateWithWhereUniqueWithoutProductInput = {
+export type FactorItemUpdateWithWhereUniqueWithoutServiceInput = {
   where: Prisma.FactorItemWhereUniqueInput
-  data: Prisma.XOR<Prisma.FactorItemUpdateWithoutProductInput, Prisma.FactorItemUncheckedUpdateWithoutProductInput>
+  data: Prisma.XOR<Prisma.FactorItemUpdateWithoutServiceInput, Prisma.FactorItemUncheckedUpdateWithoutServiceInput>
 }
 
-export type FactorItemUpdateManyWithWhereWithoutProductInput = {
+export type FactorItemUpdateManyWithWhereWithoutServiceInput = {
   where: Prisma.FactorItemScalarWhereInput
-  data: Prisma.XOR<Prisma.FactorItemUpdateManyMutationInput, Prisma.FactorItemUncheckedUpdateManyWithoutProductInput>
+  data: Prisma.XOR<Prisma.FactorItemUpdateManyMutationInput, Prisma.FactorItemUncheckedUpdateManyWithoutServiceInput>
 }
 
 export type FactorItemCreateManyFactorInput = {
   id?: number
-  productId: number
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
+  serviceId: number
 }
 
 export type FactorItemUpdateWithoutFactorInput = {
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
-  product?: Prisma.ProductReferenceUpdateOneRequiredWithoutFactorItemsNestedInput
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
+  service?: Prisma.ServiceReferenceUpdateOneRequiredWithoutFactorItemsNestedInput
 }
 
 export type FactorItemUncheckedUpdateWithoutFactorInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type FactorItemUncheckedUpdateManyWithoutFactorInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type FactorItemCreateManyProductInput = {
+export type FactorItemCreateManyServiceInput = {
   id?: number
-  factorId: number
-  description: string
+  description?: string | null
   quantity?: number
   unitPrice: number
   totalPrice: number
+  serviceName: string
+  factorId: number
 }
 
-export type FactorItemUpdateWithoutProductInput = {
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+export type FactorItemUpdateWithoutServiceInput = {
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
   factor?: Prisma.FactorUpdateOneRequiredWithoutItemsNestedInput
 }
 
-export type FactorItemUncheckedUpdateWithoutProductInput = {
+export type FactorItemUncheckedUpdateWithoutServiceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  factorId?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
+  factorId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type FactorItemUncheckedUpdateManyWithoutProductInput = {
+export type FactorItemUncheckedUpdateManyWithoutServiceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  factorId?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   unitPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceName?: Prisma.StringFieldUpdateOperationsInput | string
+  factorId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
 
 export type FactorItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  factorId?: boolean
-  productId?: boolean
   description?: boolean
   quantity?: boolean
   unitPrice?: boolean
   totalPrice?: boolean
+  serviceName?: boolean
+  factorId?: boolean
+  serviceId?: boolean
   factor?: boolean | Prisma.FactorDefaultArgs<ExtArgs>
-  product?: boolean | Prisma.ProductReferenceDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.ServiceReferenceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["factorItem"]>
 
 
 
 export type FactorItemSelectScalar = {
   id?: boolean
-  factorId?: boolean
-  productId?: boolean
   description?: boolean
   quantity?: boolean
   unitPrice?: boolean
   totalPrice?: boolean
+  serviceName?: boolean
+  factorId?: boolean
+  serviceId?: boolean
 }
 
-export type FactorItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "factorId" | "productId" | "description" | "quantity" | "unitPrice" | "totalPrice", ExtArgs["result"]["factorItem"]>
+export type FactorItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "quantity" | "unitPrice" | "totalPrice" | "serviceName" | "factorId" | "serviceId", ExtArgs["result"]["factorItem"]>
 export type FactorItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   factor?: boolean | Prisma.FactorDefaultArgs<ExtArgs>
-  product?: boolean | Prisma.ProductReferenceDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.ServiceReferenceDefaultArgs<ExtArgs>
 }
 
 export type $FactorItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "FactorItem"
   objects: {
     factor: Prisma.$FactorPayload<ExtArgs>
-    product: Prisma.$ProductReferencePayload<ExtArgs>
+    service: Prisma.$ServiceReferencePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    factorId: number
-    productId: number
-    description: string
+    description: string | null
     quantity: number
     unitPrice: number
     totalPrice: number
+    serviceName: string
+    factorId: number
+    serviceId: number
   }, ExtArgs["result"]["factorItem"]>
   composites: {}
 }
@@ -1081,7 +1119,7 @@ readonly fields: FactorItemFieldRefs;
 export interface Prisma__FactorItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   factor<T extends Prisma.FactorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FactorDefaultArgs<ExtArgs>>): Prisma.Prisma__FactorClient<runtime.Types.Result.GetResult<Prisma.$FactorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  product<T extends Prisma.ProductReferenceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductReferenceDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductReferenceClient<runtime.Types.Result.GetResult<Prisma.$ProductReferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  service<T extends Prisma.ServiceReferenceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ServiceReferenceDefaultArgs<ExtArgs>>): Prisma.Prisma__ServiceReferenceClient<runtime.Types.Result.GetResult<Prisma.$ServiceReferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1112,12 +1150,13 @@ export interface Prisma__FactorItemClient<T, Null = never, ExtArgs extends runti
  */
 export interface FactorItemFieldRefs {
   readonly id: Prisma.FieldRef<"FactorItem", 'Int'>
-  readonly factorId: Prisma.FieldRef<"FactorItem", 'Int'>
-  readonly productId: Prisma.FieldRef<"FactorItem", 'Int'>
   readonly description: Prisma.FieldRef<"FactorItem", 'String'>
   readonly quantity: Prisma.FieldRef<"FactorItem", 'Int'>
   readonly unitPrice: Prisma.FieldRef<"FactorItem", 'Float'>
   readonly totalPrice: Prisma.FieldRef<"FactorItem", 'Float'>
+  readonly serviceName: Prisma.FieldRef<"FactorItem", 'String'>
+  readonly factorId: Prisma.FieldRef<"FactorItem", 'Int'>
+  readonly serviceId: Prisma.FieldRef<"FactorItem", 'Int'>
 }
     
 
