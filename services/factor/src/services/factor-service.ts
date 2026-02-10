@@ -2,6 +2,8 @@ import { FactorItem } from "../infrastructure/database/generated/prisma/client.j
 import { prisma } from "../infrastructure/database/prisma-provider.js";
 import { GetManyQuery } from "../schemas/common/get-many-request.schema.js";
 import { CreateFactor } from "../schemas/factor/create-factor-schema.js";
+import { UpdateFactor } from "../schemas/factor/update-factor-schema.js";
+import { Service } from "../types/event-types/service-event-types.js";
 import { throwNotFound } from "../utils/app-error.js";
 import { generateFactorNumber } from "../utils/app-utils.js";
 import { buildFindManyArgs } from "../utils/prisma-util.js";
@@ -19,41 +21,20 @@ function getById(id: number) {
 async function create(payload: CreateFactor) {
   const { customerId, items, description } = payload;
 
-  // 1. Get all service IDs to fetch them in one go (prevents N+1 queries)
+  // Extract service IDs and validate
   const serviceIds = items.map((item) => item.serviceId);
-  const services = await serviceEntityService.getManyRawParams({ where: { id: { in: serviceIds } } });
+  const serviceMap = await validateAndMapServices(serviceIds);
 
-  // 2. Create a map for easy lookup (id -> service)
-  const serviceMap = new Map(services.map((s) => [s.id, s]));
+  // Calculate items and total price
+  const { itemsData: factorItemsData, totalPrice: factorTotalPrice } = calculateFactorItems(
+    items,
+    serviceMap,
+  );
 
-  // 3. Prepare data in memory
-  const factorNumber = generateFactorNumber();
-  let factorTotalPrice = 0;
-
-  const factorItemsData = items.map((item) => {
-    const service = serviceMap.get(item.serviceId);
-
-    if (!service) {
-      throw new Error(`Service with ID ${item.serviceId} not found`);
-    }
-
-    const itemTotal = service.price * item.quantity;
-    factorTotalPrice += itemTotal;
-
-    return {
-      quantity: item.quantity,
-      description: item.description,
-      serviceId: item.serviceId,
-      serviceName: service.name,
-      unitPrice: service.price,
-      totalPrice: item.quantity * service.price,
-    } as FactorItem;
-  });
-
-  // 4. Create Factor and Items in a single transaction
+  // Create Factor and Items in a single transaction
   const factor = await prisma.factor.create({
     data: {
-      factorNumber,
+      factorNumber: generateFactorNumber(),
       customerId,
       description,
       totalPrice: factorTotalPrice,
@@ -64,16 +45,118 @@ async function create(payload: CreateFactor) {
   return factor;
 }
 
-async function update(id: number, payload: UpdateVehicle) {
-  const factor = await prisma.factor.findUnique({ where: { id }, select: { id: true } });
-  if (!factor) throwNotFound("id");
-  await prisma.factor.update({ where: { id }, data: payload });
+async function update(id: number, payload: UpdateFactor) {
+  const { customerId, items, description } = payload;
+
+  // Check if factor exists
+  const existingFactor = await prisma.factor.findUnique({ where: { id }, include: { items: true } });
+
+  if (!existingFactor) {
+    throwNotFound("id", id);
+  }
+
+  // If items are being updated, process them
+  if (items && items.length > 0) {
+    // Extract service IDs and validate
+    const serviceIds = items.map((item) => item.serviceId);
+    const serviceMap = await validateAndMapServices(serviceIds);
+
+    // Calculate new items and total price
+    const { itemsData: factorItemsData, totalPrice: factorTotalPrice } = calculateFactorItems(
+      items,
+      serviceMap,
+    );
+
+    // Update factor with new items in a transaction
+    const result = await prisma.$transaction(async (tx) => {
+      // Delete all existing items
+      await tx.factorItem.deleteMany({ where: { factorId: id } });
+
+      // Update the factor and create new items
+      const updatedFactor = await tx.factor.update({
+        where: { id },
+        data: {
+          customerId: customerId ?? existingFactor!.customerId,
+          description: description ?? existingFactor!.description,
+          totalPrice: factorTotalPrice,
+          items: { createMany: { data: factorItemsData } },
+        },
+        include: { items: true },
+      });
+
+      return updatedFactor;
+    });
+
+    return result;
+  } else {
+    // If no items provided, just update basic factor info
+    const updateData: any = {};
+
+    if (customerId !== undefined) {
+      updateData.customerId = customerId;
+    }
+
+    if (description !== undefined) {
+      updateData.description = description;
+    }
+
+    const updatedFactor = await prisma.factor.update({
+      where: { id },
+      data: updateData,
+      include: { items: true },
+    });
+
+    return updatedFactor;
+  }
 }
 
 async function deleteById(id: number) {
   const factor = await prisma.factor.findUnique({ where: { id }, select: { id: true } });
-  if (!factor) throwNotFound("id");
+  if (!factor) throwNotFound("id", id);
   await prisma.factor.delete({ where: { id } });
 }
 
 export const factorService = { getMany, getById, create, update, deleteById };
+
+// Shared helper functions--------------------------------------------------------------
+async function validateAndMapServices(serviceIds: number[]): Promise<Map<number, Service>> {
+  const services = await serviceEntityService.getManyRawParams({ where: { id: { in: serviceIds } } });
+
+  if (services.length !== serviceIds.length) {
+    // Find missing service IDs
+    const foundIds = new Set(services.map((s) => s.id));
+    const missingIds = serviceIds.filter((id) => !foundIds.has(id));
+    throw new Error(`Services with IDs ${missingIds.join(", ")} not found`);
+  }
+
+  return new Map<number, Service>(services.map((s) => [s.id, s]));
+}
+
+function calculateFactorItems(
+  items: Array<{ serviceId: number; quantity: number; description: string | null }>,
+  serviceMap: Map<number, Service>,
+): { itemsData: FactorItem[]; totalPrice: number } {
+  let factorTotalPrice = 0;
+
+  const factorItemsData = items.map((item) => {
+    const service = serviceMap.get(item.serviceId);
+
+    if (!service) {
+      throw new Error(`Service with ID ${item.serviceId} not found`);
+    }
+
+    const itemTotalPrice = service.price * item.quantity;
+    factorTotalPrice += itemTotalPrice;
+
+    return {
+      quantity: item.quantity,
+      description: item.description,
+      serviceId: item.serviceId,
+      serviceName: service.name,
+      unitPrice: service.price,
+      totalPrice: itemTotalPrice,
+    } as FactorItem;
+  });
+
+  return { itemsData: factorItemsData, totalPrice: factorTotalPrice };
+}

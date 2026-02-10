@@ -1,7 +1,7 @@
 import { toServiceDto } from "../dto/serivce/service-mapper.js";
 import { ServiceReferenceFindManyArgs } from "../infrastructure/database/generated/prisma/models.js";
 import { prisma } from "../infrastructure/database/prisma-provider.js";
-import { CreateService, UpdateService } from "../types/reference-types/service-types.js";
+import { CreateService, UpdateService } from "../types/event-types/service-event-types.js";
 import { throwNotFound } from "../utils/app-error.js";
 
 async function getById(id: number) {

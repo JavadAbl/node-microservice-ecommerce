@@ -1,5 +1,5 @@
 import { prisma } from "../infrastructure/database/prisma-provider.js";
-import { CreateCustomer, UpdateCustomer } from "../types/reference-types/customer-types.js";
+import { CreateCustomer, UpdateCustomer } from "../types/event-types/customer-event-types.js";
 import { throwNotFound } from "../utils/app-error.js";
 
 async function createCustomer(payload: CreateCustomer) {

@@ -6,4 +6,4 @@ export const CreateFactorItemSchema = z.object({
   serviceId: z.number(),
 });
 
-export type CreateFactorItemDto = z.infer<typeof CreateFactorItemSchema>;
+export type CreateFactorItem = z.infer<typeof CreateFactorItemSchema>;
