@@ -1,6 +1,6 @@
-import { toServiceDto } from "../dto/serivce/service-mapper.js";
 import { ServiceReferenceFindManyArgs } from "../infrastructure/database/generated/prisma/models.js";
 import { prisma } from "../infrastructure/database/prisma-provider.js";
+import { toServiceDto } from "../types/dto/serivce/service-dto.js";
 import { CreateService, UpdateService } from "../types/event-types/service-event-types.js";
 import { throwNotFound } from "../utils/app-error.js";
 

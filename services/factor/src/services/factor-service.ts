@@ -51,9 +51,7 @@ async function update(id: number, payload: UpdateFactor) {
   // Check if factor exists
   const existingFactor = await prisma.factor.findUnique({ where: { id }, include: { items: true } });
 
-  if (!existingFactor) {
-    throwNotFound("id", id);
-  }
+  if (!existingFactor) throwNotFound("id", id);
 
   // If items are being updated, process them
   if (items && items.length > 0) {
