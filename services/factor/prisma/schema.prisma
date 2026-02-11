@@ -34,7 +34,6 @@ model FactorItem {
   quantity    Int     @default(1)
   unitPrice   Float
   totalPrice  Float
-  serviceName String
 
   factor   Factor @relation(fields: [factorId], references: [id])
   factorId Int

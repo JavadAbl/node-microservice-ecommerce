@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { FactorStatus } from "../../infrastructure/database/generated/prisma/enums.js";
-import { CreateFactorItemSchema } from "../factor-item/create-factor-item-schema.js";
+import { CreateFactorItemSchema } from "../factor-item/create-factorItem-schema.js";
 
 export const CreateFactorSchema = z.object({
   description: z.string().nullable(),

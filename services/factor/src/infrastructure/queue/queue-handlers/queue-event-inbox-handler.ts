@@ -14,12 +14,12 @@ export async function queueInboxEventHandler(
       where: { id },
       data: { status: "Handled", handledAt: new Date() },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     await prisma.inboxEvent.update({
       select: { id: true },
       where: { id },
-      data: { status: "Error", error: error?.message },
+      data: { status: "Error", error: error.message },
     });
   }
 }

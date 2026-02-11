@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { z } from "zod";
 import { Prisma } from "../../infrastructure/database/generated/prisma/client.js";
 
 /* export type GetManyQuery = {
@@ -18,10 +18,10 @@ export type GetManyQuery<T extends keyof Prisma.TypeMap["model"]> = {
   search?: string;
 };
 
-export const GetManyQuerySchema = Type.Object({
-  page: Type.Optional(Type.String()),
-  limit: Type.Optional(Type.String()),
-  sortBy: Type.Optional(Type.String()),
-  sortOrder: Type.Optional(Type.Union([Type.Literal("asc"), Type.Literal("desc")])),
-  search: Type.Optional(Type.String()),
+export const GetManyQuerySchema = z.object({
+  page: z.string().optional(),
+  limit: z.string().optional(),
+  sortBy: z.string().optional(),
+  sortOrder: z.enum(["asc", "desc"]).optional(),
+  search: z.string().optional(),
 });

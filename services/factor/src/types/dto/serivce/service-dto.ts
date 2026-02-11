@@ -1,5 +1,4 @@
-import { ServiceReference } from "../../infrastructure/database/generated/prisma/client.js";
-import { ServiceDto } from "./service-dto.js";
+import { ServiceReference } from "../../../infrastructure/database/generated/prisma/client.js";
 
 export type ServiceDto = { id: number; name: string; price: number };
 

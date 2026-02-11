@@ -1,21 +1,28 @@
+import { StatusCodes } from "http-status-codes";
 import { FactorItem } from "../infrastructure/database/generated/prisma/client.js";
 import { prisma } from "../infrastructure/database/prisma-provider.js";
 import { GetManyQuery } from "../schemas/common/get-many-request.schema.js";
 import { CreateFactor } from "../schemas/factor/create-factor-schema.js";
 import { UpdateFactor } from "../schemas/factor/update-factor-schema.js";
+import { FactorDto } from "../types/dto/factor/factor-dto.js";
 import { Service } from "../types/event-types/service-event-types.js";
-import { throwNotFound } from "../utils/app-error.js";
+import { AppError, NotFoundError } from "../utils/app-error.js";
 import { generateFactorNumber } from "../utils/app-utils.js";
 import { buildFindManyArgs } from "../utils/prisma-util.js";
-import { serviceEntityService } from "./serviceEntity-service.js";
+import { serviceEntityService } from "./service-reference-service.js";
 
 function getMany(query: GetManyQuery<"Factor">) {
   const predicate = buildFindManyArgs(query, { searchableFields: ["factorNumber"] });
   return prisma.factor.findMany(predicate);
 }
 
-function getById(id: number) {
-  return prisma.factor.findUnique({ where: { id } });
+async function getById(id: number): Promise<FactorDto> {
+  const factor = await prisma.factor.findUnique({
+    where: { id },
+    include: { items: { omit: { factorId: true }, include: { service: { select: { name: true } } } } },
+  });
+  if (!factor) throw new NotFoundError("Factor", "id", id);
+  return factor;
 }
 
 async function create(payload: CreateFactor) {
@@ -51,7 +58,7 @@ async function update(id: number, payload: UpdateFactor) {
   // Check if factor exists
   const existingFactor = await prisma.factor.findUnique({ where: { id }, include: { items: true } });
 
-  if (!existingFactor) throwNotFound("id", id);
+  if (!existingFactor) throw new NotFoundError("Factor", "id", id);
 
   // If items are being updated, process them
   if (items && items.length > 0) {
@@ -74,8 +81,8 @@ async function update(id: number, payload: UpdateFactor) {
       const updatedFactor = await tx.factor.update({
         where: { id },
         data: {
-          customerId: customerId ?? existingFactor!.customerId,
-          description: description ?? existingFactor!.description,
+          customerId: customerId ?? existingFactor.customerId,
+          description: description ?? existingFactor.description,
           totalPrice: factorTotalPrice,
           items: { createMany: { data: factorItemsData } },
         },
@@ -110,7 +117,7 @@ async function update(id: number, payload: UpdateFactor) {
 
 async function deleteById(id: number) {
   const factor = await prisma.factor.findUnique({ where: { id }, select: { id: true } });
-  if (!factor) throwNotFound("id", id);
+  if (!factor) throw new NotFoundError("Factor", "id", id);
   await prisma.factor.delete({ where: { id } });
 }
 
@@ -124,7 +131,7 @@ async function validateAndMapServices(serviceIds: number[]): Promise<Map<number,
     // Find missing service IDs
     const foundIds = new Set(services.map((s) => s.id));
     const missingIds = serviceIds.filter((id) => !foundIds.has(id));
-    throw new Error(`Services with IDs ${missingIds.join(", ")} not found`);
+    throw new AppError(`Services with IDs ${missingIds.join(", ")} not found`, StatusCodes.NOT_FOUND);
   }
 
   return new Map<number, Service>(services.map((s) => [s.id, s]));
@@ -139,9 +146,7 @@ function calculateFactorItems(
   const factorItemsData = items.map((item) => {
     const service = serviceMap.get(item.serviceId);
 
-    if (!service) {
-      throw new Error(`Service with ID ${item.serviceId} not found`);
-    }
+    if (!service) throw new NotFoundError("Service", "id", item.serviceId);
 
     const itemTotalPrice = service.price * item.quantity;
     factorTotalPrice += itemTotalPrice;
@@ -150,7 +155,6 @@ function calculateFactorItems(
       quantity: item.quantity,
       description: item.description,
       serviceId: item.serviceId,
-      serviceName: service.name,
       unitPrice: service.price,
       totalPrice: itemTotalPrice,
     } as FactorItem;

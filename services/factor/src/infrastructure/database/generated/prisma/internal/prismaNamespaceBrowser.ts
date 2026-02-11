@@ -97,7 +97,6 @@ export const FactorItemScalarFieldEnum = {
   quantity: 'quantity',
   unitPrice: 'unitPrice',
   totalPrice: 'totalPrice',
-  serviceName: 'serviceName',
   factorId: 'factorId',
   serviceId: 'serviceId'
 } as const
@@ -202,8 +201,7 @@ export type FactorOrderByRelevanceFieldEnum = (typeof FactorOrderByRelevanceFiel
 
 
 export const FactorItemOrderByRelevanceFieldEnum = {
-  description: 'description',
-  serviceName: 'serviceName'
+  description: 'description'
 } as const
 
 export type FactorItemOrderByRelevanceFieldEnum = (typeof FactorItemOrderByRelevanceFieldEnum)[keyof typeof FactorItemOrderByRelevanceFieldEnum]

@@ -1,6 +1,6 @@
 import Queue from "bee-queue";
 import { InboxEvent } from "../../database/generated/prisma/client.js";
-import { customerService } from "../../../services/customer-service.js";
+import { customerService } from "../../../services/customer-reference-service.js";
 import { queueInboxEventHandler } from "./queue-event-inbox-handler.js";
 
 export async function queueCustomerCreateHandler(job: Queue.Job<InboxEvent>) {

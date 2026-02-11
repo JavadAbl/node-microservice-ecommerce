@@ -1,6 +1,7 @@
 import { config, isDev } from "./infrastructure/config.js";
 import express from "express";
 import { factorRoutes } from "./routes/factor-route.js";
+import { paymentRoutes } from "./routes/payment-route.js";
 import { useErrorHandler } from "./middlewares/use-error-handler.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -13,6 +14,7 @@ export async function startHttpServer() {
 
   //Register Routes
   app.use("/factors", factorRoutes);
+  app.use("/payments", paymentRoutes);
 
   // catch 404
   app.use((req, res, next) => {

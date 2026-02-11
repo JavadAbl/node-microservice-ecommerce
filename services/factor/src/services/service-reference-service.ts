@@ -2,17 +2,17 @@ import { ServiceReferenceFindManyArgs } from "../infrastructure/database/generat
 import { prisma } from "../infrastructure/database/prisma-provider.js";
 import { toServiceDto } from "../types/dto/serivce/service-dto.js";
 import { CreateService, UpdateService } from "../types/event-types/service-event-types.js";
-import { throwNotFound } from "../utils/app-error.js";
+import { NotFoundError } from "../utils/app-error.js";
 
 async function getById(id: number) {
   const service = await prisma.serviceReference.findUnique({ where: { id } });
-  if (!service) throwNotFound("Service", id);
+  if (!service) throw new NotFoundError("Service", "id", id);
   return toServiceDto(service!);
 }
 
 async function checkExistsById(id: number) {
   const service = await prisma.serviceReference.findUnique({ select: { id: true }, where: { id } });
-  if (!service) throwNotFound("Service", id);
+  if (!service) throw new NotFoundError("Service", "id", id);
 }
 
 async function createService(payload: CreateService) {
@@ -27,7 +27,7 @@ async function updateService(payload: UpdateService) {
   const { id, ...updataData } = payload;
 
   const service = await prisma.serviceReference.findUnique({ select: { id: true }, where: { id } });
-  if (!service) throwNotFound("Service", id);
+  if (!service) throw new NotFoundError("Service", "id", id);
 
   return await prisma.serviceReference.update({ select: { id: true }, where: { id }, data: updataData });
 }
