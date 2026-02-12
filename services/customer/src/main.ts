@@ -1,24 +1,20 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import { AllExceptionsFilter } from './common/error-handler/error-handler.filter';
+import { validateConfig } from './common/config/app.config';
 
 async function bootstrap() {
-  // Initialize with Fastify adapter + custom options
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter({}),
-  );
+  validateConfig();
 
-  // NestJS-agnostic config (works on any platform)
-  app.enableShutdownHooks();
-  app.setGlobalPrefix('api');
+  const app = await NestFactory.create(AppModule);
 
-  // Listen on all interfaces (critical for Docker/cloud)
-  await app.listen(3000, '0.0.0.0');
-  console.log(`🚀 Application running at ${await app.getUrl()}`);
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+  // app.setGlobalPrefix('/api/v1');
+
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
+
+  await app.listen(process.env.HTTP_PORT ?? 3000);
 }
-
 bootstrap();
