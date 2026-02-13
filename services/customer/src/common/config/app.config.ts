@@ -1,9 +1,7 @@
 import { registerAs } from '@nestjs/config';
-import dotenv from 'dotenv';
 import { nodeEnvs } from './config.type';
-dotenv.config();
 
-export const config = {
+export const config = () => ({
   NODE_ENV: process.env.NODE_ENV || 'development',
   HTTP_PORT: parseInt(process.env.HTTP_PORT || '0'),
   HTTP_HOST: process.env.HTTP_HOST!,
@@ -16,17 +14,8 @@ export const config = {
   REDIS_HOST: process.env.REDIS_HOST!,
   REDIS_PORT: parseInt(process.env.REDIS_PORT || '0'),
   REDIS_PASSWORD: process.env.REDIS_PASSWORD!,
-};
+});
 
-export function validateConfig() {
-  for (const [key, value] of Object.entries(config)) {
-    if (!value) {
-      console.error(`❌ Error: Environment variable "${key}" is missing or empty.`);
-      process.exit(1);
-    }
-  }
-}
-
-export const appConfig = registerAs('app', () => config);
+export const appConfig = registerAs('app', config);
 export const env = process.env.NODE_ENV;
 export const isDev = env === nodeEnvs.Development;

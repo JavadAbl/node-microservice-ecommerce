@@ -22,4 +22,7 @@ model Customers {
   mobile    String @unique()
   city      String
   address   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -1,7 +1,7 @@
-import { ErrorHandlerFilter } from './error-handler.filter';
+import { AllExceptionsFilter } from './error-handler.filter';
 
-describe('ErrorHandlerFilter', () => {
+describe('AllExceptionsFilter', () => {
   it('should be defined', () => {
-    expect(new ErrorHandlerFilter()).toBeDefined();
+    expect(new AllExceptionsFilter()).toBeDefined();
   });
 });

@@ -8,6 +8,7 @@ import { PrismaClient } from 'src/generated/prisma/client';
 export class PrismaService extends PrismaClient {
   constructor(configService: ConfigService<ConfigType>) {
     const config = configService.getOrThrow<AppConfig>('app');
+    console.log(config);
 
     const adapter = new PrismaMariaDb({
       ssl: false,
