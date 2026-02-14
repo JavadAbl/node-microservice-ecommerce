@@ -39,28 +39,28 @@ const services = [
 
 export function Services() {
   return (
-    <section id="services" className="py-20 md:py-28 bg-gray-50">
+    <section id="services" className="py-20 md:py-28 bg-muted">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <Badge variant="secondary" className="mb-4">Our Services</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Comprehensive Car Repair Services
           </h2>
-          <p className="text-lg text-gray-600">
-            From routine maintenance to complex repairs, our certified technicians 
+          <p className="text-lg text-muted-foreground">
+            From routine maintenance to complex repairs, our certified technicians
             handle all your automotive needs with expertise and care.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-sm bg-white hover:-translate-y-1">
+            <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-sm bg-background hover:-translate-y-1">
               <CardContent className="p-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-orange-50 text-orange-500 mb-5 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/5 text-primary mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <service.icon className="h-7 w-7" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">{service.title}</h3>
+                <p className="text-muted-foreground">{service.description}</p>
               </CardContent>
             </Card>
           ))}

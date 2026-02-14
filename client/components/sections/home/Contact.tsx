@@ -9,46 +9,46 @@ import { Phone, Mail } from "lucide-react"
 
 export function Contact() {
   return (
-    <section id="contact" className="py-20 md:py-28 bg-white">
+    <section id="contact" className="py-20 md:py-28 bg-background">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12">
           {/* CTA Card */}
-          <div className="rounded-3xl bg-gradient-to-br from-orange-500 to-orange-600 p-8 md:p-12 text-white">
+          <div className="rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-8 md:p-12 text-primary-foreground">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ready to Get Your Car Serviced?
             </h2>
-            <p className="text-lg text-orange-100 mb-8">
-              Book your appointment today and experience the AutoCare Pro difference. 
+            <p className="text-lg text-primary-foreground/20 mb-8">
+              Book your appointment today and experience the AutoCare Pro difference.
               Free pickup and delivery included!
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100 text-lg px-8">
+              <Button size="lg" className="bg-background text-primary hover:bg-muted text-lg px-8">
                 Book Now
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8">
+              <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 text-lg px-8">
                 <Phone className="mr-2 h-5 w-5" />
                 Call Us
               </Button>
             </div>
 
-            <Separator className="my-8 bg-white/20" />
+            <Separator className="my-8 bg-primary-foreground/20" />
 
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-foreground/20">
                   <Phone className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-orange-100">24/7 Support</p>
+                  <p className="text-sm text-primary-foreground/20">24/7 Support</p>
                   <p className="font-semibold">(555) 123-4567</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-foreground/20">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-orange-100">Email Us</p>
+                  <p className="text-sm text-primary-foreground/20">Email Us</p>
                   <p className="font-semibold">hello@autocarepro.com</p>
                 </div>
               </div>
@@ -58,43 +58,43 @@ export function Contact() {
           {/* Contact Form */}
           <div>
             <Badge variant="secondary" className="mb-4">Get In Touch</Badge>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
               Send Us a Message
             </h2>
             <form className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                  <label htmlFor="name" className="text-sm font-medium text-foreground mb-1.5 block">
                     Full Name
                   </label>
                   <Input id="name" placeholder="John Doe" className="h-12" />
                 </div>
                 <div>
-                  <label htmlFor="email" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                  <label htmlFor="email" className="text-sm font-medium text-foreground mb-1.5 block">
                     Email Address
                   </label>
                   <Input id="email" type="email" placeholder="john@example.com" className="h-12" />
                 </div>
               </div>
               <div>
-                <label htmlFor="phone" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                <label htmlFor="phone" className="text-sm font-medium text-foreground mb-1.5 block">
                   Phone Number
                 </label>
                 <Input id="phone" type="tel" placeholder="(555) 000-0000" className="h-12" />
               </div>
               <div>
-                <label htmlFor="service" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                <label htmlFor="service" className="text-sm font-medium text-foreground mb-1.5 block">
                   Service Needed
                 </label>
                 <Input id="service" placeholder="e.g., Oil Change, Brake Service" className="h-12" />
               </div>
               <div>
-                <label htmlFor="message" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                <label htmlFor="message" className="text-sm font-medium text-foreground mb-1.5 block">
                   Message
                 </label>
                 <Textarea id="message" placeholder="Tell us about your car and the issue you're experiencing..." className="min-h-[120px]" />
               </div>
-              <Button size="lg" className="w-full bg-orange-500 hover:bg-orange-600 text-white h-12">
+              <Button size="lg" className="w-full bg-primary hover:bg-primary/80 text-primary-foreground h-12">
                 Send Message
               </Button>
             </form>
