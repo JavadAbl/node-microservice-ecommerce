@@ -12,7 +12,7 @@ export function Hero() {
       <div className="container mx-auto px-4 py-16 md:py-18">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <Badge>#1 Rated Auto Repair Service</Badge>
+            <Badge className="">#1 Rated Auto Repair Service</Badge>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Expert Car Repair <br />
