@@ -1,13 +1,11 @@
-import {
-  Contact,
-  Footer,
-  Hero,
-  HowItWorks,
-  Navbar,
-  Services,
-  Testimonials,
-  WhyChooseUs,
-} from "@/components/sections/home";
+import { Contact } from "./ui/Contact";
+import { Footer } from "./ui/Footer";
+import { Hero } from "./ui/Hero";
+import { HowItWorks } from "./ui/HowItWorks";
+import { Navbar } from "./ui/Navbar";
+import { Services } from "./ui/Services";
+import { Testimonials } from "./ui/Testimonials";
+import { WhyChooseUs } from "./ui/WhyChooseUs";
 
 export default function Home() {
   return (

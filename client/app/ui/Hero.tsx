@@ -11,7 +11,7 @@ export function Hero() {
       id="home"
       className="relative overflow-hidden bg-linear-to-br from-primary-foreground to-chart-1"
     >
-      <div className="container mx-auto px-4 py-16 md:py-16">
+      <div className="container mx-auto px-4 py-16 md:py-18">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <Badge>#1 Rated Auto Repair Service</Badge>
