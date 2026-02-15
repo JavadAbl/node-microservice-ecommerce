@@ -1,34 +1,36 @@
-'use client'
-
-import { Badge } from "@/components/ui/badge"
-import { Wrench, Car, CalendarCheck, Truck } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Wrench, Car, CalendarCheck, Truck } from "lucide-react";
 
 const steps = [
   {
     number: "01",
     icon: CalendarCheck,
     title: "Book Online",
-    description: "Schedule your service appointment online in just a few clicks. Choose a time that works for you."
+    description:
+      "Schedule your service appointment online in just a few clicks. Choose a time that works for you.",
   },
   {
     number: "02",
     icon: Truck,
     title: "We Pick Up Your Car",
-    description: "Our team will come to your location and safely transport your vehicle to our facility."
+    description:
+      "Our team will come to your location and safely transport your vehicle to our facility.",
   },
   {
     number: "03",
     icon: Wrench,
     title: "Expert Repair",
-    description: "Our certified mechanics diagnose and repair your vehicle with precision and care."
+    description:
+      "Our certified mechanics diagnose and repair your vehicle with precision and care.",
   },
   {
     number: "04",
     icon: Car,
     title: "Delivery Back to You",
-    description: "We return your freshly serviced vehicle right to your doorstep, good as new."
-  }
-]
+    description:
+      "We return your freshly serviced vehicle right to your doorstep, good as new.",
+  },
+];
 
 export function HowItWorks() {
   return (
@@ -59,7 +61,9 @@ export function HowItWorks() {
                     {step.number}
                   </span>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mt-6 mb-3">{step.title}</h3>
+                <h3 className="text-xl font-semibold text-foreground mt-6 mb-3">
+                  {step.title}
+                </h3>
                 <p className="text-muted-foreground">{step.description}</p>
               </div>
               {index < steps.length - 1 && (
@@ -70,5 +74,5 @@ export function HowItWorks() {
         </div>
       </div>
     </section>
-  )
+  );
 }
