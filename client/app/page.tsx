@@ -1,10 +1,10 @@
-import { Contact } from "./ui/Contact";
-import { Footer } from "./ui/Footer";
-import { Hero } from "./ui/Hero";
-import { HowItWorks } from "./ui/HowItWorks";
-import { Services } from "./ui/Services";
-import { Testimonials } from "./ui/Testimonials";
-import { WhyChooseUs } from "./ui/WhyChooseUs";
+import { Contact } from "../components/home/Contact";
+import { Footer } from "../components/home/Footer";
+import { Hero } from "../components/home/Hero";
+import { HowItWorks } from "../components/home/HowItWorks";
+import { Services } from "../components/home/Services";
+import { Testimonials } from "../components/home/Testimonials";
+import { WhyChooseUs } from "../components/home/WhyChooseUs";
 
 export default function Home() {
   return (

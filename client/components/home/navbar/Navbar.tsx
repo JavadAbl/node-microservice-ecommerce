@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Wrench, Phone, Menu } from "lucide-react";
 import Link from "next/link";
+import ThemeModeToggle from "./theme-mode-toggle";
 
 export function Navbar() {
   return (
@@ -52,9 +53,12 @@ export function Navbar() {
             <Phone className="mr-2 h-4 w-4" />
             (555) 123-4567
           </Button>
+
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
             Book Now
           </Button>
+
+          <ThemeModeToggle />
         </div>
 
         {/* Mobile Menu */}
@@ -73,6 +77,8 @@ export function Navbar() {
             className="w-[300px] sm:w-[400px] bg-background"
           >
             <nav className="flex flex-col gap-4 mt-8">
+              <ThemeModeToggle />
+
               <Link
                 href="#home"
                 className="text-lg font-medium text-muted-foreground hover:text-primary transition-colors"
@@ -97,7 +103,9 @@ export function Navbar() {
               >
                 Contact
               </Link>
+
               <Separator className="my-4 bg-border" />
+
               <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
                 Book Now
               </Button>

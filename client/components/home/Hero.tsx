@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-linear-to-br from-primary-foreground to-chart-1"
+      className="relative overflow-hidden bg-linear-to-br from-primary-foreground dark:from-accent to-chart-1 dark:to-chart-5"
     >
       <div className="container mx-auto px-4 py-16 md:py-18">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -15,7 +15,10 @@ export function Hero() {
             <Badge className="">#1 Rated Auto Repair Service</Badge>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Expert Car Repair <br />
+              <span className="text-black dark:text-foreground">
+                Expert Car Repair
+              </span>
+              <br />
               <span className="text-primary">You Can Trust</span>
             </h1>
 
