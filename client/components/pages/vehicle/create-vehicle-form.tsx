@@ -1,6 +1,7 @@
-// src/components/vehicles/create-vehicle-form.tsx
-import { Car, Save, AlertCircle, CheckCircle2 } from "lucide-react";
+"use client";
 
+import { useActionState } from "react";
+import { Car, Save, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,8 +13,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -28,8 +27,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-import { type VehicleFormState } from "@/app/actions/vehicle-actions";
+import { FormState } from "@/lib/shared/types/form-state";
+import { createVehicleAction } from "@/lib/features/vehicle/actions/create-vehicle-action";
 
 // --- Enums from Prisma Schema ---
 const FUEL_TYPES = [
@@ -62,18 +61,11 @@ const VEHICLE_STATUS = [
   "NotOperational",
 ] as const;
 
-interface CreateVehicleFormProps {
-  action: (formData: FormData) => Promise<VehicleFormState>;
-  customers: { id: number; name: string }[];
-  initialState?: VehicleFormState;
-}
-
-export function CreateVehicleForm({
-  action,
-  customers,
-  initialState,
-}: CreateVehicleFormProps) {
-  const state = initialState;
+export function CreateVehicleForm() {
+  const [state, formAction, isPending] = useActionState<FormState, FormData>(
+    createVehicleAction,
+    { success: false, error: undefined, fieldErrors: undefined },
+  );
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
@@ -109,7 +101,7 @@ export function CreateVehicleForm({
             </Alert>
           )}
 
-          <Form action={action}>
+          <Form action={formAction}>
             <div className="space-y-8">
               {/* Section 1: Identification */}
               <div className="space-y-4">
@@ -124,7 +116,7 @@ export function CreateVehicleForm({
                         name="vin"
                         placeholder="17-character VIN"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.vin}
+                        defaultValue={state?.fieldErrors?.vin ? "" : undefined}
                       />
                     </FormControl>
                     {state?.fieldErrors?.vin && (
@@ -141,7 +133,6 @@ export function CreateVehicleForm({
                         name="licensePlate"
                         placeholder="ABC-123"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.licensePlate}
                       />
                     </FormControl>
                     {state?.fieldErrors?.licensePlate && (
@@ -160,7 +151,6 @@ export function CreateVehicleForm({
                         name="state"
                         placeholder="CA"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.state}
                       />
                     </FormControl>
                     {state?.fieldErrors?.state && (
@@ -183,7 +173,6 @@ export function CreateVehicleForm({
                         name="make"
                         placeholder="Toyota"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.make}
                       />
                     </FormControl>
                     {state?.fieldErrors?.make && (
@@ -198,7 +187,6 @@ export function CreateVehicleForm({
                         name="model"
                         placeholder="Camry"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.model}
                       />
                     </FormControl>
                     {state?.fieldErrors?.model && (
@@ -214,7 +202,6 @@ export function CreateVehicleForm({
                         type="number"
                         placeholder="2024"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.year}
                       />
                     </FormControl>
                     {state?.fieldErrors?.year && (
@@ -229,7 +216,6 @@ export function CreateVehicleForm({
                         name="trim"
                         placeholder="XLE"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.trim}
                       />
                     </FormControl>
                     {state?.fieldErrors?.trim && (
@@ -244,7 +230,6 @@ export function CreateVehicleForm({
                         name="color"
                         placeholder="Silver"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.color}
                       />
                     </FormControl>
                     {state?.fieldErrors?.color && (
@@ -262,10 +247,7 @@ export function CreateVehicleForm({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <FormItem>
                     <FormLabel className="text-foreground">Fuel Type</FormLabel>
-                    <Select
-                      name="fuelType"
-                      defaultValue={state?.formData?.fuelType}
-                    >
+                    <Select name="fuelType">
                       <SelectTrigger className="bg-background text-foreground border-input focus:ring-ring">
                         <SelectValue placeholder="Select fuel type" />
                       </SelectTrigger>
@@ -286,10 +268,7 @@ export function CreateVehicleForm({
                     <FormLabel className="text-foreground">
                       Transmission
                     </FormLabel>
-                    <Select
-                      name="transmission"
-                      defaultValue={state?.formData?.transmission}
-                    >
+                    <Select name="transmission">
                       <SelectTrigger className="bg-background text-foreground border-input focus:ring-ring">
                         <SelectValue placeholder="Select transmission" />
                       </SelectTrigger>
@@ -315,7 +294,6 @@ export function CreateVehicleForm({
                         name="engine"
                         placeholder="2.5L 4-Cylinder"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.engine}
                       />
                     </FormControl>
                     {state?.fieldErrors?.engine && (
@@ -333,7 +311,6 @@ export function CreateVehicleForm({
                         type="number"
                         placeholder="0"
                         className="bg-background text-foreground border-input focus-visible:ring-ring"
-                        defaultValue={state?.formData?.mileage}
                       />
                     </FormControl>
                     {state?.fieldErrors?.mileage && (
@@ -350,46 +327,8 @@ export function CreateVehicleForm({
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormItem>
-                    <FormLabel className="text-foreground">
-                      Customer *
-                    </FormLabel>
-                    <Select
-                      name="customerId"
-                      defaultValue={state?.formData?.customerId}
-                    >
-                      <SelectTrigger className="bg-background text-foreground border-input focus:ring-ring">
-                        <SelectValue placeholder="Select customer" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {customers.length > 0 ? (
-                          customers.map((customer) => (
-                            <SelectItem
-                              key={customer.id}
-                              value={customer.id.toString()}
-                            >
-                              {customer.name}
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem value="no-customers" disabled>
-                            No customers available
-                          </SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                    {state?.fieldErrors?.customerId && (
-                      <FormMessage>
-                        {state.fieldErrors.customerId[0]}
-                      </FormMessage>
-                    )}
-                  </FormItem>
-
-                  <FormItem>
                     <FormLabel className="text-foreground">Status</FormLabel>
-                    <Select
-                      name="status"
-                      defaultValue={state?.formData?.status || "Active"}
-                    >
+                    <Select name="status" defaultValue="Active">
                       <SelectTrigger className="bg-background text-foreground border-input focus:ring-ring">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
@@ -416,7 +355,6 @@ export function CreateVehicleForm({
                       name="description"
                       placeholder="Any additional details about the vehicle condition..."
                       className="bg-background text-foreground border-input focus-visible:ring-ring min-h-[100px]"
-                      defaultValue={state?.formData?.description}
                     />
                   </FormControl>
                   {state?.fieldErrors?.description && (
@@ -433,16 +371,46 @@ export function CreateVehicleForm({
                   type="button"
                   variant="outline"
                   className="border-border text-foreground hover:bg-accent hover:text-accent-foreground"
-                  formAction={() => window.location.reload()}
+                  onClick={() => window.location.reload()}
                 >
                   Reset
                 </Button>
+
                 <Button
                   type="submit"
+                  disabled={isPending}
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  <Save className="mr-2 h-4 w-4" />
-                  Create Vehicle
+                  {isPending ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary-foreground"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-4 w-4" />
+                      Create Vehicle
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
