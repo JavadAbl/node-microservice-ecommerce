@@ -2,30 +2,17 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createVehicleSchema } from "../schema/create-vehicle-schema";
+import {
+  CreateVehicle,
+  createVehicleSchema,
+} from "../schema/create-vehicle-schema";
 import { FormState } from "@/lib/shared/types/form-state";
 
 export async function createVehicleAction(
-  formData: FormData,
+  payload: CreateVehicle,
 ): Promise<FormState> {
   try {
-    const validatedFields = createVehicleSchema.safeParse({
-      vin: formData.get("vin"),
-      make: formData.get("make"),
-      model: formData.get("model"),
-      year: formData.get("year"),
-      trim: formData.get("trim"),
-      fuelType: formData.get("fuelType"),
-      transmission: formData.get("transmission"),
-      engine: formData.get("engine"),
-      color: formData.get("color"),
-      mileage: formData.get("mileage"),
-      licensePlate: formData.get("licensePlate"),
-      state: formData.get("state"),
-      status: formData.get("status"),
-      description: formData.get("description"),
-      customerId: formData.get("customerId"),
-    });
+    const validatedFields = createVehicleSchema.safeParse(payload);
 
     if (!validatedFields.success) {
       return {
