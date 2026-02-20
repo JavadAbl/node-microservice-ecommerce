@@ -3,13 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
-  CreateVehicle,
+  CreateVehicleDto,
   createVehicleSchema,
 } from "../schema/create-vehicle-schema";
 import { FormState } from "@/lib/shared/types/form-state";
 
 export async function createVehicleAction(
-  payload: CreateVehicle,
+  payload: CreateVehicleDto,
 ): Promise<FormState> {
   try {
     const validatedFields = createVehicleSchema.safeParse(payload);
@@ -22,7 +22,7 @@ export async function createVehicleAction(
       };
     }
     //db mock
-    console.log("created");
+    console.log("created:", payload);
   } catch (error) {
     console.error("Failed to create vehicle:", error);
     return {

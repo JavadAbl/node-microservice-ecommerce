@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -22,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -31,75 +28,51 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  CreateVehicleDto,
+  createVehicleSchema,
+} from "@/lib/features/vehicle/schema/create-vehicle-schema";
+import { FormInput } from "@/components/shared/form-input";
+import { FormTextarea } from "@/components/shared/form-textarea";
 
-// Validation Schema
-const vehicleFormSchema = z.object({
-  vin: z
-    .string()
-    .min(17, "VIN must be 17 characters")
-    .max(17, "VIN must be 17 characters")
-    .toUpperCase(),
-  make: z.string().min(1, "Make is required"),
-  model: z.string().min(1, "Model is required"),
-  year: z
-    .number()
-    .min(1900, "Year must be valid")
-    .max(new Date().getFullYear() + 1, "Year cannot be in the future"),
-  trim: z.string().optional(),
-  fuelType: z
-    .enum([
-      "Gasoline",
-      "Diesel",
-      "Electric",
-      "Hybrid",
-      "PlugInHybrid",
-      "Hydrogen",
-      "Other",
-    ])
-    .optional(),
-  transmission: z
-    .enum(["Automatic", "Manual", "CVT", "DualClutch", "Robotic", "Other"])
-    .optional(),
-  engine: z.string().optional(),
-  color: z.string().optional(),
-  mileage: z
-    .number()
-    .min(0, "Mileage cannot be negative")
-    .optional()
-    .or(z.literal("")),
-  licensePlate: z.string().optional(),
-  state: z.string().optional(),
-  status: z.enum([
-    "Active",
-    "InRepair",
-    "ReadyForPickup",
-    "Archived",
-    "UnderWarranty",
-    "InService",
-    "OnLoan",
-    "NotOperational",
-  ]),
-  description: z.string().optional(),
-});
+const defaultValues: CreateVehicleDto = {
+  // Basic Info
+  vin: "",
+  make: "",
+  model: "",
+  year: null,
+  trim: null,
+  status: null,
 
-type VehicleFormValues = z.infer<typeof vehicleFormSchema>;
+  // Specifications
+  fuelType: null,
+  transmission: null,
+  engine: null,
+  color: null,
+  mileage: null,
 
-const defaultValues: Partial<VehicleFormValues> = {
-  status: "Active",
-  mileage: undefined,
+  // Additional
+  licensePlate: null,
+  state: null,
+  description: null,
 };
 
-export function CreateVehicleForm() {
+export default function CreateVehicleForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("basic");
 
-  const form = useForm<VehicleFormValues>({
-    resolver: zodResolver(vehicleFormSchema),
+  const form = useForm<CreateVehicleDto>({
+    resolver: zodResolver(createVehicleSchema) as Resolver<CreateVehicleDto>,
     defaultValues,
     mode: "onChange",
   });
 
-  async function onSubmit(values: VehicleFormValues) {
+  async function onSubmit(values: CreateVehicleDto) {
+    console.log(values);
+    //    console.log(emptyObjectFieldsToNull(values));
+
+    return;
+
     setIsLoading(true);
     try {
       const response = await fetch("/api/vehicles", {
@@ -158,7 +131,7 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>VIN *</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               placeholder="Enter 17-character VIN"
                               {...field}
                               maxLength={17}
@@ -181,7 +154,7 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>Make *</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               placeholder="e.g., Toyota, Honda, BMW"
                               {...field}
                             />
@@ -199,7 +172,7 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>Model *</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               placeholder="e.g., Camry, Civic, 3 Series"
                               {...field}
                             />
@@ -217,13 +190,10 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>Year *</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               type="number"
                               placeholder="e.g., 2023"
                               {...field}
-                              onChange={(e) =>
-                                field.onChange(parseInt(e.target.value))
-                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -239,7 +209,10 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>Trim</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g., SE, LE, XLE" {...field} />
+                            <FormInput
+                              placeholder="e.g., SE, LE, XLE"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -255,13 +228,15 @@ export function CreateVehicleForm() {
                           <FormLabel>Status *</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
+                            // defaultValue={field.value}
+                            value={field.value || ""}
                           >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select status" />
                               </SelectTrigger>
                             </FormControl>
+
                             <SelectContent>
                               <SelectItem value="Active">Active</SelectItem>
                               <SelectItem value="InRepair">
@@ -368,7 +343,7 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>Engine</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               placeholder="e.g., 2.5L V6, 3.0L Turbo"
                               {...field}
                             />
@@ -386,7 +361,7 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>Color</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               placeholder="e.g., Black, Silver, Red"
                               {...field}
                             />
@@ -404,17 +379,10 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>Mileage (km)</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               type="number"
                               placeholder="e.g., 45000"
                               {...field}
-                              onChange={(e) =>
-                                field.onChange(
-                                  e.target.value
-                                    ? parseInt(e.target.value)
-                                    : undefined,
-                                )
-                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -435,7 +403,10 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>License Plate</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g., ABC-1234" {...field} />
+                            <FormInput
+                              placeholder="e.g., ABC-1234"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -450,7 +421,10 @@ export function CreateVehicleForm() {
                         <FormItem>
                           <FormLabel>State</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g., CA, NY, TX" {...field} />
+                            <FormInput
+                              placeholder="e.g., CA, NY, TX"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -466,7 +440,7 @@ export function CreateVehicleForm() {
                       <FormItem>
                         <FormLabel>Description</FormLabel>
                         <FormControl>
-                          <Textarea
+                          <FormTextarea
                             placeholder="Add any additional notes or details about the vehicle..."
                             className="resize-none"
                             rows={5}

@@ -1,69 +1,64 @@
-import { z } from "zod";
-
-const emptyToNull = (val: unknown) =>
-  val === "" || val === undefined ? null : val;
+import z from "zod";
 
 export const createVehicleSchema = z.object({
-  vin: z.string().min(1, "VIN is required"),
+  vin: z
+    .string("VIN is required")
+    .min(17, "VIN must be 17 characters")
+    .max(17, "VIN must be 17 characters")
+    .toUpperCase(),
+
   make: z.string().min(1, "Make is required"),
+
   model: z.string().min(1, "Model is required"),
 
-  year: z.coerce
+  year: z
     .number()
-    .min(1900)
-    .max(new Date().getFullYear() + 1),
+    .min(1900, "Year must be valid")
+    .max(new Date().getFullYear() + 1, "Year cannot be in the future")
+    .nullable(),
 
-  trim: z.preprocess(emptyToNull, z.string().nullable()),
+  trim: z.string().nullable(),
 
-  fuelType: z.preprocess(
-    emptyToNull,
-    z
-      .enum([
-        "Gasoline",
-        "Diesel",
-        "Electric",
-        "Hybrid",
-        "PlugInHybrid",
-        "Hydrogen",
-        "Other",
-      ])
-      .nullable(),
-  ),
+  fuelType: z
+    .enum([
+      "Gasoline",
+      "Diesel",
+      "Electric",
+      "Hybrid",
+      "PlugInHybrid",
+      "Hydrogen",
+      "Other",
+    ])
+    .nullable(),
 
-  transmission: z.preprocess(
-    emptyToNull,
-    z
-      .enum(["Automatic", "Manual", "CVT", "DualClutch", "Robotic", "Other"])
-      .nullable(),
-  ),
+  transmission: z
+    .enum(["Automatic", "Manual", "CVT", "DualClutch", "Robotic", "Other"])
+    .nullable(),
 
-  engine: z.preprocess(emptyToNull, z.string().nullable()),
+  engine: z.string().nullable(),
 
-  color: z.preprocess(emptyToNull, z.string().nullable()),
+  color: z.string().nullable(),
 
-  mileage: z.preprocess(
-    (val) => (val === "" || val === undefined ? null : val),
-    z.coerce.number().nonnegative().nullable(),
-  ),
+  mileage: z.number().min(0, "Mileage cannot be negative").nullable(),
 
-  licensePlate: z.preprocess(emptyToNull, z.string().nullable()),
+  licensePlate: z.string().nullable(),
 
-  state: z.preprocess(emptyToNull, z.string().nullable()),
+  state: z.string().nullable(),
 
-  status: z.enum([
-    "Active",
-    "InRepair",
-    "ReadyForPickup",
-    "Archived",
-    "UnderWarranty",
-    "InService",
-    "OnLoan",
-    "NotOperational",
-  ]),
+  status: z
+    .enum([
+      "Active",
+      "InRepair",
+      "ReadyForPickup",
+      "Archived",
+      "UnderWarranty",
+      "InService",
+      "OnLoan",
+      "NotOperational",
+    ])
+    .nullable(),
 
-  description: z.preprocess(emptyToNull, z.string().nullable()),
-
-  customerId: z.coerce.number().min(1, "Customer is required"),
+  description: z.string().nullable(),
 });
 
-export type CreateVehicle = z.infer<typeof createVehicleSchema>;
+export type CreateVehicleDto = z.infer<typeof createVehicleSchema>;
