@@ -3,24 +3,16 @@
 import { useState, useTransition } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Car, Save, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -28,61 +20,59 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { createVehicleAction } from "@/lib/features/vehicle/actions/create-vehicle-action";
 import {
-  CreateVehicle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  CreateVehicleDto,
   createVehicleSchema,
 } from "@/lib/features/vehicle/schema/create-vehicle-schema";
+import { FormInput } from "@/components/shared/form-input";
+import { FormTextarea } from "@/components/shared/form-textarea";
+import { createVehicleAction } from "@/lib/features/vehicle/actions/create-vehicle-action";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 
-const FUEL_TYPES = [
-  "Gasoline",
-  "Diesel",
-  "Electric",
-  "Hybrid",
-  "PlugInHybrid",
-  "Hydrogen",
-  "Other",
-] as const;
+const defaultValues: CreateVehicleDto = {
+  // Basic Info
+  vin: "",
+  make: "",
+  model: "",
+  year: null,
+  trim: null,
+  status: null,
 
-const TRANSMISSION_TYPES = [
-  "Automatic",
-  "Manual",
-  "CVT",
-  "DualClutch",
-  "Robotic",
-  "Other",
-] as const;
+  // Specifications
+  fuelType: null,
+  transmission: null,
+  engine: null,
+  color: null,
+  mileage: null,
 
-const VEHICLE_STATUS = [
-  "Active",
-  "InRepair",
-  "ReadyForPickup",
-  "Archived",
-  "UnderWarranty",
-  "InService",
-  "OnLoan",
-  "NotOperational",
-] as const;
+  // Additional
+  licensePlate: null,
+  state: null,
+  description: null,
+};
 
-export function CreateVehicleForm() {
+export default function CreateVehicleForm() {
   const [isPending, startTransition] = useTransition();
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverSuccess, setServerSuccess] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("basic");
 
-  const form = useForm({
-    //  resolver: zodResolver(createVehicleSchema) as Resolver<CreateVehicle>,
-    defaultValues: {
-      status: "Active" as any,
-      // If your schema has optional strings, you can omit them
-      // If it expects numbers, keep them undefined until input
-    },
-    mode: "onSubmit",
+  const form = useForm<CreateVehicleDto>({
+    resolver: zodResolver(createVehicleSchema) as Resolver<CreateVehicleDto>,
+    defaultValues,
+    mode: "onChange",
   });
 
-  async function onSubmit(values: CreateVehicle) {
-    console.log(123);
+  async function onSubmit(values: CreateVehicleDto) {
     setServerError(null);
     setServerSuccess(null);
 
@@ -98,7 +88,7 @@ export function CreateVehicleForm() {
             const message = msgs?.[0];
             if (!message) continue;
 
-            form.setError(key as keyof CreateVehicle, {
+            form.setError(key as keyof CreateVehicleDto, {
               type: "server",
               message,
             });
@@ -109,30 +99,18 @@ export function CreateVehicleForm() {
       }
 
       setServerSuccess("Vehicle created successfully!");
-      form.reset({ status: "Active" as any });
+      form.reset(defaultValues);
     });
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
-      <Card className="bg-card text-card-foreground border-border shadow-sm">
-        <CardHeader className="border-b border-border bg-muted/20">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Car className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <CardTitle className="text-2xl font-bold text-foreground">
-                Register New Vehicle
-              </CardTitle>
-              <CardDescription className="text-muted-foreground">
-                Enter the details of the vehicle to add it to the system.
-              </CardDescription>
-            </div>
-          </div>
+    <div className="w-full max-w-4xl mx-auto py-8">
+      <Card>
+        <CardHeader>
+          <CardTitle>Create New Vehicle</CardTitle>
+          <CardDescription>Add a new vehicle to the system</CardDescription>
         </CardHeader>
-
-        <CardContent className="p-6">
+        <CardContent>
           {serverSuccess && (
             <Alert className="mb-6 bg-primary/10 border-primary text-foreground">
               <CheckCircle2 className="h-4 w-4 text-primary" />
@@ -148,101 +126,57 @@ export function CreateVehicleForm() {
           )}
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="space-y-8">
-                {/* Section 1: Identification */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-foreground border-b border-border pb-2">
-                    Identification
-                  </h3>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+              >
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="basic">Basic Info</TabsTrigger>
+                  <TabsTrigger value="specifications">
+                    Specifications
+                  </TabsTrigger>
+                  <TabsTrigger value="additional">Additional</TabsTrigger>
+                </TabsList>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Basic Information Tab */}
+                <TabsContent value="basic" className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* VIN */}
                     <FormField
                       control={form.control}
                       name="vin"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-foreground">
-                            VIN *
-                          </FormLabel>
+                          <FormLabel>VIN *</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="17-character VIN"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
+                            <FormInput
+                              placeholder="Enter 17-character VIN"
                               {...field}
-                              value={field.value ?? ""}
+                              maxLength={17}
+                              className="uppercase"
                             />
                           </FormControl>
+                          <FormDescription>
+                            Vehicle Identification Number
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="licensePlate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">
-                            License Plate
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="ABC-123"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
-                              {...field}
-                              value={field.value ?? ""} // for optional fields
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="state"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">
-                            State/Region
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="CA"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
-                              {...field}
-                              value={field.value ?? ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-
-                {/* Section 2: Vehicle Details */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-foreground border-b border-border pb-2">
-                    Vehicle Details
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {/* Make */}
                     <FormField
                       control={form.control}
                       name="make"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-foreground">
-                            Make *
-                          </FormLabel>
+                          <FormLabel>Make *</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Toyota"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
+                            <FormInput
+                              placeholder="e.g., Toyota, Honda, BMW"
                               {...field}
-                              value={field.value ?? ""}
                             />
                           </FormControl>
                           <FormMessage />
@@ -250,20 +184,17 @@ export function CreateVehicleForm() {
                       )}
                     />
 
+                    {/* Model */}
                     <FormField
                       control={form.control}
                       name="model"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-foreground">
-                            Model *
-                          </FormLabel>
+                          <FormLabel>Model *</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Camry"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
+                            <FormInput
+                              placeholder="e.g., Camry, Civic, 3 Series"
                               {...field}
-                              value={field.value ?? ""}
                             />
                           </FormControl>
                           <FormMessage />
@@ -271,27 +202,18 @@ export function CreateVehicleForm() {
                       )}
                     />
 
-                    {/* Year - important: number parsing */}
+                    {/* Year */}
                     <FormField
                       control={form.control}
                       name="year"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-foreground">
-                            Year *
-                          </FormLabel>
+                          <FormLabel>Year *</FormLabel>
                           <FormControl>
-                            <Input
+                            <FormInput
                               type="number"
-                              placeholder="2024"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
-                              value={field.value ?? ""}
-                              onChange={(e) => {
-                                const v = e.target.value;
-                                field.onChange(
-                                  v === "" ? undefined : Number(v),
-                                );
-                              }}
+                              placeholder="e.g., 2023"
+                              {...field}
                             />
                           </FormControl>
                           <FormMessage />
@@ -299,20 +221,17 @@ export function CreateVehicleForm() {
                       )}
                     />
 
+                    {/* Trim */}
                     <FormField
                       control={form.control}
                       name="trim"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-foreground">
-                            Trim
-                          </FormLabel>
+                          <FormLabel>Trim</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="XLE"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
+                            <FormInput
+                              placeholder="e.g., SE, LE, XLE"
                               {...field}
-                              value={field.value ?? ""}
                             />
                           </FormControl>
                           <FormMessage />
@@ -320,261 +239,254 @@ export function CreateVehicleForm() {
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="color"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">
-                            Color
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Silver"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
-                              {...field}
-                              value={field.value ?? ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-
-                {/* Section 3: Mechanics & Specs */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-foreground border-b border-border pb-2">
-                    Mechanics & Specs
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="fuelType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">
-                            Fuel Type
-                          </FormLabel>
-                          <Select
-                            value={(field.value as string | undefined) ?? ""}
-                            onValueChange={(v) => field.onChange(v)}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="bg-background text-foreground border-input focus:ring-ring">
-                                <SelectValue placeholder="Select fuel type" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {FUEL_TYPES.map((type) => (
-                                <SelectItem key={type} value={type}>
-                                  {type}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="transmission"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">
-                            Transmission
-                          </FormLabel>
-                          <Select
-                            value={(field.value as string | undefined) ?? ""}
-                            onValueChange={(v) => field.onChange(v)}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="bg-background text-foreground border-input focus:ring-ring">
-                                <SelectValue placeholder="Select transmission" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {TRANSMISSION_TYPES.map((type) => (
-                                <SelectItem key={type} value={type}>
-                                  {type}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="engine"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">
-                            Engine
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="2.5L 4-Cylinder"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
-                              {...field}
-                              value={field.value ?? ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* mileage - number parsing */}
-                    <FormField
-                      control={form.control}
-                      name="mileage"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-foreground">
-                            Current Mileage
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="0"
-                              className="bg-background text-foreground border-input focus-visible:ring-ring"
-                              value={field.value ?? ""}
-                              onChange={(e) => {
-                                const v = e.target.value;
-                                field.onChange(
-                                  v === "" ? undefined : Number(v),
-                                );
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-
-                {/* Section 4: Status & Notes */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-foreground border-b border-border pb-2">
-                    Ownership & Status
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Status */}
                     <FormField
                       control={form.control}
                       name="status"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-foreground">
-                            Status
-                          </FormLabel>
+                          <FormLabel>Status *</FormLabel>
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              // defaultValue={field.value}
+                              value={field.value || ""}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select status" />
+                              </SelectTrigger>
+
+                              <SelectContent>
+                                <SelectItem value="Active">Active</SelectItem>
+                                <SelectItem value="InRepair">
+                                  In Repair
+                                </SelectItem>
+                                <SelectItem value="ReadyForPickup">
+                                  Ready For Pickup
+                                </SelectItem>
+                                <SelectItem value="Archived">
+                                  Archived
+                                </SelectItem>
+                                <SelectItem value="UnderWarranty">
+                                  Under Warranty
+                                </SelectItem>
+                                <SelectItem value="InService">
+                                  In Service
+                                </SelectItem>
+                                <SelectItem value="OnLoan">On Loan</SelectItem>
+                                <SelectItem value="NotOperational">
+                                  Not Operational
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </TabsContent>
+
+                {/* Specifications Tab */}
+                <TabsContent value="specifications" className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Fuel Type */}
+                    <FormField
+                      control={form.control}
+                      name="fuelType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Fuel Type</FormLabel>
                           <Select
-                            value={
-                              (field.value as string | undefined) ?? "Active"
-                            }
                             onValueChange={field.onChange}
+                            value={field.value || ""}
                           >
                             <FormControl>
-                              <SelectTrigger className="bg-background text-foreground border-input focus:ring-ring">
-                                <SelectValue placeholder="Select status" />
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select fuel type" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {VEHICLE_STATUS.map((s) => (
-                                <SelectItem key={s} value={s}>
-                                  {s}
-                                </SelectItem>
-                              ))}
+                              <SelectItem value="Gasoline">Gasoline</SelectItem>
+                              <SelectItem value="Diesel">Diesel</SelectItem>
+                              <SelectItem value="Electric">Electric</SelectItem>
+                              <SelectItem value="Hybrid">Hybrid</SelectItem>
+                              <SelectItem value="PlugInHybrid">
+                                Plug-in Hybrid
+                              </SelectItem>
+                              <SelectItem value="Hydrogen">Hydrogen</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+
+                    {/* Transmission */}
+                    <FormField
+                      control={form.control}
+                      name="transmission"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Transmission</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value || ""}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select transmission" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Automatic">
+                                Automatic
+                              </SelectItem>
+                              <SelectItem value="Manual">Manual</SelectItem>
+                              <SelectItem value="CVT">CVT</SelectItem>
+                              <SelectItem value="DualClutch">
+                                Dual Clutch
+                              </SelectItem>
+                              <SelectItem value="Robotic">Robotic</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Engine */}
+                    <FormField
+                      control={form.control}
+                      name="engine"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Engine</FormLabel>
+                          <FormControl>
+                            <FormInput
+                              placeholder="e.g., 2.5L V6, 3.0L Turbo"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Color */}
+                    <FormField
+                      control={form.control}
+                      name="color"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Color</FormLabel>
+                          <FormControl>
+                            <FormInput
+                              placeholder="e.g., Black, Silver, Red"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Mileage */}
+                    <FormField
+                      control={form.control}
+                      name="mileage"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mileage (km)</FormLabel>
+                          <FormControl>
+                            <FormInput
+                              type="number"
+                              placeholder="e.g., 45000"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </TabsContent>
+
+                {/* Additional Information Tab */}
+                <TabsContent value="additional" className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* License Plate */}
+                    <FormField
+                      control={form.control}
+                      name="licensePlate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>License Plate</FormLabel>
+                          <FormControl>
+                            <FormInput
+                              placeholder="e.g., ABC-1234"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* State */}
+                    <FormField
+                      control={form.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>State</FormLabel>
+                          <FormControl>
+                            <FormInput
+                              placeholder="e.g., CA, NY, TX"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
 
+                  {/* Description */}
                   <FormField
                     control={form.control}
                     name="description"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">
-                          Description / Notes
-                        </FormLabel>
+                        <FormLabel>Description</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="Any additional details about the vehicle condition..."
-                            className="bg-background text-foreground border-input focus-visible:ring-ring min-h-[100px]"
+                          <FormTextarea
+                            placeholder="Add any additional notes or details about the vehicle..."
+                            className="resize-none"
+                            rows={5}
                             {...field}
-                            value={field.value ?? ""}
                           />
                         </FormControl>
+                        <FormDescription>
+                          Optional field for additional vehicle information
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
+                </TabsContent>
+              </Tabs>
 
-                {/* Actions */}
-                <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="border-border text-foreground hover:bg-accent hover:text-accent-foreground"
-                    onClick={() => {
-                      setServerError(null);
-                      setServerSuccess(null);
-                      form.reset({ status: "Active" as any });
-                    }}
-                  >
-                    Reset
-                  </Button>
-
-                  <Button
-                    type="submit"
-                    disabled={isPending}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90"
-                  >
-                    {isPending ? (
-                      <>
-                        <svg
-                          className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary-foreground"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          />
-                        </svg>
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="mr-2 h-4 w-4" />
-                        Create Vehicle
-                      </>
-                    )}
-                  </Button>
-                </div>
+              {/* Form Actions */}
+              <div className="flex justify-between gap-4 pt-6 border-t">
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? "Creating..." : "Create Vehicle"}
+                </Button>
               </div>
             </form>
           </Form>
