@@ -1,0 +1,45 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/infrastructure/database/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model InboxEvent {
+  id          Int              @id @default(autoincrement())
+  queue       String
+  routingKey  String
+  serviceName String
+  status      InboxEventStatus @default(PENDING)
+  captureAt   DateTime         @default(now())
+  handledAt   DateTime?
+  error       String?
+  payload     Json
+}
+
+model OutboxEvent {
+  id         Int               @id @default(autoincrement())
+  routingKey String
+  status     OutboxEventStatus @default(PENDING)
+  captureAt  DateTime          @default(now())
+  handledAt  DateTime?
+  error      String?
+  payload    Json
+}
+
+// Enums-------------------------------------------------------------------------
+enum InboxEventStatus {
+  PENDING
+  Handled
+  Error
+}
+
+enum OutboxEventStatus {
+  PENDING
+  Handled
+  Error
+}
