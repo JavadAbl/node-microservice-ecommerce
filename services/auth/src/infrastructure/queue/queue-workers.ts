@@ -1,19 +1,5 @@
 import Queue from "bee-queue";
 import { pause } from "../../utils/app-utils.js";
-import {
-  queueEventCustomerCreate,
-  queueEventCustomerUpdate,
-  queueEventServiceCreate,
-  queueEventServiceUpdate,
-} from "./queue-provider.js";
-import {
-  queueCustomerCreateHandler,
-  queueCustomerUpdateHandler,
-} from "./queue-handlers/queue-customer-handlers.js";
-import {
-  queueServiceCreateHandler,
-  queueServiceUpdateHandler,
-} from "./queue-handlers/queue-service-handlers copy.js";
 
 function queueWorkerRegister(
   queue: Queue,
@@ -29,9 +15,6 @@ function queueWorkerRegister(
 }
 
 export function startQueueWorkers() {
-  queueWorkerRegister(queueEventCustomerCreate, queueCustomerCreateHandler);
-  queueWorkerRegister(queueEventCustomerUpdate, queueCustomerUpdateHandler);
-
-  queueWorkerRegister(queueEventServiceCreate, queueServiceCreateHandler);
-  queueWorkerRegister(queueEventServiceUpdate, queueServiceUpdateHandler);
+  /* queueWorkerRegister(queueEventCustomerCreate, queueCustomerCreateHandler);
+  queueWorkerRegister(queueEventCustomerUpdate, queueCustomerUpdateHandler); */
 }

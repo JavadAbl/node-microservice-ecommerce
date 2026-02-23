@@ -8,7 +8,7 @@ export const SendOtpSchema = {
   body: SendOtpBodySchema,
   description: "Send a vehicle entity",
   tags: ["Otps"],
-  response: { 201: OtpDtoSchema },
+  response: { 200: OtpDtoSchema },
 };
 
 export type SendOtpDto = Static<typeof SendOtpBodySchema>;

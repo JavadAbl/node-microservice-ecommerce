@@ -16,6 +16,7 @@ const config = {
   REDIS_HOST: "localhost",
   REDIS_PORT: 6379,
   REDIS_PASSWORD: "redis",
+  OTP_HASH_SECRET: "your-secret-key-for-hashing",
 };
 
 // 1. Convert the object into a string format for .env (KEY=VALUE)

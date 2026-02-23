@@ -1,25 +1,12 @@
 import { Channel } from "amqp-connection-manager";
 import { rmqConnection } from "./rabbitmq-provider.js";
 import { RmqEventHandler, rmqInboxEventHandler } from "./rabbitmq-handlers.js";
-import {
-  RMQ_QUEUE_CUSTOMER_CREATE,
-  RMQ_QUEUE_CUSTOMER_UPDATE,
-  RMQ_QUEUE_SERVICE_CREATE,
-  RMQ_QUEUE_SERVICE_UPDATE,
-  RMQ_RK_CUSTOMER_CREATE,
-  RMQ_RK_CUSTOMER_UPDATE,
-  RMQ_RK_SERVICE_CREATE,
-  RMQ_RK_SERVICE_UPDATE,
-} from "./rabbitmq-config.js";
+
 
 export function rmqSetupConsumers() {
   //Customer
-  createConsumer(RMQ_QUEUE_CUSTOMER_CREATE, RMQ_RK_CUSTOMER_CREATE, rmqInboxEventHandler);
-  createConsumer(RMQ_QUEUE_CUSTOMER_UPDATE, RMQ_RK_CUSTOMER_UPDATE, rmqInboxEventHandler);
+ // createConsumer(RMQ_QUEUE_CUSTOMER_CREATE, RMQ_RK_CUSTOMER_CREATE, rmqInboxEventHandler);
 
-  //Service
-  createConsumer(RMQ_QUEUE_SERVICE_CREATE, RMQ_RK_SERVICE_CREATE, rmqInboxEventHandler);
-  createConsumer(RMQ_QUEUE_SERVICE_UPDATE, RMQ_RK_SERVICE_UPDATE, rmqInboxEventHandler);
 }
 
 function createConsumer(queueName: string, routingKey: string, handler: RmqEventHandler) {

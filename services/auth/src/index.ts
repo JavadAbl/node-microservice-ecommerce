@@ -1,3 +1,4 @@
+import { startCacheClient } from "./infrastructure/cache/cache-provider.js";
 import { validateConfig } from "./infrastructure/config.js";
 import { prisma, startDatabase } from "./infrastructure/database/prisma-provider.js";
 import { startCronJobs } from "./infrastructure/node-cron/cron-jobs.js";
@@ -14,6 +15,7 @@ async function run() {
   await startRmq();
   startQueues();
   startQueueWorkers();
+  await startCacheClient()
   try {
   } catch (error) {
     console.error(error);

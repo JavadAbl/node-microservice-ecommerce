@@ -14,6 +14,7 @@ export const config = {
   REDIS_HOST: process.env.REDIS_HOST,
   REDIS_PORT: parseInt(process.env.REDIS_PORT),
   REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+  OTP_HASH_SECRET: process.env.OTP_HASH_SECRET,
 };
 
 export function validateConfig() {

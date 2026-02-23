@@ -1,22 +1,10 @@
 import Queue from "bee-queue";
 import { config } from "../config.js";
-import {
-  QUEUE_EVENT_CUSTOMER_CREATE,
-  QUEUE_EVENT_CUSTOMER_UPDATE,
-  QUEUE_EVENT_SERVICE_CREATE,
-  QUEUE_EVENT_SERVICE_UPDATE,
-} from "./queue-config.js";
 
-export let queueEventCustomerCreate: Queue;
-export let queueEventCustomerUpdate: Queue;
-export let queueEventServiceCreate: Queue;
-export let queueEventServiceUpdate: Queue;
+// export let queueEventCustomerCreate: Queue;
 
 export function startQueues() {
-  queueEventCustomerCreate = queueCreate(QUEUE_EVENT_CUSTOMER_CREATE);
-  queueEventCustomerUpdate = queueCreate(QUEUE_EVENT_CUSTOMER_UPDATE);
-  queueEventServiceCreate = queueCreate(QUEUE_EVENT_SERVICE_CREATE);
-  queueEventServiceUpdate = queueCreate(QUEUE_EVENT_SERVICE_UPDATE);
+  // queueEventCustomerCreate = queueCreate(QUEUE_EVENT_CUSTOMER_CREATE);
 }
 
 function queueCreate(queueName: string) {
@@ -36,9 +24,6 @@ function queueCreate(queueName: string) {
 }
 
 export const queueGracefulShutdown = async () => {
-  await queueEventCustomerCreate.close();
-  await queueEventCustomerUpdate.close();
-  await queueEventServiceCreate.close();
-  await queueEventServiceUpdate.close();
+  // await queueEventCustomerCreate.close();
   // console.log(`Worker ${queueEventCustomerCreate.name} stopped.`);
 };

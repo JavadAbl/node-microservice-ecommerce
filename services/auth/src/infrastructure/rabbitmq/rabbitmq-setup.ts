@@ -1,16 +1,6 @@
 import { Channel } from "amqp-connection-manager";
 import { rmqConnection } from "./rabbitmq-provider.js";
-import {
-  RMQ_EXCHANGE,
-  RMQ_QUEUE_CUSTOMER_CREATE,
-  RMQ_QUEUE_CUSTOMER_UPDATE,
-  RMQ_QUEUE_SERVICE_CREATE,
-  RMQ_QUEUE_SERVICE_UPDATE,
-  RMQ_RK_CUSTOMER_CREATE,
-  RMQ_RK_CUSTOMER_UPDATE,
-  RMQ_RK_SERVICE_CREATE,
-  RMQ_RK_SERVICE_UPDATE,
-} from "./rabbitmq-config.js";
+import { RMQ_EXCHANGE } from "./rabbitmq-config.js";
 
 export function rmqSetup() {
   return new Promise((res, rej) => {
@@ -20,24 +10,9 @@ export function rmqSetup() {
         await channel.assertExchange(RMQ_EXCHANGE, "direct", { durable: true });
 
         //Service Create
-        await channel.assertQueue(RMQ_QUEUE_CUSTOMER_CREATE, { durable: true });
+        /* await channel.assertQueue(RMQ_QUEUE_CUSTOMER_CREATE, { durable: true });
         await channel.bindQueue(RMQ_QUEUE_CUSTOMER_CREATE, RMQ_EXCHANGE, RMQ_RK_CUSTOMER_CREATE);
-        logQueueBinding(RMQ_QUEUE_CUSTOMER_CREATE, RMQ_EXCHANGE);
-
-        //Customer Update
-        await channel.assertQueue(RMQ_QUEUE_CUSTOMER_UPDATE, { durable: true });
-        await channel.bindQueue(RMQ_QUEUE_CUSTOMER_UPDATE, RMQ_EXCHANGE, RMQ_RK_CUSTOMER_UPDATE);
-        logQueueBinding(RMQ_QUEUE_CUSTOMER_UPDATE, RMQ_EXCHANGE);
-
-        //Service Create
-        await channel.assertQueue(RMQ_QUEUE_SERVICE_CREATE, { durable: true });
-        await channel.bindQueue(RMQ_QUEUE_SERVICE_CREATE, RMQ_EXCHANGE, RMQ_RK_SERVICE_CREATE);
-        logQueueBinding(RMQ_QUEUE_SERVICE_CREATE, RMQ_EXCHANGE);
-
-        //Service Update
-        await channel.assertQueue(RMQ_QUEUE_SERVICE_UPDATE, { durable: true });
-        await channel.bindQueue(RMQ_QUEUE_SERVICE_UPDATE, RMQ_EXCHANGE, RMQ_RK_SERVICE_UPDATE);
-        logQueueBinding(RMQ_QUEUE_SERVICE_UPDATE, RMQ_EXCHANGE);
+        logQueueBinding(RMQ_QUEUE_CUSTOMER_CREATE, RMQ_EXCHANGE); */
 
         await channel.close();
 
