@@ -4,7 +4,7 @@ import path from "path";
 // Define the configuration with the same logic as your source file
 const config = {
   NODE_ENV: "development",
-  HTTP_PORT: 3021,
+  HTTP_PORT: 3024,
   HTTP_HOST: "localhost",
   DATABASE_URL: "mysql://admin:admin@localhost:3306/auth_db",
   DATABASE_HOST: "localhost",
@@ -16,7 +16,8 @@ const config = {
   REDIS_HOST: "localhost",
   REDIS_PORT: 6379,
   REDIS_PASSWORD: "redis",
-  OTP_HASH_SECRET: "your-secret-key-for-hashing",
+  JWT_ACCESS_SECRET: "your-secret-key-for-hashing",
+  JWT_REFRESH_SECRET: "your-secret-key-for-hashing",
 };
 
 // 1. Convert the object into a string format for .env (KEY=VALUE)

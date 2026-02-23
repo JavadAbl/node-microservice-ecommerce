@@ -1,10 +1,11 @@
 import { randomInt } from "crypto";
 import { cacheCheckConnection, cacheClient } from "../infrastructure/cache/cache-provider.js";
 import { SendOtpDto } from "../schemas/otp/sent-otp-shema.js";
-import { BadRequestError } from "../utils/app-error.js";
+import { BadRequestError, UnauthorizedError } from "../utils/app-error.js";
 import { isEmptyObj, isMobileNumber } from "../utils/app-utils.js";
 import { VerifyOtpDto } from "../schemas/otp/verify-otp-shema.js";
 import { userService } from "./user-service.js";
+import { authService } from "./auth-service.js";
 
 export const otpService = { sendOtp, verifyOtp };
 
@@ -19,6 +20,8 @@ async function sendOtp(payload: SendOtpDto) {
   await cacheCheckConnection();
   await cacheClient.setEx(`otp:${mobile}`, OTP_EXPIRE, otp);
 
+  //Mock send sms
+
   return { otp };
 }
 
@@ -29,9 +32,15 @@ async function verifyOtp(payload: VerifyOtpDto) {
   const cachedOtp = await cacheClient.get(`otp:${mobile}`);
   if (isEmptyObj(cachedOtp)) throw new BadRequestError("Otp code was expired");
 
+  if (otp !== cachedOtp) throw new UnauthorizedError("Wrong otp code");
+
   const user = await userService.getUserForLogin(mobile);
+
+  return authService.generateTokens({ userId: user.id });
 }
 
 function generateOtp() {
+  //Mock for client
+  return "123456";
   return randomInt(100000, 999999).toString();
 }

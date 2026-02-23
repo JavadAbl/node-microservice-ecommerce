@@ -39,10 +39,8 @@ export class BadRequestError extends AppError {
 }
 
 export class UnauthorizedError extends AppError {
-  constructor(entity?: string, message?: string, stack?: string) {
-    const baseMsg = message ?? "Unauthorized";
-    const fullMsg = entity ? `${baseMsg}: ${entity}` : baseMsg;
-    super(fullMsg, StatusCodes.UNAUTHORIZED, stack);
+  constructor(message = "Unauthorized", stack?: string) {
+    super(message, StatusCodes.UNAUTHORIZED, stack);
     this.name = "UnauthorizedError";
   }
 }

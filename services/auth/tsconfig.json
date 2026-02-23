@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "strict": false,
+    "strict": true,
+    "strictNullChecks": true,
     "customConditions": ["my-package-dev"]
   },
   "include": ["src/**/*"],
