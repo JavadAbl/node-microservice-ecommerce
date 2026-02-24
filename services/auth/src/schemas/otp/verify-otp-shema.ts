@@ -1,6 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteGenericInterface } from "fastify";
-import { AuthDto, AuthDtoSchema } from "./auth-schema.js";
+import { AuthDto, AuthDtoSchema } from "../auth/auth-schema.js";
 
 const VerifyOtpBodySchema = Type.Object({
   mobile: Type.String({ description: "Mobile Number" }),

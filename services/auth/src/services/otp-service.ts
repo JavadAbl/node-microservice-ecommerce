@@ -6,6 +6,7 @@ import { isEmptyObj, isMobileNumber } from "../utils/app-utils.js";
 import { VerifyOtpDto } from "../schemas/otp/verify-otp-shema.js";
 import { userService } from "./user-service.js";
 import { authService } from "./auth-service.js";
+import { AuthDto } from "../schemas/auth/auth-schema.js";
 
 export const otpService = { sendOtp, verifyOtp };
 
@@ -25,7 +26,7 @@ async function sendOtp(payload: SendOtpDto) {
   return { otp };
 }
 
-async function verifyOtp(payload: VerifyOtpDto) {
+async function verifyOtp(payload: VerifyOtpDto): Promise<AuthDto> {
   const { mobile, otp } = payload;
   if (!isMobileNumber(mobile)) throw new BadRequestError("Invalid mobile");
 
@@ -36,7 +37,8 @@ async function verifyOtp(payload: VerifyOtpDto) {
 
   const user = await userService.getUserForLogin(mobile);
 
-  return authService.generateTokens({ userId: user.id });
+  const { accessToken, refreshToken } = authService.generateTokens({ userId: user.id });
+  return { accessToken, refreshToken, user };
 }
 
 function generateOtp() {

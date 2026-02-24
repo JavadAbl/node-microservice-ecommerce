@@ -1,5 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
 
-export const OtpDtoSchema = Type.Object({ otp: Type.String({ description: "Otp code" }) });
+export const OtpSchema = Type.Object({ otp: Type.String({ description: "Otp code" }) });
 
-export type OtpDto = Static<typeof OtpDtoSchema>;
+export type OtpDto = Static<typeof OtpSchema>;
