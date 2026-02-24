@@ -1,10 +1,10 @@
 import { Static, Type } from "@sinclair/typebox";
-import { RouteGenericInterface } from "fastify";
-import { OtpDto, OtpSchema } from "./otp-schema.js";
+import { FastifySchema, RouteGenericInterface } from "fastify";
+import { OtpDto, OtpSchema } from "../reply-schema/otp-schema.js";
 
 const SendOtpBodySchema = Type.Object({ mobile: Type.String({ description: "Mobile Number" }) });
 
-export const SendOtpSchema = {
+export const SendOtpSchema: FastifySchema = {
   body: SendOtpBodySchema,
   description: "Send a vehicle entity",
   tags: ["Otps"],

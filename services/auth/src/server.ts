@@ -3,7 +3,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import { config, isDev } from "./infrastructure/config.js";
 import { errorHandler } from "./plugins/error-handler.js";
 import fastify from "fastify";
-import { otpRoutes } from "./routes/otp-route.js";
+import { authRoutes } from "./routes/auth-route.js";
 
 export const app = fastify({ logger: false, caseSensitive: false });
 
@@ -28,7 +28,7 @@ export async function startHttpServer() {
     });
   }
 
-  app.register(otpRoutes, { prefix: "/Otp" });
+  app.register(authRoutes, { prefix: "/Otp" });
 
   app.setErrorHandler(errorHandler);
 

@@ -1,8 +1,13 @@
+import { NotFoundError } from "../../../utils/app-error.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../prisma-provider.js";
 
 export class Repository<TModel extends keyof typeof prisma> {
   constructor(private readonly model: TModel) {}
+
+  private get entityName(): string {
+    return String(this.model);
+  }
 
   // --- READ ---
 
@@ -28,6 +33,15 @@ export class Repository<TModel extends keyof typeof prisma> {
     args: TArgs,
   ): Promise<Prisma.Result<(typeof prisma)[TModel], TArgs, "findFirst"> | null> {
     return this.findFirst(args);
+  }
+
+  async findAndCheckExistsBy<TArgs extends Prisma.Args<(typeof prisma)[TModel], "findFirst">>(
+    args: TArgs,
+    { field, hasThrow = true, value }: { hasThrow?: boolean; field?: string; value?: unknown },
+  ): Promise<Prisma.Result<(typeof prisma)[TModel], TArgs, "findFirst"> | null> {
+    const entity = await (prisma[this.model] as any).findFirst(args);
+    if (hasThrow && !entity) throw new NotFoundError(this.entityName, field!, value!);
+    return entity;
   }
 
   // --- WRITE ---
