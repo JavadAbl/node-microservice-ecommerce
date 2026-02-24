@@ -6,7 +6,7 @@ import { isEmptyObj, isMobileNumber } from "../utils/app-utils.js";
 import { VerifyOtpDto } from "../schemas/otp/verify-otp-shema.js";
 import { userService } from "./user-service.js";
 import { authService } from "./auth-service.js";
-import { AuthDto } from "../schemas/auth/auth-schema.js";
+import { AuthDto } from "../schemas/auth/dto-schema/auth-schema.js";
 
 export const otpService = { sendOtp, verifyOtp };
 
