@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from "fastify";
-import { SendOtpRouteType, SendOtpSchema } from "../schemas/auth/request-schema/sent-otp-shema.js";
-import { authService } from "../services/auth-service.js";
-import { VerifyOtpRouteType, VerifyOtpSchema } from "../schemas/auth/request-schema/verify-otp-shema.js";
+import { SendOtpRouteType, SendOtpSchema } from "../schemas/auth/request-schema/sent-otp.schema.js";
+import { authService } from "../services/auth.service.js";
+import { VerifyOtpRouteType, VerifyOtpSchema } from "../schemas/auth/request-schema/verify-otp.schema.js";
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
   // Send otp ------------------------------------------------

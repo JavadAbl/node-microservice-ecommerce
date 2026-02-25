@@ -2,9 +2,9 @@ import amqp, { AmqpConnectionManager } from "amqp-connection-manager";
 import { rmqSetupConsumers } from "./rabbitmq-consumers.js";
 import { rmqSetup } from "./rabbitmq-setup.js";
 import { config } from "../config.js";
-import { pause } from "../../utils/app-utils.js";
+import { pause } from "../../utils/app.util.js";
 
- export let rmqConnection: AmqpConnectionManager;
+export let rmqConnection: AmqpConnectionManager;
 
 export async function startRmq() {
   rmqConnection = amqp.connect([config.RABBITMQ_URL]);

@@ -1,5 +1,5 @@
 import Queue from "bee-queue";
-import { pause } from "../../utils/app-utils.js";
+import { pause } from "../../utils/app.util.js";
 
 function queueWorkerRegister(
   queue: Queue,

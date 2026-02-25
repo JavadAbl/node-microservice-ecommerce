@@ -1,13 +1,13 @@
 import { FastifyPluginAsync } from "fastify";
-import { userService } from "../services/user-service.js";
+import { userService } from "../services/user.service.js";
 import {
   SetUserRoleRouteType,
   SetUserRoleSchema,
-} from "../schemas/user/request-schema/set-user-role-schema.js";
+} from "../schemas/user/request-schema/set-user-role.schema.js";
 import {
   SetUserPermissionRouteType,
   SetUserPermissionSchema,
-} from "../schemas/user/request-schema/set-user-permission-schema.js";
+} from "../schemas/user/request-schema/set-user-permission.schema.js";
 
 export const userRoutes: FastifyPluginAsync = async (app) => {
   // Set user role ------------------------------------------------
@@ -24,7 +24,7 @@ export const userRoutes: FastifyPluginAsync = async (app) => {
     "Admin/:id/SetPermissions",
     { schema: SetUserPermissionSchema },
     async (request, reply) => {
-      return userService.setUserRole(request.params.id, request.body);
+      return userService.setUserPermissions(request.params.id, request.body);
     },
   );
 };

@@ -3,7 +3,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import { config, isDev } from "./infrastructure/config.js";
 import { errorHandler } from "./plugins/error-handler.js";
 import fastify from "fastify";
-import { authRoutes } from "./routes/auth-route.js";
+import { authRoutes } from "./routes/auth.route.js";
 
 export const app = fastify({ logger: false, caseSensitive: false });
 

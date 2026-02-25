@@ -1,9 +1,9 @@
 import { Type, Static } from "@sinclair/typebox";
 import { RouteGenericInterface, FastifySchema } from "fastify";
-import { IdParams, IdParamsSchema } from "../../common/id-params-schema.js";
+import { IdParams, IdParamsSchema } from "../../common/id-params.schema.js";
 
 const SetUserPermissionBodySchema = Type.Object({
-  permissions: Type.Array(Type.Integer({ description: "Id of the permission" })),
+  permissionIds: Type.Array(Type.Integer({ description: "Id of the permission" })),
 });
 
 export const SetUserPermissionSchema: FastifySchema = {

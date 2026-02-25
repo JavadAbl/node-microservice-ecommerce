@@ -1,7 +1,7 @@
 import { Type, Static } from "@sinclair/typebox";
 import { RouteGenericInterface, FastifySchema } from "fastify";
 import { Role } from "../../../infrastructure/database/generated/prisma/enums.js";
-import { IdParams, IdParamsSchema } from "../../common/id-params-schema.js";
+import { IdParams, IdParamsSchema } from "../../common/id-params.schema.js";
 
 const SetUserRoleBodySchema = Type.Object({ role: Type.Enum(Role, { description: "User role" }) });
 

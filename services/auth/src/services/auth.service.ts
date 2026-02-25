@@ -1,12 +1,12 @@
 import { randomInt } from "crypto";
 import { cacheCheckConnection, cacheClient } from "../infrastructure/cache/cache-provider.js";
-import { SendOtpDto } from "../schemas/auth/request-schema/sent-otp-shema.js";
+import { SendOtpDto } from "../schemas/auth/request-schema/sent-otp.schema.js";
 import { BadRequestError, UnauthorizedError } from "../utils/app-error.js";
-import { isEmptyObj, isMobileNumber } from "../utils/app-utils.js";
-import { VerifyOtpDto } from "../schemas/auth/request-schema/verify-otp-shema.js";
-import { userService } from "./user-service.js";
-import { tokenService } from "./token-service.js";
-import { AuthDto } from "../schemas/auth/reply-schema/auth-schema.js";
+import { isEmptyObj, isMobileNumber } from "../utils/app.util.js";
+import { VerifyOtpDto } from "../schemas/auth/request-schema/verify-otp.schema.js";
+import { userService } from "./user.service.js";
+import { tokenService } from "./token.service.js";
+import { AuthDto } from "../schemas/auth/reply-schema/auth.schema.js";
 
 export const authService = { sendOtp, verifyOtp };
 
