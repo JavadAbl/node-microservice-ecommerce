@@ -19,7 +19,7 @@ export class AppError extends Error {
 
 export class NotFoundError extends AppError {
   constructor(entity: string, field: string, value: unknown, stack?: string) {
-    super(`${entity} not found: ${field} with value ${value}`, StatusCodes.NOT_FOUND, stack);
+    super(`${entity} ${field} with value ${value} not found`, StatusCodes.NOT_FOUND, stack);
     this.name = "NotFoundError";
   }
 }

@@ -10,9 +10,8 @@ import { AuthDto } from "../schemas/auth/reply/auth.schema.js";
 import { CreatePermissionDto } from "../schemas/auth/request/create-permission.schema.js";
 import { PermissionRepository } from "../infrastructure/database/Repository/permission.repository.js";
 
-export const authService = { sendOtp, verifyOtp, createPermission };
+export const authService = { sendOtp, verifyOtp, createPermission, deletePermission };
 const permissionRep = new PermissionRepository();
-console.log(132);
 
 const OTP_EXPIRE = 120; // 120 Second expiry
 
@@ -45,11 +44,16 @@ async function verifyOtp(payload: VerifyOtpDto): Promise<AuthDto> {
   return { accessToken, refreshToken, user };
 }
 
-async function createPermission(payload: CreatePermissionDto) {
+async function createPermission(payload: CreatePermissionDto): Promise<void> {
   const { name } = payload;
   const lowerName = name.toLocaleLowerCase();
   await permissionRep.checkDuplicateBy({ where: { name: lowerName } }, "name", name);
   await permissionRep.create({ data: { name: lowerName } });
+}
+
+async function deletePermission(id: number): Promise<void> {
+  await permissionRep.findAndCheckExistsBy({ where: { id } }, "id", id);
+  await permissionRep.remove({ where: { id } });
 }
 
 function generateOtp() {
