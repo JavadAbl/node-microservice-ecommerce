@@ -9,9 +9,9 @@ const SetUserPermissionBodySchema = Type.Object({
 export const SetUserPermissionSchema: FastifySchema = {
   params: IdParamsSchema,
   body: SetUserPermissionBodySchema,
-  description: "Set a user role",
-  tags: ["Users"],
-  response: { 200: undefined },
+  description: "Set an user permission",
+  tags: ["User"],
+  response: { 200: Type.Null() },
 };
 
 export type SetUserPermissionDto = Static<typeof SetUserPermissionBodySchema>;

@@ -17,10 +17,10 @@ export const prisma = new PrismaClient({ adapter: prismaAdapter });
 export async function startDatabase() {
   await prisma.$connect();
   await prisma.$queryRaw`SELECT 1`;
-  console.log("Connected to database");
+  console.log("Connected to database..");
 }
 
-const softDeleteModel = {
+/* const softDeleteModel = {
   async delete({ args, query }) {
     return query({ ...args, data: { isDeleted: true } });
   },
@@ -41,3 +41,4 @@ const softDeleteModel = {
 prisma.$extends(
   Prisma.defineExtension({ query: { vehicle: softDeleteModel, vehicleService: softDeleteModel } }),
 );
+ */

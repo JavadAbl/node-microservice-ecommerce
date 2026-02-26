@@ -1,6 +1,6 @@
 import { startCacheClient } from "./infrastructure/cache/cache-provider.js";
 import { validateConfig } from "./infrastructure/config.js";
-import { prisma, startDatabase } from "./infrastructure/database/prisma-provider.js";
+import { startDatabase } from "./infrastructure/database/prisma-provider.js";
 import { startCronJobs } from "./infrastructure/node-cron/cron-jobs.js";
 import { queueGracefulShutdown, startQueues } from "./infrastructure/queue/queue-provider.js";
 import { startQueueWorkers } from "./infrastructure/queue/queue-workers.js";
@@ -15,10 +15,10 @@ async function run() {
   await startRmq();
   startQueues();
   startQueueWorkers();
-  await startCacheClient()
+  await startCacheClient();
   try {
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error(error?.message, error);
     process.exit(1);
   }
 }

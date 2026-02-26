@@ -8,9 +8,9 @@ const SetUserRoleBodySchema = Type.Object({ role: Type.Enum(Role, { description:
 export const SetUserRoleSchema: FastifySchema = {
   params: IdParamsSchema,
   body: SetUserRoleBodySchema,
-  description: "Set a user role",
-  tags: ["Users"],
-  response: { 200: undefined },
+  description: "Set an user role",
+  tags: ["User"],
+  response: { 200: Type.Null() },
 };
 
 export type SetUserRoleDto = Static<typeof SetUserRoleBodySchema>;

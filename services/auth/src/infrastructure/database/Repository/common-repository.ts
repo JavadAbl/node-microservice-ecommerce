@@ -1,4 +1,4 @@
-import { NotFoundError } from "../../../utils/app-error.js";
+import { ConflictError, NotFoundError } from "../../../utils/app-error.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../prisma-provider.js";
 
@@ -37,11 +37,21 @@ export class Repository<TModel extends keyof typeof prisma> {
 
   async findAndCheckExistsBy<TArgs extends Prisma.Args<(typeof prisma)[TModel], "findFirst">>(
     args: TArgs,
-    { field, hasThrow = true, value }: { hasThrow?: boolean; field?: string; value?: unknown },
+    fieldName: string,
+    value: unknown,
   ): Promise<Prisma.Result<(typeof prisma)[TModel], TArgs, "findFirst"> | null> {
     const entity = await (prisma[this.model] as any).findFirst(args);
-    if (hasThrow && !entity) throw new NotFoundError(this.entityName, field!, value!);
+    if (!entity) throw new NotFoundError(this.entityName, fieldName, value);
     return entity;
+  }
+
+  async checkDuplicateBy<TArgs extends Prisma.Args<(typeof prisma)[TModel], "findFirst">>(
+    args: TArgs,
+    fieldName: string,
+    value: unknown,
+  ): Promise<void> {
+    const entity = await (prisma[this.model] as any).findFirst(args);
+    if (entity) throw new ConflictError(this.entityName, fieldName, value);
   }
 
   // --- WRITE ---

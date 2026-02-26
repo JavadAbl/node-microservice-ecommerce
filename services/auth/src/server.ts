@@ -3,7 +3,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import { config, isDev } from "./infrastructure/config.js";
 import { errorHandler } from "./plugins/error-handler.js";
 import fastify from "fastify";
-import { authRoutes } from "./routes/auth.route.js";
+import { startRouter } from "./routes/router.js";
 
 export const app = fastify({ logger: false, caseSensitive: false });
 
@@ -13,8 +13,8 @@ export async function startHttpServer() {
     await app.register(fastifySwagger, {
       openapi: {
         info: {
-          title: "Vehicle Microservice API",
-          description: "API documentation for the Vehicle Microservice",
+          title: "Auth Microservice API",
+          description: "API documentation for the Auth Microservice",
           version: "1.0.0",
         },
         // servers: [{ url: `http://localhost:${config.HTTP_PORT}`, description: "Internal Microservice (h2c)" }],
@@ -28,13 +28,9 @@ export async function startHttpServer() {
     });
   }
 
-  app.register(authRoutes, { prefix: "/Otp" });
-
   app.setErrorHandler(errorHandler);
 
-  app.get("/health", async () => {
-    return { status: "OK", timestamp: new Date().toISOString() };
-  });
+  await startRouter(app);
 
   const port = config.HTTP_PORT;
   const address = config.HTTP_HOST;

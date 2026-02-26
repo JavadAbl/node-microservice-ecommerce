@@ -7,7 +7,7 @@ export const errorHandler = (error: any, request: any, reply: any) => {
   const message = error.message || "Internal Server Error";
   const formattedStack = error.stack ? error.stack?.split("\n") : undefined;
 
-  app.log.error({
+  const logObj = {
     message,
     statusCode,
     url: request.url,
@@ -16,7 +16,10 @@ export const errorHandler = (error: any, request: any, reply: any) => {
     params: request.params,
     body: request.body,
     stack: formattedStack,
-  });
+  };
+
+  app.log.error(logObj);
+  console.error(error?.message);
 
   reply
     .status(statusCode)

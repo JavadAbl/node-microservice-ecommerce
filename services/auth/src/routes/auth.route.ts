@@ -1,7 +1,11 @@
 import { FastifyPluginAsync } from "fastify";
-import { SendOtpRouteType, SendOtpSchema } from "../schemas/auth/request-schema/sent-otp.schema.js";
+import { SendOtpRouteType, SendOtpSchema } from "../schemas/auth/request/send-otp.schema.js";
 import { authService } from "../services/auth.service.js";
-import { VerifyOtpRouteType, VerifyOtpSchema } from "../schemas/auth/request-schema/verify-otp.schema.js";
+import { VerifyOtpRouteType, VerifyOtpSchema } from "../schemas/auth/request/verify-otp.schema.js";
+import {
+  CreatePermissionRouteType,
+  CreatePermissionSchema,
+} from "../schemas/auth/request/create-permission.schema.js";
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
   // Send otp ------------------------------------------------
@@ -13,4 +17,13 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
   app.post<VerifyOtpRouteType>("/Verify", { schema: VerifyOtpSchema }, async (request, reply) => {
     return authService.verifyOtp(request.body);
   });
+
+  // Create Permission------------------------------------------------
+  app.post<CreatePermissionRouteType>(
+    "/Admin/Permission",
+    { schema: CreatePermissionSchema },
+    async (request, reply) => {
+      return authService.createPermission(request.body);
+    },
+  );
 };

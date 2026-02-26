@@ -1,6 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { Role } from "../../../infrastructure/database/generated/prisma/enums.js";
-import { PermissionSchema } from "./permission.schema.js";
+import { PermissionSchema } from "../../auth/reply/permission.schema.js";
 
 export const UserSchema = Type.Object({
   id: Type.Integer({ description: "User id" }),

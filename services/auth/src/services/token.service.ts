@@ -11,7 +11,7 @@ export const tokenService = {
 
 const JWT_ACCESS_SECRET = config.JWT_ACCESS_SECRET;
 const JWT_REFRESH_SECRET = config.JWT_REFRESH_SECRET;
-const ACCESS_TOKEN_EXPIRES_IN = "15m";
+const ACCESS_TOKEN_EXPIRES_IN = "60m";
 const REFRESH_TOKEN_EXPIRES_IN = "7d";
 
 export interface TokenPayload {

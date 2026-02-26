@@ -1,5 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
-import { UserSchema } from "../../user/reply-schema/user.schema.js";
+import { UserSchema } from "../../user/reply/user.schema.js";
 
 export const AuthDtoSchema = Type.Object({
   accessToken: Type.String({ description: "Access token" }),

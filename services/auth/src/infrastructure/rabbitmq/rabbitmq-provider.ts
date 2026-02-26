@@ -9,7 +9,7 @@ export let rmqConnection: AmqpConnectionManager;
 export async function startRmq() {
   rmqConnection = amqp.connect([config.RABBITMQ_URL]);
 
-  rmqConnection.on("connect", () => console.log("Connected to RabbitMQ!"));
+  rmqConnection.on("connect", () => console.log("Connected to RabbitMQ.."));
   rmqConnection.on("disconnect", (err) => console.log("Disconnected from RabbitMQ", err.err.message));
 
   await rmqSetup();

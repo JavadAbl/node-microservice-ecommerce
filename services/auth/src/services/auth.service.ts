@@ -1,14 +1,18 @@
 import { randomInt } from "crypto";
 import { cacheCheckConnection, cacheClient } from "../infrastructure/cache/cache-provider.js";
-import { SendOtpDto } from "../schemas/auth/request-schema/sent-otp.schema.js";
+import { SendOtpDto } from "../schemas/auth/request/send-otp.schema.js";
 import { BadRequestError, UnauthorizedError } from "../utils/app-error.js";
 import { isEmptyObj, isMobileNumber } from "../utils/app.util.js";
-import { VerifyOtpDto } from "../schemas/auth/request-schema/verify-otp.schema.js";
+import { VerifyOtpDto } from "../schemas/auth/request/verify-otp.schema.js";
 import { userService } from "./user.service.js";
 import { tokenService } from "./token.service.js";
-import { AuthDto } from "../schemas/auth/reply-schema/auth.schema.js";
+import { AuthDto } from "../schemas/auth/reply/auth.schema.js";
+import { CreatePermissionDto } from "../schemas/auth/request/create-permission.schema.js";
+import { PermissionRepository } from "../infrastructure/database/Repository/permission.repository.js";
 
-export const authService = { sendOtp, verifyOtp };
+export const authService = { sendOtp, verifyOtp, createPermission };
+const permissionRep = new PermissionRepository();
+console.log(132);
 
 const OTP_EXPIRE = 120; // 120 Second expiry
 
@@ -39,6 +43,13 @@ async function verifyOtp(payload: VerifyOtpDto): Promise<AuthDto> {
 
   const { accessToken, refreshToken } = tokenService.generateTokens({ userId: user.id });
   return { accessToken, refreshToken, user };
+}
+
+async function createPermission(payload: CreatePermissionDto) {
+  const { name } = payload;
+  const lowerName = name.toLocaleLowerCase();
+  await permissionRep.checkDuplicateBy({ where: { name: lowerName } }, "name", name);
+  await permissionRep.create({ data: { name: lowerName } });
 }
 
 function generateOtp() {
