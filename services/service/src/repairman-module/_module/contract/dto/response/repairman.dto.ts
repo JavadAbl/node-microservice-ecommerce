@@ -1,14 +1,20 @@
+import { Exclude, Expose } from 'class-transformer';
 import { WorkShift } from 'src/generated/prisma/enums';
 
+@Exclude()
 export class RepairmanDto {
+  @Expose()
   id: number;
-  firstName: string;
-  lastName: string;
-  workShift: WorkShift;
-  createdAt: Date;
-  updatedAt: Date;
 
-  constructor(partial: Partial<RepairmanDto>) {
-    Object.assign(this, partial);
-  }
+  @Expose()
+  firstName: string;
+
+  @Expose()
+  lastName: string;
+
+  @Expose()
+  employeeNumber: string;
+
+  @Expose()
+  workShift: WorkShift;
 }

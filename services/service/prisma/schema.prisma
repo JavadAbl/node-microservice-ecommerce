@@ -15,16 +15,17 @@ datasource db {
 }
 
 model Repairman {
-  id        Int       @id() @default(autoincrement())
-  firstName String
-  lastName  String
-  workShift WorkShift
+  id             Int       @id() @default(autoincrement())
+  employeeNumber String    @unique()
+  firstName      String
+  lastName       String
+  workShift      WorkShift
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Customers {
+model Service {
   id    Int    @id() @default(autoincrement())
   name  String @unique()
   price Int
@@ -36,4 +37,38 @@ model Customers {
 enum WorkShift {
   Day
   Night
+}
+
+model InboxEvent {
+  id          Int              @id @default(autoincrement())
+  queue       String
+  routingKey  String
+  serviceName String
+  status      InboxEventStatus @default(PENDING)
+  captureAt   DateTime         @default(now())
+  handledAt   DateTime?
+  error       String?
+  payload     Json
+}
+
+model OutboxEvent {
+  id         Int               @id @default(autoincrement())
+  routingKey String
+  status     OutboxEventStatus @default(PENDING)
+  captureAt  DateTime          @default(now())
+  handledAt  DateTime?
+  error      String?
+  payload    Json
+}
+
+enum InboxEventStatus {
+  PENDING
+  Handled
+  Error
+}
+
+enum OutboxEventStatus {
+  PENDING
+  Handled
+  Error
 }

@@ -5,6 +5,11 @@ export class CreateRepairmanDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
+  employeeNumber: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
   firstName: string;
 
   @IsString()

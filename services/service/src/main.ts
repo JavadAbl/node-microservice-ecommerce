@@ -3,27 +3,32 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './common/error-handler/error-handler.filter';
 import { ConfigService } from '@nestjs/config';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  // validateConfig();
-
   const app = await NestFactory.create(AppModule);
 
-  /*  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-    transport: Transport.RMQ,
-    options: { urls: ['amqp://localhost:5672'], queue: 'cats_queue', queueOptions: { durable: false } },
-  }); */
+  app.connectMicroservice<MicroserviceOptions>(
+    {
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://guest:guest@localhost:5672'],
+        exchange: 'app_exchange',
+        queue: 'cats_queue',
+        queueOptions: { durable: true, exclusive: true },
+      },
+    },
+    { inheritAppConfig: true, deferInitialization: false },
+  );
 
   app.useGlobalFilters(new AllExceptionsFilter());
-
-  // app.setGlobalPrefix('/api/v1');
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
 
   const configService = app.get(ConfigService);
   const port = configService.get('app').HTTP_PORT;
-  console.log(port);
 
-  await app.listen(process.env.HTTP_PORT || 3023);
+  await app.startAllMicroservices();
+  await app.listen(port);
 }
 bootstrap();

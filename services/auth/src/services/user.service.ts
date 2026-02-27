@@ -1,11 +1,12 @@
-import { Prisma } from "../infrastructure/database/generated/prisma/client.js";
 import { prisma } from "../infrastructure/database/prisma-provider.js";
 import { PermissionRepository } from "../infrastructure/database/Repository/permission.repository.js";
 import { UserRepository } from "../infrastructure/database/Repository/user.repository.js";
+import { GetManyQuery } from "../schemas/common/get-many-request.schema.js";
 import { SetUserPermissionDto } from "../schemas/user/request/set-user-permission.schema.js";
 import { SetUserRoleDto } from "../schemas/user/request/set-user-role.schema.js";
+import { buildFindManyArgs } from "../utils/prisma.util.js";
 
-export const userService = { getUserForLogin, setUserRole, setUserPermissions };
+export const userService = { getMany, getUserForLogin, setUserRole, setUserPermissions };
 const userRep = new UserRepository();
 const permissionRep = new PermissionRepository();
 
@@ -18,6 +19,12 @@ async function getUserForLogin(mobile: string) {
   });
 
   return { ...user, permissions };
+}
+
+async function getMany(query: GetManyQuery<"User">) {
+  const predicate = buildFindManyArgs(query, { searchableFields: ["mobile"] });
+  const users = await userRep.findMany(predicate);
+  return users;
 }
 
 async function setUserRole(userId: number, payload: SetUserRoleDto): Promise<void> {

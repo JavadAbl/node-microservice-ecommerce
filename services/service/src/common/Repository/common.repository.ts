@@ -2,6 +2,7 @@ import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { Prisma, PrismaClient } from 'src/generated/prisma/client';
 import { AppConfig, ConfigType } from '../config/config.type';
 import { ConfigService } from '@nestjs/config';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 export class Repository<TModel extends keyof PrismaClient> extends PrismaClient {
   constructor(
@@ -9,7 +10,6 @@ export class Repository<TModel extends keyof PrismaClient> extends PrismaClient 
     configService: ConfigService<ConfigType>,
   ) {
     const config = configService.getOrThrow<AppConfig>('app');
-    console.log(config);
 
     const adapter = new PrismaMariaDb({
       ssl: false,
@@ -56,20 +56,21 @@ export class Repository<TModel extends keyof PrismaClient> extends PrismaClient 
   async findAndCheckExistsBy<TArgs extends Prisma.Args<PrismaClient[TModel], 'findFirst'>>(
     args: TArgs,
     fieldName: string,
-    value: unknown,
-  ): Promise<Prisma.Result<PrismaClient[TModel], TArgs, 'findFirst'> | null> {
+    value: any,
+  ): Promise<Prisma.Result<PrismaClient[TModel], TArgs, 'findFirst'>> {
     const entity = await (this[this.model] as any).findFirst(args);
-    if (!entity) throw new NotFoundError(this.entityName, fieldName, value);
+    if (!entity) throw new NotFoundException(`${this.entityName} ${fieldName} with value ${value} not found`);
     return entity;
   }
 
   async checkDuplicateBy<TArgs extends Prisma.Args<PrismaClient[TModel], 'findFirst'>>(
     args: TArgs,
     fieldName: string,
-    value: unknown,
+    value: any,
   ): Promise<void> {
     const entity = await (this[this.model] as any).findFirst(args);
-    if (entity) throw new ConflictError(this.entityName, fieldName, value);
+    if (entity)
+      throw new ConflictException(`${this.entityName} ${fieldName} with value ${value} already exists`);
   }
 
   // --- WRITE ---
